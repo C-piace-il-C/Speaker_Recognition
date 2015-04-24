@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Speaker Recognition</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="infos">
+        \tEmanuele Canessa\n
+        \tAndrea Luzzati\n
+        \tDavide Oddone\n
+        \tIMEI:\t35221506509213/0
+    </string>
+    <string name="train">Train</string>
+    <string name="recognize">Recognize</string>
+    <string name="speaker">Insert your name</string>
+    <string name="duration">Duration (in ms)</string>
+    <string name="recordbutton">Record Audio</string>
+</resources>
