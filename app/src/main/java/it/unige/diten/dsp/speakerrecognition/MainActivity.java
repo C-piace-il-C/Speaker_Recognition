@@ -1,17 +1,38 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    Button btnRecord;
+    private static Context context;
+    short[] samples = null;
+
+    private final String PATH = "LUXATEE";
+    private final String FILE_NAME = "AudioRecorder.wav";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
+        btnRecord = (Button)findViewById(R.id.RecordButton);
+
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Rec rec = new Rec(context, 5, 8000, samples);
+                rec.execute(PATH, FILE_NAME);
+            }
+        });
     }
 
 
