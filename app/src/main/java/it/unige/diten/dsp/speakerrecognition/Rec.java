@@ -49,7 +49,8 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
         cProgressFeatures = new ProgressDialog(cContext);
         cProgressFeatures.setIndeterminate(true);
 
-        cRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, cFS, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, cNumberOfSamples * 2);
+        cRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, cFS, AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, cNumberOfSamples * 2);
     }
 
     @Override
@@ -62,14 +63,8 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
 
         cAudioData = new short[cNumberOfSamples];
 
-        try {
-            cRecorder.startRecording();
-            cRecorder.read(cAudioData, 0, cNumberOfSamples);
-        }
-        catch(IllegalStateException ise) {
-            showError(ise.getMessage());
-            return false;
-        }
+        cRecorder.startRecording();
+        cRecorder.read(cAudioData, 0, cNumberOfSamples);
 
         String storDir = Environment.getExternalStorageDirectory() + "/" + _path;
         File file = new File(storDir);
@@ -84,7 +79,7 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             dataByte[2*i+1] = (byte)((cAudioData[i] >> 8) & 0x00FF);
         }
 
-        WavIO writeWav = new WavIO(Environment.getExternalStorageDirectory() + "/" + _path + "/" + _fileName ,16, 1, 1, 8000, 2, 16, dataByte);
+        WavIO writeWav = new WavIO(storDir + "/" + _fileName ,16, 1, 1, 8000, 2, 16, dataByte);
         writeWav.save();
 
         return true;

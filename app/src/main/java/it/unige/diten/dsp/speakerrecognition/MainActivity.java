@@ -15,7 +15,7 @@ public class MainActivity extends ActionBarActivity {
     private static Context context;
     short[] samples = null;
 
-    private final String PATH = "LUXATEE";
+    private final String PATH = "ASR";
     private final String FILE_NAME = "AudioRecorder.wav";
 
     @Override

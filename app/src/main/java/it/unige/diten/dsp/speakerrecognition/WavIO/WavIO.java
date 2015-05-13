@@ -97,7 +97,6 @@ a trimmed down version that most wav files adhere to.
     private int myBlockAlign;
     private int myBitsPerSample;
     private long myDataSize;
-
     // I made this public so that you can toss whatever you want in here
     // maybe a recorded buffer, maybe just whatever you want
     public byte[] myData;
@@ -319,6 +318,11 @@ a trimmed down version that most wav files adhere to.
     public static byte[] shortToByteArray(short data)
     {
         return new byte[]{(byte)(data & 0xff),(byte)((data >>> 8) & 0xff)};
+    }
+
+    public long GetSampleRate()
+    {
+        return mySampleRate;
     }
 
 }
