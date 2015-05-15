@@ -7,26 +7,32 @@
     android:rowCount="6">
 
 
-
-    <RadioButton
-        android:layout_width="match_parent"
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/train"
-        android:id="@+id/TrainButton"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:checked="false"
-        android:layout_gravity="top" />
+        android:orientation="vertical">
 
-    <RadioButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/recognize"
-        android:id="@+id/RecognizeButton"
-        android:layout_row="1"
-        android:layout_column="0"
-        android:checked="true"
-        android:layout_gravity="top" />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/train"
+            android:id="@+id/rbt_Train"
+            android:checked="true"
+            android:layout_gravity="top" />
+            <!--android:layout_row="0"
+            android:layout_column="0" -->
+
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recognize"
+            android:id="@+id/rbt_Recognize"
+            android:checked="true"
+            android:layout_gravity="top" />
+            <!--android:layout_row="1"
+            android:layout_column="0"-->
+    </RadioGroup>
 
     <EditText
         android:layout_width="wrap_content"
