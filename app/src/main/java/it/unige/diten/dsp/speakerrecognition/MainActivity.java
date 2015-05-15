@@ -7,11 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity {
+    private final static String TAG = "ASR";
+    private static String NAME = "";
 
     Button btnRecord;
+    EditText etName;
+    EditText etDuration;
+
     private static Context context;
     short[] samples = null;
 
@@ -24,16 +30,22 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         context = this;
+        
         btnRecord = (Button)findViewById(R.id.RecordButton);
+
+        etDuration = (EditText)findViewById(R.id.edt_Duration);
+        etName = (EditText)findViewById(R.id.edt_Speaker);
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Rec rec = new Rec(context, 5, 8000, samples);
                 rec.execute(PATH, FILE_NAME);
             }
         });
     }
+
 
 
     @Override

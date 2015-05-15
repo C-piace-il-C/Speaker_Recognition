@@ -10,8 +10,10 @@ package it.unige.diten.dsp.speakerrecognition.WavIO;
 // if you catch any bugs in this, or improve upon it significantly, send me the changes
 // at evan at thisisnotalabel dot com, so we can share your changes with the world
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class WavIO
 {
