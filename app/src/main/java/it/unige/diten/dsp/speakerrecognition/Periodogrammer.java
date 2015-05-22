@@ -6,7 +6,7 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class Periodogrammer {
 
-    private static Complex[] ft = new Comples[Framer.SAMPLES_IN_FRAME];
+    private static Complex[] ft = new Complex[Framer.SAMPLES_IN_FRAME];
 
     public static short[] CalculatePeriodgram (Frame frame) {
         // Init return value
