@@ -6,8 +6,9 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
  * Framer
  * E' una classe astratta che si occupa di leggere un file .WAV per poi suddividerlo in frames
  * secondo i parametri noti (public final static...)
- * L'unico parametro che NON VA CAMBIATO è BPS in quanto abbiamo utilizzato il tipo short per lo
+ * L'unico parametro che NON VA CAMBIATO Ã¨ BPS in quanto abbiamo utilizzato il tipo short per lo
  * storage e l'elaborazione dei campioni, e dunque BPS deve essere 2.
+ * Il resto del codice dovrebbe adattarsi in automatico ad eventuali cambiamenti dei parametri.
  */
 public abstract class Framer
 {
