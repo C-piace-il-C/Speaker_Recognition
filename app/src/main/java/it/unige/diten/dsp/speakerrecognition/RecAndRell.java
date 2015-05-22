@@ -82,8 +82,8 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
         byte[] dataByte = new byte[2 * cNumberOfSamples];
 
         for (int i = 0; i < cNumberOfSamples; i++) {
-            dataByte[2 * i] =       (byte) (cAudioData[i] & 0x00FF);
-            dataByte[2 * i + 1] =   (byte) ((cAudioData[i] >> 8) & 0x00FF);
+            dataByte[2 * i]     =   (byte) (cAudioData[i]           & 0x00FF);
+            dataByte[2 * i + 1] =   (byte) ((cAudioData[i] >> 8)    & 0x00FF);
         }
 
         WavIO writeWav = new WavIO(fileName, 16, 1, 1, 8000, 2, 16, dataByte);

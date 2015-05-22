@@ -15,7 +15,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         // Params[0] = filename of the file from which to extract the features
         try {
             // Framing
-            Framer.ReadFromFile(params[0]);
+            Framer.readFromFile(params[0]);
             // Mel scaling with filters
 
             // Logarithm energies

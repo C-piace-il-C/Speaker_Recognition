@@ -2,7 +2,6 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.content.Context;
 import android.os.Bundle;
-//import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +15,8 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+//import android.provider.MediaStore;
 
 public class MainActivity extends ActionBarActivity {
     private final static String TAG = "ASR";
