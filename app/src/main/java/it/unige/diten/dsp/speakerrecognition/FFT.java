@@ -1,5 +1,12 @@
 package it.unige.diten.dsp.speakerrecognition;
-
+/*
+ * FFT
+ * Questa classe per il calcolo della FFT è stata presa da internet
+ * e lievemente modificata, tuttavia abbiamo deciso di non usarla per i seguenti motivi:
+ * -    Implementare la DFT è facile e permette di arrivare velocemente ad una release funzionante.
+ * -    E' comunque auspicabile scrivere la FFT a mano per scopi didattici, ma essendo time
+ *      consuming conviene prendersi del tempo per farlo in futuro in modo da sostituirla alla DFT.
+ */
 public class FFT {
 
     int n, m;

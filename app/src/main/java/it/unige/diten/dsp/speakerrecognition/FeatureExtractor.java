@@ -16,7 +16,9 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         try {
             // Framing
             Framer.readFromFile(params[0]);
-            // Mel scaling with filters
+            // Periodogram
+
+            // Mel scaling with filters of periodogram
 
             // Logarithm energies
 
@@ -24,9 +26,11 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
             // Delta-deltas
 
-            // Save to file
-            // save with the same filename of the wav with a different extension:
-            // ff = feature file
+            /**
+             * Save to file
+             * save with the same filename of the wav with a different extension:
+             * ff = feature file
+             */
             String outputFileName = params[0].replace(".wav",".ff");
         }
         catch(Exception ew)

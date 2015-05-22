@@ -130,8 +130,6 @@ a trimmed down version that most wav files adhere to.
     public WavIO(String tmpPath, long subChunk1Size, int format, long channels, long sampleRate,
                  int blockAlign, int bitsPerSample, byte[] audioData)
     {
-
-
         myPath = tmpPath;
 
         myChunkSize = 36 + audioData.length;

@@ -13,7 +13,23 @@ import android.widget.Toast;
 import java.io.File;
 
 import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
-
+/**
+ * RecAndRell
+ * Questa AsyncTask si occupa della registrazione. Quando viene avviata, prende come input una
+ * stringa (path) con la directory dove salvare la registrazione e una seconda (behaviour) che
+ * specifica ilcomportamaento successivo.
+ * Behaviour = "0": TRAIN
+ *      Il processo di registrazione è stato avviato con l'intenzione di allenare la SVM.
+ *      Una volta registrato e salvato il file WAV, si procede con l'estrazione di feature salvando
+ *      un file in una directory dedicata a parte (che conterrà esclusivamente i file di feature
+ *      per allenare la SVM). Il file verrà inviato alla SVM in un secondo momento dall'utente
+ *      attraverso l'interfaccia grafica del programma (magari attraverso un pulsante "invia"
+ *      che spedisce alla SVM tutto il contenuto della cartella).
+ * Behaviour = "1": RECOGNIZE
+ *      Il processo di registrazione è stato avviato con l'intenzione di riconoscere il parlatore.
+ *      Si procede con l'estrazione di feature, ma in questo caso il file prodotto viene inviato
+ *      automaticamente alla SVM in modalità di il riconoscimento.
+ */
 public class RecAndRell extends AsyncTask<String, Void, Integer> {
 
     final int waitPreRecording = 2000;
@@ -55,6 +71,7 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
     protected Integer doInBackground(String... params) {
         String _path = params[0];
         String _fileName = params[1];
+
         /*
          *   _behaviour:
          *     "0" - Train
@@ -113,14 +130,8 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
 
         if(behaviour == 0) {
             // train
-            // do nothing 'cause there will be a fragment to show the list of feature files
-            // extracted till that moment
-            // and you will select them from there and you will choose to send them to them
-            // in a way that is asynchronous in relation with the time you recorded it
-            // So, in essence, there is no need to send features immediately,
         } else {
-            //recognize
-            //Send features file to SVM MACHINE SERVER (googlepls)
+            // recognize
         }
     }
 
