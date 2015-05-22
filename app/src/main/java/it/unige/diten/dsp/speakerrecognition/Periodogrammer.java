@@ -6,14 +6,14 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class Periodogrammer {
 
-    private static Complex[] ft;
+    private static Complex[] ft = new Comples[Framer.SAMPLES_IN_FRAME];
 
     public static short[] CalculatePeriodgram (Frame frame) {
         // Init return value
         short[] periodogram = new short[Framer.SAMPLES_IN_FRAME];
 
         // Compute DFT
-        ft = DFT.computeDFT(frame.data);
+        DFT.computeDFT(frame.data,ft);
 
         // Compute periodogram
         // Please do not rename the for index variable, we need C++ to get things work properly.
