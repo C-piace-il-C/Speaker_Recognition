@@ -2,7 +2,7 @@ package it.unige.diten.dsp.speakerrecognition;
 
 /**
  * DFT
- * Classe astratta che si occupa di calcolare la DFT di una sequenza di short.
+ * Classe astratta che si occupa di calcolare la DFT di una sequenza di double.
  */
 
 public abstract class DFT {
