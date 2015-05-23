@@ -7,8 +7,14 @@ package it.unige.diten.dsp.speakerrecognition;
 
 public abstract class DFT {
 
-    public static void computeDFT(double[] src, Complex[] dest) {
-        
+    /**
+     * @brief   compute the DFT of the sequence src and saves it in dest.
+     * @param src   The source sequence.
+     * @param dest  The destination sequence. This must be large enough to
+     *              contain src
+     */
+    public static void computeDFT(double[] src, Complex[] dest) 
+    {
         if(dest.length < src.length)
             return;
         
