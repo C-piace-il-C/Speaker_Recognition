@@ -19,16 +19,16 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
  * stringa (path) con la directory dove salvare la registrazione e una seconda (behaviour) che
  * specifica ilcomportamaento successivo.
  * Behaviour = "0": TRAIN
- *      Il processo di registrazione è stato avviato con l'intenzione di allenare la SVM.
+ *      Il processo di registrazione e' stato avviato con l'intenzione di allenare la SVM.
  *      Una volta registrato e salvato il file WAV, si procede con l'estrazione di feature salvando
- *      un file in una directory dedicata a parte (che conterrà esclusivamente i file di feature
- *      per allenare la SVM). Il file verrà inviato alla SVM in un secondo momento dall'utente
+ *      un file in una directory dedicata a parte (che conterra' esclusivamente i file di feature
+ *      per allenare la SVM). Il file verra' inviato alla SVM in un secondo momento dall'utente
  *      attraverso l'interfaccia grafica del programma (magari attraverso un pulsante "invia"
  *      che spedisce alla SVM tutto il contenuto della cartella).
  * Behaviour = "1": RECOGNIZE
- *      Il processo di registrazione è stato avviato con l'intenzione di riconoscere il parlatore.
+ *      Il processo di registrazione e' stato avviato con l'intenzione di riconoscere il parlatore.
  *      Si procede con l'estrazione di feature, ma in questo caso il file prodotto viene inviato
- *      automaticamente alla SVM in modalità di il riconoscimento.
+ *      automaticamente alla SVM in modalita' di il riconoscimento.
  */
 public class RecAndRell extends AsyncTask<String, Void, Integer> {
 

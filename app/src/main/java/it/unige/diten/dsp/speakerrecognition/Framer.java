@@ -10,8 +10,7 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
  * storage e l'elaborazione dei campioni, e dunque BPS deve essere 2.
  * Il resto del codice dovrebbe adattarsi in automatico ad eventuali cambiamenti dei parametri.
  */
-public abstract class Framer
-{
+public abstract class Framer {
     /// Duration of the single frame in ms
     public final static int FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
@@ -25,13 +24,14 @@ public abstract class Framer
     /// Frame size in Bytes
     public final static int FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
     /// Distance in Bytes between the beginning of a frame and the following
-    public final static int FRAME_BYTE_SPACING = (int)((float)FRAME_BYTE_SIZE * (1.0f-FRAME_OVERLAP_FACTOR));
+    public final static int FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
 
     /// Container for all frames
     private static Frame[] frames = null;
 
     /// Convert byte[] to short[] with zero-filling
-    private static short[] toShortArray(byte[] src, int pos_byte, int len)
+    /*
+    private static double[] toShortArray(byte[] src, int pos_byte, int len)
     {
         short[] retV = new short[len];
 
@@ -47,6 +47,43 @@ public abstract class Framer
         }
 
         return (retV);
+    }*/
+
+    /**
+     * @brief   Converts a raw data source (array of bytes) to an array of double with zero-filling.
+     *          The raw data source is expected to contain integer elements.
+     *          by ALu. For info contact me at alu@cumallover.me.
+     *          note: yet to be debugged
+     * @param rawDataSrc Reference to the source.
+     * @param byteOffset Index of the first byte read from rawDataSrc.
+     * @param len        Number of elements to be read from rawDataSrc.
+     * @param byteStride Size in bytes of a single elment of rawDataSrc.
+     *                   note: byteStride must be in the range [1,8]
+     */
+    public static double[] toDoubleArray(byte[] rawDataSrc, int byteOffset, int len, int byteStride)
+    {
+        double[] result = new double[len];
+
+        // Zero-filling: create a temporary local copy of rawDataSrc of the correct size
+        // already zero filled
+        int C;
+        byte[] src = new byte[len*byteStride];
+        for(C = 0; C < len*byteStride && C+byteOffset < rawDataSrc.length; C++)
+            src[C] = rawDataSrc[C+byteOffset];
+        for( ; C < len*byteStride; C++ )
+            src[C] = 0;
+
+        // fill the result array
+        long currentValue;
+        for(C = 0; C < len; C++)
+        {
+            currentValue = 0;
+            for(int B = 0; B < byteStride; B++)
+                currentValue += (src[C*byteStride+B] << (8*B));
+            result[C] = (double)currentValue;
+        }
+
+        return (result);
     }
 
     /// Read WAVE file from SDCard
@@ -64,7 +101,12 @@ public abstract class Framer
         frames = new Frame[frameCount];
 
         for (int i = 0; i < frameCount; i++)
-            frames[i].data = toShortArray(readWAV.myData, i * FRAME_BYTE_SPACING, SAMPLES_IN_FRAME);
+            frames[i].data = toDoubleArray(
+                    readWAV.myData,         // src
+                    i * FRAME_BYTE_SPACING, // byte offset
+                    SAMPLES_IN_FRAME,       // len
+                    BPS                     // stride
+            );
     }
 
     /// Returns frame array

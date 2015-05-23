@@ -15,7 +15,7 @@ public class Complex {
     {
         return(re*re + im*im);
     }
-    // Questa è da correggere
+    // Questa e' da correggere
     public double GetPhase()
     {
         return(Math.atan(im/re));
