@@ -18,7 +18,7 @@ public abstract class Periodogrammer {
         // Compute periodogram
         // Please do not rename the for index variable, we need C++ to get things work properly.
         for (int C = 0; C < Framer.SAMPLES_IN_FRAME; C++){
-            periodogram[C] = (1.0 / (double)Framer.SAMPLES_IN_FRAME) * ft[C].GetSquareLength();
+            periodogram[C] = (1.0 / (double)Framer.SAMPLES_IN_FRAME) * ft[C].getSquareLength();
         }
 
         return (periodogram);
