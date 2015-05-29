@@ -9,15 +9,23 @@ public abstract class Periodogrammer {
     private static Complex[] ft = new Complex[Framer.SAMPLES_IN_FRAME];
     private static double[] hammingWindow = new double[Framer.SAMPLES_IN_FRAME];
 
-    public static void Initialize()
+    private static boolean initialized = false;
+
+    private static void Initialize()
     {
         // Create an hamming window and then computeWindowedDFT
         // Il primo campione viene quasi annullato, quello in mezzo (N/2) passa inalterato, l'ultimo
         for( int C = 0; C < Framer.SAMPLES_IN_FRAME; C++) // questa parte andrebbe spostata in un initialize
             hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)Framer.SAMPLES_IN_FRAME-1.0));
     }
-    public static double[] computePeriodogram (Frame frame) {
-        // Init return value
+
+    public static double[] computePeriodogram (Frame frame)
+    {
+
+        if(!initialized)
+            Initialize();
+
+        // Initialize return value
         double[] periodogram = new double[Framer.SAMPLES_IN_FRAME];
 
         double N = (double)Framer.SAMPLES_IN_FRAME; // converti una sola volta, usalo tante!

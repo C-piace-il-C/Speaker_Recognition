@@ -3,6 +3,8 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.os.AsyncTask;
 
+import it.unige.diten.dsp.speakerrecognition.Logarithmer;
+
 public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
     @Override
@@ -17,12 +19,21 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
             // Framing
             Framer.readFromFile(params[0]);
             // Periodogram
+            Frame[] frames = Framer.getFrames();
+            double[] periodogram;
+            for(int frame = 0; frame < frames.length; frame++ )
+            {
+                DCT.computeDCT(
+                    Logarithmer.computeLogarithm(
+                        MelScaler.extractMelEnergies(
+                            Periodogrammer.computePeriodogram(
+                                frames[frame]
+                            )
+                        )
+                    )
+                );
+            }
 
-            // Mel scaling with filters of periodogram
-
-            // Logarithm energies
-
-            // DCT
 
             // Delta-deltas
 

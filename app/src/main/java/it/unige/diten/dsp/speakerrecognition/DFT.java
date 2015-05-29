@@ -11,7 +11,7 @@ public abstract class DFT
      * @brief   compute the DFT of the real sequence src and saves it in dest.
      * @param src   The source sequence.
      * @param dest  The destination sequence. This must be large enough to
-     *              contain src
+     *              contain src.
      */
     public static void computeDFT(double[] src, Complex[] dest) 
     {
@@ -36,7 +36,7 @@ public abstract class DFT
      * @brief   compute the real part of the IDFT of sequence src and saves it in dest.
      * @param src   The source sequence.
      * @param dest  The destination sequence. This must be large enough to
-     *              contain src
+     *              contain src.
      */
     public static void computeIDFT(Complex[] src, double[] dest)
     {
