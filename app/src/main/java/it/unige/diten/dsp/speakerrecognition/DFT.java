@@ -5,8 +5,8 @@ package it.unige.diten.dsp.speakerrecognition;
  * Classe astratta che si occupa di calcolare la DFT di una sequenza di double.
  */
 
-public abstract class DFT {
-
+public abstract class DFT
+{
     /**
      * @brief   compute the DFT of the real sequence src and saves it in dest.
      * @param src   The source sequence.
