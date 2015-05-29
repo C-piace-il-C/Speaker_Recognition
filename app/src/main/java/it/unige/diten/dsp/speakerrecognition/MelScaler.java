@@ -7,32 +7,37 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class MelScaler {
 
-    // Calculate filterbanks
-    private static boolean initialized = false;
-
     public final static double  START_FREQ  = 300.0;
     public final static double  END_FREQ    = 8000.0;
-
+    // Number of filters
     public final static int FILTERBANK_SIZE = 26;
-
-
+    // Calculate filterbanks
+    private static boolean initialized = false;
     private static double[] filterFrequencies;
-
     private static double[][] filterBank;
+
     private static void Initialize()
     {
-        // NOP = number of positions
+        // NOP number of positions
+        /**
+         * 1.   Calcolo delle frequenze che compongono i filtri
+         *          le frequenze sono inserite linearmente in mels e riconvertite in hertz
+         *          ottenendo un effetto logaritmico.
+         * 2.   Calcolo dei vettori di filteBank
+         *          Ogni vettore del filterbank è nullo escluso il triangolo centrato alla
+         *          frequenza corrispondente.
+         */
         int NOPs = (FILTERBANK_SIZE+2);
         filterFrequencies = new double[NOPs];
 
-        filterFrequencies[0] = melScale( START_FREQ );
+        filterFrequencies[0] = melScale(START_FREQ);
         double step = (END_FREQ-START_FREQ)/(NOPs-1.0);
         for( int C = 1; C < NOPs; C++ )
         {
-            filterFrequencies[C] = filterFrequencies[C-1] + step;
-            filterFrequencies[C-1] = IMelScale(filterFrequencies[C-1]);
+            filterFrequencies[C] = filterFrequencies[C - 1] + step;
+            filterFrequencies[C - 1] = IMelScale(filterFrequencies[C - 1]);
         }
-        filterFrequencies[NOPs-1] = IMelScale(filterFrequencies[NOPs-1]);
+        filterFrequencies[NOPs - 1] = IMelScale(filterFrequencies[NOPs - 1]);
 
         filterBank = new double[FILTERBANK_SIZE][Framer.SAMPLES_IN_FRAME];
         double currentFrequency = 0;
@@ -43,8 +48,8 @@ public abstract class MelScaler {
             currentFrequency = 0;
             for( int C = 0; C < Framer.SAMPLES_IN_FRAME; C++)
             {
-                coeff = 2.0/(filterFrequencies[C+1]-filterFrequencies[C]);
-                centralFreq = (filterFrequencies[C+1]-filterFrequencies[C])/2.0+filterFrequencies[C];
+                coeff = 2.0 / (filterFrequencies[C + 1] - filterFrequencies[C]);
+                centralFreq = (filterFrequencies[C + 1] - filterFrequencies[C]) / 2.0 + filterFrequencies[C];
 
                 if( filterFrequencies[C] <= currentFrequency && currentFrequency <= centralFreq)
                     filterBank[F][C] = coeff*(currentFrequency-filterFrequencies[C]);
@@ -58,7 +63,10 @@ public abstract class MelScaler {
         }
     }
 
-
+    /**
+     * @param periodogram double array with periodogram computed by Periodogrammer
+     * @return array with Mel energies
+     */
     public static double[] extractMelEnergies(double[] periodogram)
     {
         if(!initialized)
