@@ -9,7 +9,11 @@ public abstract class Periodogrammer {
     private static Complex[] ft = new Complex[Framer.SAMPLES_IN_FRAME];
     private static double[] hammingWindow = new double[Framer.SAMPLES_IN_FRAME];
 
-    private static boolean initialized = false;
+
+    public Periodogrammer()
+    {
+        Initialize();
+    }
 
     private static void Initialize()
     {
@@ -21,10 +25,6 @@ public abstract class Periodogrammer {
 
     public static double[] computePeriodogram (Frame frame)
     {
-
-        if(!initialized)
-            Initialize();
-
         // Initialize return value
         double[] periodogram = new double[Framer.SAMPLES_IN_FRAME];
 
