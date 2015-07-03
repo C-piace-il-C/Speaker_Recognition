@@ -28,7 +28,7 @@ public abstract class Periodogrammer {
         // Initialize return value
         double[] periodogram = new double[Framer.SAMPLES_IN_FRAME];
 
-        double N = (double)Framer.SAMPLES_IN_FRAME; // converti una sola volta, usalo tante!
+        double N = (double)Framer.SAMPLES_IN_FRAME; // converti una sola volta, usalo tante! ~Xat
 
         // Compute DFT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ////////////////////////////////////////////////////////////////////////////////////////////

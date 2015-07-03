@@ -7,6 +7,8 @@ import it.unige.diten.dsp.speakerrecognition.Logarithmer;
 
 public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
+    private final static int MFCC_COUNT = 13;
+
     @Override
     protected void onPreExecute() {
         //nein
@@ -18,24 +20,26 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         try {
             // Framing
             Framer.readFromFile(params[0]);
-            // Periodogram
             Frame[] frames = Framer.getFrames();
-            double[] periodogram;
-            for(int frame = 0; frame < frames.length; frame++ )
+
+
+            // MFCCs
+            double[][] mfcc = new double[frames.length][];
+            for(int frame = 0; frame < frames.length; frame++)
             {
-                DCT.computeDCT(
-                    Logarithmer.computeLogarithm(
-                        MelScaler.extractMelEnergies(
-                            Periodogrammer.computePeriodogram(
-                                frames[frame]
-                            )
-                        )
-                    )
+                mfcc[frame] = DCT.computeDCT(
+                        Logarithmer.computeLogarithm(
+                                MelScaler.extractMelEnergies(
+                                        Periodogrammer.computePeriodogram(
+                                                frames[frame]
+                                        )
+                                )
+                        ), MFCC_COUNT
                 );
             }
 
-
             // Delta-deltas
+            double[][] delta_delta = DD.computeDD(mfcc, 2);
 
             /**
              * Save to file
