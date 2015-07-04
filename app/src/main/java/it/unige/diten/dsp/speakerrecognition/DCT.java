@@ -22,7 +22,7 @@ public abstract class DCT
             // Scaling factor
             retV[k] *= (1/N);
             // Under a certain value we can consider it as if it were 0
-            if(retV[k] < precision) retV[k] = 0;
+            if(Math.abs(retV[k]) < precision) retV[k] = 0;
         }
 
         return (retV);

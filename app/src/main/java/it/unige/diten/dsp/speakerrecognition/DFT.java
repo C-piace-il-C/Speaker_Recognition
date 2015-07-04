@@ -7,6 +7,7 @@ package it.unige.diten.dsp.speakerrecognition;
 
 public abstract class DFT
 {
+    static final double precision = Math.pow(10, -6);
     /**
      * @brief   compute the DFT of the real sequence src and saves it in dest.
      * @param src   The source sequence.
@@ -22,14 +23,17 @@ public abstract class DFT
         int N = src.length;
 
         for(int k = 0; k < N; k++) {
-            dest[k].re = .0;
-            dest[k].im = .0;
+            dest[k].re = 0;
+            dest[k].im = 0;
             for (int n = 0; n < N; n++) {
                 angle = -2*Math.PI*(double)k*(double)n/(double)N;
 
                 dest[k].re += src[n] * Math.cos(angle);
                 dest[k].im += src[n] * Math.sin(angle);
             }
+            // Under a certain value we can consider it as if it were 0
+            if(Math.abs(dest[k].re) < precision) dest[k].re = 0;
+            if(Math.abs(dest[k].im) < precision) dest[k].im = 0;
         }
     }
     /**
@@ -55,6 +59,9 @@ public abstract class DFT
                 // add the real part
                 dest[n] += src[k].re;
             }
+
+            // If the result has too much precision, round it
+            if(Math.abs(Math.round(dest[n]) - dest[n]) < precision) dest[n] = Math.round(dest[n]);
         }
     }
 }

@@ -24,7 +24,6 @@ public class DCTTest extends TestCase {
         results = DCT.computeDCT(values, 8);
         for(int i = 1; i < results.length; i++) {
             String val = String.valueOf(results[i]);
-            Log.v("VALUE:", val);
             Assert.assertEquals(results[i], 0.);
         }
     }
