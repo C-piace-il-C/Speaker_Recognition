@@ -34,7 +34,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                                                 frames[frame]
                                         )
                                 )
-                        ), MFCC_COUNT
+                        ), MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
                 );
             }
 
