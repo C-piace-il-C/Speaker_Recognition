@@ -31,7 +31,7 @@ public abstract class MelScaler {
          *          le frequenze sono inserite linearmente in mels e riconvertite in hertz
          *          ottenendo un effetto logaritmico.
          * 2.   Calcolo dei vettori di filterBank
-         *          Ogni vettore del filterbank è nullo escluso il triangolo centrato alla
+         *          Ogni vettore del filterbank Ã¨ nullo escluso il triangolo centrato alla
          *          frequenza corrispondente.
          */
         int NOPs = (FILTERBANK_SIZE+2);
