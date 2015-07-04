@@ -15,10 +15,9 @@ public class Complex {
     {
         return(re*re + im*im);
     }
-    // Questa e' da controllare
     public double getPhase()
     {
-        return(Math.atan(im/re));
+        return(Math.atan2(im,re));
     }
 
     public void addPhase( double relPhase )
