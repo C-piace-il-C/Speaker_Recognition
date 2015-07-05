@@ -76,8 +76,10 @@ public abstract class MelScaler
      */
     public static double[] extractMelEnergies(double[] periodogram)
     {
-        if(!initialized)
+        if(!initialized) {
             Initialize();
+            initialized = true;
+        }
         double[] energies = new double[FILTERBANK_SIZE];
 
         for( int C = 0; C < FILTERBANK_SIZE; C++ )

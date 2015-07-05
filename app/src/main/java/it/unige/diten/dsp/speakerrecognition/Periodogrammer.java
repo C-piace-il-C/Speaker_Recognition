@@ -41,8 +41,10 @@ public abstract class Periodogrammer {
         int size = frame.data.length;
 
         if(!initialized)
+        {
             Initialize(size);
-
+            initialized = true;
+        }
 
         // Initialize return value
         double[] periodogram = new double[size];
