@@ -30,10 +30,13 @@ public abstract class DD
                     // visto che f+m+n >= 0, e quindi n >= -f -m, allora min = Math.max(-f-m,-M)
                     // visto che f+m+n < src.length, e quindi n < src.length - m - f, allora 
                     //      max = Math.min(src.length - m - f, M)
-                    for (int n = -M; n <= M; n++)
+
+                    int min = Math.max(-f - m, -M);
+                    int max = Math.min(src.length - m - f, M);
+
+                    for (int n = min; n <= max; n++)
                     {
-                        if ((f + m + n >= 0) && (f + m + n < src.length))
-                            ret[f][k] += m * n *  src[f + m + n][k];
+                        ret[f][k] += m * n * src[f + m + n][k];
                     }
                 }
 
