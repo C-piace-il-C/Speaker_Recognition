@@ -3,9 +3,6 @@ package it.unige.diten.dsp.speakerrecognition;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-/**
- * Created by doddo on 7/4/15.
- */
 public class ComplexTest extends TestCase {
 
     static Complex comp = new Complex();
@@ -23,5 +20,11 @@ public class ComplexTest extends TestCase {
 
     public void testGetSquareLength() throws Exception {
         Assert.assertEquals(0., comp.getSquareLength());
+    }
+
+
+    public void testArr() throws Exception {
+        Complex[] comp = new Complex[10];
+        Assert.assertEquals(comp[0].Re,0.0);
     }
 }

@@ -14,6 +14,12 @@ public class Complex {
         Im = .0;
     }
 
+    public Complex(double re, double im)
+    {
+        Re = re;
+        Im = im;
+    }
+
     public double getLength()
     {
         return (Math.sqrt(Re * Re + Im * Im));
