@@ -16,10 +16,10 @@ public abstract class DD
         double adj = Math.pow(2 * (M * (M + 1) * (2 * M + 1)) / 6.0, 2);
 
         // f: frame index
-        for (int f = 0; f < src.length; f++)
+        for (int k = 0; k < src.length; k++)
         {
             // k: MFCC index
-            for (int k = 0; k < src[0].length; k++)
+            for (int f = 0; f < src[0].length; f++)
             {
                 ret[f][k] = .0;
 
