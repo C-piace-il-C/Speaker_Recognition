@@ -19,8 +19,6 @@ public abstract class DCT
             {
                 retV[k] += src[n] * Math.cos((Math.PI / N) * (n + 0.5) * k);
             }
-            // Scaling factor
-            retV[k] *= (1/N);
             // Under a certain value we can consider it as if it were 0
             if(Math.abs(retV[k]) < precision) retV[k] = 0;
         }
