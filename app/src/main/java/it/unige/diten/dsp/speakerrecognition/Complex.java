@@ -6,25 +6,32 @@ package it.unige.diten.dsp.speakerrecognition;
  * a partire DFT.
  */
 public class Complex {
-    public double re, im;
+    public double Re;
+    public double Im;
+
+    public Complex() {
+        Re = .0;
+        Im = .0;
+    }
+
     public double getLength()
     {
-        return(Math.sqrt(re*re + im*im));
+        return (Math.sqrt(Re * Re + Im * Im));
     }
     public double getSquareLength()
     {
-        return(re*re + im*im);
+        return (Re * Re + Im * Im);
     }
     public double getPhase()
     {
-        return(Math.atan2(im,re));
+        return (Math.atan2(Im, Re));
     }
 
     public void addPhase( double relPhase )
     {
         double len = getLength();
         double angle = getPhase()+relPhase;
-        re = len*Math.cos(angle);
-        im = len*Math.sin(angle);
+        Re = len * Math.cos(angle);
+        Im = len * Math.sin(angle);
     }
 }

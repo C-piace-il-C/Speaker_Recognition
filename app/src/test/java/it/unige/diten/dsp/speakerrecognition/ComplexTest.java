@@ -12,8 +12,8 @@ public class ComplexTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        comp.re = 0;
-        comp.im = 0;
+        comp.Re = 0;
+        comp.Im = 0;
     }
 
     public void testGetLength() throws Exception {

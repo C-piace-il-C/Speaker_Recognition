@@ -88,6 +88,9 @@ a trimmed down version that most wav files adhere to.
 
 	 */
 
+    // I made this public so that you can toss whatever you want in here
+    // maybe a recorded buffer, maybe just whatever you want
+    public byte[] myData;
     // our private variables
     private String myPath;
     private long myChunkSize;
@@ -99,20 +102,6 @@ a trimmed down version that most wav files adhere to.
     private int myBlockAlign;
     private int myBitsPerSample;
     private long myDataSize;
-    // I made this public so that you can toss whatever you want in here
-    // maybe a recorded buffer, maybe just whatever you want
-    public byte[] myData;
-
-    // get/set for the Path property
-    public String getPath()
-    {
-        return myPath;
-    }
-
-    public void setPath(String newPath)
-    {
-        myPath = newPath;
-    }
 
     // empty constructor
     public WavIO()
@@ -143,6 +132,66 @@ a trimmed down version that most wav files adhere to.
         myDataSize = audioData.length;
 
         myData = audioData;
+    }
+
+    // these two routines convert a byte array to a unsigned short
+    public static int byteArrayToInt(byte[] b) {
+        int start = 0;
+        int low = b[start] & 0xff;
+        int high = b[start + 1] & 0xff;
+        return (int) (high << 8 | low);
+    }
+
+    // these two routines convert a byte array to an unsigned integer
+    public static long byteArrayToLong(byte[] b) {
+        int start = 0;
+        int i = 0;
+        int len = 4;
+        int cnt = 0;
+        byte[] tmp = new byte[len];
+        for (i = start; i < (start + len); i++) {
+            tmp[cnt] = b[i];
+            cnt++;
+        }
+        long accum = 0;
+        i = 0;
+        for (int shiftBy = 0; shiftBy < 32; shiftBy += 8) {
+            accum |= ((long) (tmp[i] & 0xff)) << shiftBy;
+            i++;
+        }
+        return accum;
+    }
+
+    // ===========================
+    // CONVERT JAVA TYPES TO BYTES
+    // ===========================
+    // returns a byte array of length 4
+    private static byte[] intToByteArray(int i) {
+        byte[] b = new byte[4];
+        b[0] = (byte) (i & 0x00FF);
+        b[1] = (byte) ((i >> 8) & 0x000000FF);
+        b[2] = (byte) ((i >> 16) & 0x000000FF);
+        b[3] = (byte) ((i >> 24) & 0x000000FF);
+        return b;
+    }
+
+    // convert a short to a byte array
+    public static byte[] shortToByteArray(short data) {
+        return new byte[]{(byte) (data & 0xff), (byte) ((data >>> 8) & 0xff)};
+    }
+
+    // get/set for the Path property
+    public String getPath() {
+        return myPath;
+    }
+
+
+    // ===========================
+    // CONVERT BYTES TO JAVA TYPES
+    // ===========================
+
+    public void setPath(String newPath) {
+        myPath = newPath;
     }
 
     // read a wav file into this class
@@ -198,7 +247,7 @@ a trimmed down version that most wav files adhere to.
             //System.out.println("SubChunk1ID:" + subChunk1ID + " SubChunk1Size:" + mySubChunk1Size + " AudioFormat:" + myFormat + " Channels:" + myChannels + " SampleRate:" + mySampleRate);
 
 
-            // read the data chunk header - reading this IS necessary, because not all wav files will have the data chunk here - for now, we're just assuming that the data chunk is here
+            // read the data chunk header - reading this IS necessary, because not all wav files will have the data chunk here - for now, we'Re just assuming that the data chunk is here
             String dataChunkID = "" + (char)inFile.readByte() + (char)inFile.readByte() + (char)inFile.readByte() + (char)inFile.readByte();
 
             inFile.read(tmpLong); // read the size of the data
@@ -259,65 +308,6 @@ a trimmed down version that most wav files adhere to.
         String newline = "<br>";
         String summary = "<html>Format: " + myFormat + newline + "Channels: " + myChannels + newline + "SampleRate: " + mySampleRate + newline + "ByteRate: " + myByteRate + newline + "BlockAlign: " + myBlockAlign + newline + "BitsPerSample: " + myBitsPerSample + newline + "DataSize: " + myDataSize + "</html>";
         return summary;
-    }
-
-
-    // ===========================
-    // CONVERT BYTES TO JAVA TYPES
-    // ===========================
-
-    // these two routines convert a byte array to a unsigned short
-    public static int byteArrayToInt(byte[] b)
-    {
-        int start = 0;
-        int low = b[start] & 0xff;
-        int high = b[start+1] & 0xff;
-        return (int)( high << 8 | low );
-    }
-
-
-    // these two routines convert a byte array to an unsigned integer
-    public static long byteArrayToLong(byte[] b)
-    {
-        int start = 0;
-        int i = 0;
-        int len = 4;
-        int cnt = 0;
-        byte[] tmp = new byte[len];
-        for (i = start; i < (start + len); i++)
-        {
-            tmp[cnt] = b[i];
-            cnt++;
-        }
-        long accum = 0;
-        i = 0;
-        for ( int shiftBy = 0; shiftBy < 32; shiftBy += 8 )
-        {
-            accum |= ( (long)( tmp[i] & 0xff ) ) << shiftBy;
-            i++;
-        }
-        return accum;
-    }
-
-
-    // ===========================
-    // CONVERT JAVA TYPES TO BYTES
-    // ===========================
-    // returns a byte array of length 4
-    private static byte[] intToByteArray(int i)
-    {
-        byte[] b = new byte[4];
-        b[0] = (byte) (i & 0x00FF);
-        b[1] = (byte) ((i >> 8) & 0x000000FF);
-        b[2] = (byte) ((i >> 16) & 0x000000FF);
-        b[3] = (byte) ((i >> 24) & 0x000000FF);
-        return b;
-    }
-
-    // convert a short to a byte array
-    public static byte[] shortToByteArray(short data)
-    {
-        return new byte[]{(byte)(data & 0xff),(byte)((data >>> 8) & 0xff)};
     }
 
     public long GetSampleRate()

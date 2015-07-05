@@ -23,17 +23,17 @@ public abstract class DFT
         int N = src.length;
 
         for(int k = 0; k < N; k++) {
-            dest[k].re = 0;
-            dest[k].im = 0;
+            dest[k].Re = 0;
+            dest[k].Im = 0;
             for (int n = 0; n < N; n++) {
                 angle = -2*Math.PI*(double)k*(double)n/(double)N;
 
-                dest[k].re += src[n] * Math.cos(angle);
-                dest[k].im += src[n] * Math.sin(angle);
+                dest[k].Re += src[n] * Math.cos(angle);
+                dest[k].Im += src[n] * Math.sin(angle);
             }
             // Under a certain value we can consider it as if it were 0
-            if(Math.abs(dest[k].re) < precision) dest[k].re = 0;
-            if(Math.abs(dest[k].im) < precision) dest[k].im = 0;
+            if (Math.abs(dest[k].Re) < precision) dest[k].Re = 0;
+            if (Math.abs(dest[k].Im) < precision) dest[k].Im = 0;
         }
     }
     /**
@@ -57,7 +57,7 @@ public abstract class DFT
                 // src[k] = src[k] * e^(jnk2PI/N) => solo uno sfasamento
                 src[k].addPhase(2.0*Math.PI / (double)N*(double)k*(double)n);
                 // add the real part
-                dest[n] += src[k].re;
+                dest[n] += src[k].Re;
             }
             // Scaling factor
             dest[n] /= (double)N;

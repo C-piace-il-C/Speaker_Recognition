@@ -1,6 +1,5 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
@@ -25,8 +24,8 @@ public class DFTTest extends TestCase {
         /*
         for(int i = 0; i < values.length; i++)
         {
-            Assert.assertEquals(0., results[i].re);
-            Assert.assertEquals(0., results[i].im);
+            Assert.assertEquals(0., results[i].Re);
+            Assert.assertEquals(0., results[i].Im);
         }*/
     }
 
