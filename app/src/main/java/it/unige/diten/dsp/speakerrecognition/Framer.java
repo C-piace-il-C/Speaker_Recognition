@@ -27,26 +27,6 @@ public abstract class Framer {
     /// Container for all frames
     private static Frame[] frames = null;
 
-    /// Convert byte[] to short[] with zero-filling
-
-    private static short[] toShortArray(byte[] src, int byte_offset, int len)
-    {
-        short[] shorts = new short[len];
-
-        for (int i = 0; i < len * 2; i += 2)
-        {
-            // Zero-filling
-            if (byte_offset + i + 1 >= src.length)
-                shorts[i / 2] = 0;
-            else {                                      // Copy two bytes into one short
-                shorts[i / 2] = (short) ((src[byte_offset + i]) & 0x00FF); //LSB
-                shorts[i / 2] += (short) ((src[byte_offset + i + 1] << 8) & 0xFF00); //MSB
-            }
-        }
-
-        return (shorts);
-    }
-
     /**
      * @brief   Converts a raw data source (array of bytes) to an array of double with zero-filling.
      *          The raw data source is expected to contain integer elements.
