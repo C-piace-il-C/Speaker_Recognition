@@ -1,3 +1,8 @@
+// TESTATI GROSSOLANAMENTE (ponendo come input x, x^2, x^3, e^x e osservando qualitativamente il
+// risultato) è uscito che la versione del paper (DD0) è corretta e meno onerosa computazionalmente
+// mentre la DD1, tratta dalle dispense di grattarola, è totalmente sbagliata per x^2 e x^3
+// (resta da vedere se ci sono bug nel'implementazione)
+
 package it.unige.diten.dsp.speakerrecognition;
 
 /**
@@ -44,7 +49,8 @@ public abstract class DD
         return ret;
     }
 
-    public static double[][] computeDD_1(double[][] src, int M, double[][] ret1) {
+    public static double[][] computeDD_1(double[][] src, int M)
+    {
         double ret[][] = new double[src.length][src[0].length];
 
         // k: MFCC index
@@ -54,9 +60,13 @@ public abstract class DD
                 ret[f][k] = .0;
 
                 for (int m = -M; m <= M; m++) {
+                    if(m==0)
+                        continue;
                     double temp = .0;
 
                     for (int n = -M; n <= M; n++) {
+                        if(n==0)
+                            continue;
                         if ((f - m - n >= 0) && (f - m - n < src.length))
                             temp += Math.pow(-1, n) / (double) n * src[f - m - n][k];
                     }
@@ -65,7 +75,6 @@ public abstract class DD
                 }
             }
         }
-
         return ret;
     }
 }
