@@ -28,24 +28,24 @@ public abstract class Framer {
     private static Frame[] frames = null;
 
     /// Convert byte[] to short[] with zero-filling
-    /*
-    private static double[] toShortArray(byte[] src, int pos_byte, int len)
+
+    private static short[] toShortArray(byte[] src, int byte_offset, int len)
     {
         short[] retV = new short[len];
 
         for (int i = 0; i < len * 2; i += 2)
         {
             // Zero-filling
-            if (pos_byte + i + 1 >= src.length)
+            if (byte_offset + i + 1 >= src.length)
                 retV[i / 2] = 0;
             else {                                      // Copy two bytes into one short
-                retV[i / 2] =   (short) ((src[pos_byte + i])            & 0x00FF); //LSB
-                retV[i / 2] +=  (short) ((src[pos_byte + i + 1] << 8)   & 0xFF00); //MSB
+                retV[i / 2] =   (short) ((src[byte_offset + i])            & 0x00FF); //LSB
+                retV[i / 2] +=  (short) ((src[byte_offset + i + 1] << 8)   & 0xFF00); //MSB
             }
         }
 
         return (retV);
-    }*/
+    }
 
     /**
      * @brief   Converts a raw data source (array of bytes) to an array of double with zero-filling.
@@ -58,10 +58,18 @@ public abstract class Framer {
      * @param byteStride Size in bytes of a single elment of rawDataSrc.
      *                   note: byteStride must be in the range [1,8]
      */
+
+    // bug: bisogna sistemare i numeri negativi.
     public static double[] toDoubleArray(byte[] rawDataSrc, int byteOffset, int len, int byteStride)
     {
         double[] result = new double[len];
 
+        short[] shorts = toShortArray(rawDataSrc, byteOffset, len);
+
+        for(int C=0;C<len;C++)
+            result[C] = (double)shorts[C];
+
+        /*
         // Zero-filling: create a temporary local copy of rawDataSrc of the correct size
         // already zero filled
         int C;
@@ -80,6 +88,9 @@ public abstract class Framer {
                 currentValue += (src[C*byteStride+B] << (8*B));
             result[C] = (double)currentValue;
         }
+*/
+
+
 
         return (result);
     }

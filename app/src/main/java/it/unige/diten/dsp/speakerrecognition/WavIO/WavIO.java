@@ -266,6 +266,7 @@ a trimmed down version that most wav files adhere to.
             return false;
         }
 
+
         return true; // this should probably be something more descriptive
     }
 
