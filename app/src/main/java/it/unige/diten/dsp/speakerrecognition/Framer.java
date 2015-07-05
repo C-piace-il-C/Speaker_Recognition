@@ -31,20 +31,20 @@ public abstract class Framer {
 
     private static short[] toShortArray(byte[] src, int byte_offset, int len)
     {
-        short[] retV = new short[len];
+        short[] shorts = new short[len];
 
         for (int i = 0; i < len * 2; i += 2)
         {
             // Zero-filling
             if (byte_offset + i + 1 >= src.length)
-                retV[i / 2] = 0;
+                shorts[i / 2] = 0;
             else {                                      // Copy two bytes into one short
-                retV[i / 2] =   (short) ((src[byte_offset + i])            & 0x00FF); //LSB
-                retV[i / 2] +=  (short) ((src[byte_offset + i + 1] << 8)   & 0xFF00); //MSB
+                shorts[i / 2] = (short) ((src[byte_offset + i]) & 0x00FF); //LSB
+                shorts[i / 2] += (short) ((src[byte_offset + i + 1] << 8) & 0xFF00); //MSB
             }
         }
 
-        return (retV);
+        return (shorts);
     }
 
     /**
@@ -52,47 +52,31 @@ public abstract class Framer {
      *          The raw data source is expected to contain integer elements.
      *          by ALu. For info contact me at alu@cumallover.me.
      *          note: yet to be debugged
-     * @param rawDataSrc Reference to the source.
-     * @param byteOffset Index of the first byte read from rawDataSrc.
-     * @param len        Number of elements to be read from rawDataSrc.
-     * @param byteStride Size in bytes of a single elment of rawDataSrc.
+     * @param src Reference to the source.
+     * @param byteOffset Index of the first byte read from src.
+     * @param len        Number of elements to be read from src.
+     * @param byteStride Size in bytes of a single elment of src.
      *                   note: byteStride must be in the range [1,8]
      */
-
-    // bug: bisogna sistemare i numeri negativi.
-    public static double[] toDoubleArray(byte[] rawDataSrc, int byteOffset, int len, int byteStride)
+    public static double[] toDoubleArray(byte[] src, int byteOffset, int len, int byteStride)
     {
-        double[] result = new double[len];
+        int size = len * byteStride;
+        double[] retV = new double[size];
 
-        short[] shorts = toShortArray(rawDataSrc, byteOffset, len);
+        int i;
 
-        for(int C=0;C<len;C++)
-            result[C] = (double)shorts[C];
-
-        /*
-        // Zero-filling: create a temporary local copy of rawDataSrc of the correct size
-        // already zero filled
-        int C;
-        byte[] src = new byte[len*byteStride];
-        for(C = 0; C < len*byteStride && C+byteOffset < rawDataSrc.length; C++)
-            src[C] = rawDataSrc[C+byteOffset];
-        for( ; C < len*byteStride; C++ )
-            src[C] = 0;
-
-        // fill the result array
-        long currentValue;
-        for(C = 0; C < len; C++)
+        // Convert input to double.
+        for (i = 0; (i < size) && (i + byteOffset < src.length); i++)
         {
-            currentValue = 0;
-            for(int B = 0; B < byteStride; B++)
-                currentValue += (src[C*byteStride+B] << (8*B));
-            result[C] = (double)currentValue;
+            retV[i] = (double) ((src[byteOffset + i * byteStride]) & 0x00FF); //LSB
+            retV[i] += (double) ((src[byteOffset + i * byteStride + 1] << 8) & 0xFF00); //MSB
         }
-*/
 
+        // Zero-filling.
+        while (i < size)
+            retV[i++] = .0;
 
-
-        return (result);
+        return (retV);
     }
 
     /// Read WAVE file from SDCard

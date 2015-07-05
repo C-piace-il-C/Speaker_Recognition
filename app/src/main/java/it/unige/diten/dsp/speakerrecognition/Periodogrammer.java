@@ -26,7 +26,7 @@ public abstract class Periodogrammer {
 
     /**
      * @brief   Calcola il periodogramma di un frame (sequenza di double)
-     *          Il periodogramma è una sequenza reale lunga quanto quella in ingresso
+     *          Il periodogramma e' una sequenza reale lunga quanto quella in ingresso
      *          periodogram[i] = 1/N * |F[i]|^2
      *          essendo F[i] la DFT del frame, N la lunghezza della sequenza
      * @param   frame   Il frame del quale calcolare il periodogramma
