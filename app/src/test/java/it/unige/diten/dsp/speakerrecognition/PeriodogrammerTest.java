@@ -1,4 +1,3 @@
-
 package it.unige.diten.dsp.speakerrecognition;
 
 import junit.framework.Assert;
@@ -27,6 +26,7 @@ public class PeriodogrammerTest extends TestCase {
         double[] expectation = new double[10];
         int k = 0;
 
+        // Values obtained with MATLAB
         expectation[k++] = 0.045896195961077;
         expectation[k++] = 0.370815577298035;
         expectation[k++] = 0.470100665735951;
