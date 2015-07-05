@@ -91,17 +91,19 @@ public abstract class Framer {
         readWAV.read();
 
         if (readWAV.GetSampleRate() != SAMPLE_RATE)
-            throw new Exception("Framer::readFromWAV: Invalid sample rate!");
+            throw new Exception("Framer.readFromWAV: Invalid sample rate!");
         // Clear old data (garbage collector)
         frames = null;
 
         int frameCount = readWAV.myData.length / FRAME_BYTE_SPACING;
         frames = new Frame[frameCount];
 
-        for (int i = 0; i < frameCount; i++) {
-            frames[i].data = toDoubleArray(
+
+        for (int C = 0; C < frameCount; C++) {
+            frames[C] = new Frame();
+            frames[C].data = toDoubleArray(
                     readWAV.myData,         // src
-                    i * FRAME_BYTE_SPACING, // byte offset
+                    C * FRAME_BYTE_SPACING, // byte offset
                     SAMPLES_IN_FRAME,       // len
                     BPS                     // stride
             );

@@ -13,38 +13,13 @@ public class DFTTest extends TestCase {
     public boolean areEqual(double a, double b)
     {
         double abs = a-b < 0 ? (b-a) : (a-b);
-        return(abs <= 0.0001);
+        return(abs <= 0.00000001);
     }
     public void setUp() throws Exception {
         super.setUp();
 
     }
-/*
-    public void testComputeDFT() throws Exception {
-        for(int i = 0; i < results.length; i++) {
-            results[i] = new Complex();
-        }
 
-        DFT.computeDFT(values, results);
-
-        for(int i = 0; i < values.length; i++)
-        {
-            Assert.assertEquals(0., results[i].Re);
-            Assert.assertEquals(0., results[i].Im);
-        }
-    }
-
-    public void testComputeIDFT() throws Exception {
-        DFT.computeIDFT(results, values);
-
-        for(int i = 0; i < values.length; i++)
-        {
-            Assert.assertEquals(8., values[i]);
-        }
-
-    }
-
-*/
     public void testDFTofSin1() throws Exception
     {
         double[] input = new double[10];

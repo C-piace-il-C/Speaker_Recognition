@@ -24,6 +24,14 @@ public abstract class Periodogrammer {
             hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)Framer.SAMPLES_IN_FRAME-1.0));
     }
 
+    /**
+     * @brief   Calcola il periodogramma di un frame (sequenza di double)
+     *          Il periodogramma è una sequenza reale lunga quanto quella in ingresso
+     *          periodogram[i] = 1/N * |F[i]|^2
+     *          essendo F[i] la DFT del frame, N la lunghezza della sequenza
+     * @param   frame   Il frame del quale calcolare il periodogramma
+     * @return  Double array contenente il periodogramma
+     */
     public static double[] computePeriodogram (Frame frame)
     {
         // Initialize return value
@@ -31,7 +39,7 @@ public abstract class Periodogrammer {
 
         double N = (double)Framer.SAMPLES_IN_FRAME; // converti una sola volta, usalo tante! ~Xat
 
-        // Compute DFT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        // Compute DFT of windowed sequence \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         ////////////////////////////////////////////////////////////////////////////////////////////
         double[]  windowedFrame = new double[Framer.SAMPLES_IN_FRAME];
         for( int C = 0; C < Framer.SAMPLES_IN_FRAME; C++)

@@ -23,6 +23,8 @@ public abstract class MelScaler {
     {
         Initialize();
     }
+
+    // Compute the filterbank matrix (set of triangle filter vectors)
     private static void Initialize()
     {
         // NOP number of positions
@@ -47,7 +49,7 @@ public abstract class MelScaler {
         filterFrequencies[NOPs - 1] = IMelScale(filterFrequencies[NOPs - 1]);
 
         filterBank = new double[FILTERBANK_SIZE][Framer.SAMPLES_IN_FRAME];
-        double currentFrequency = 0;
+        double currentFrequency;// = 0;
         double stepFrequency = (double)Framer.SAMPLE_RATE * 2.0 / (double)Framer.SAMPLES_IN_FRAME;
         double centralFreq, coeff;
         for( int F=0; F < FILTERBANK_SIZE; F++)
