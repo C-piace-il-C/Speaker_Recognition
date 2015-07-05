@@ -3,8 +3,6 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.os.AsyncTask;
 
-import it.unige.diten.dsp.speakerrecognition.Logarithmer;
-
 public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
     private final static int MFCC_COUNT = 13;
@@ -39,7 +37,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
             }
 
             // Delta-deltas
-            double[][] delta_delta = DD.computeDD(mfcc, 2);
+            double[][] delta_delta = DD.computeDD_0(mfcc, 2);
 
             /**
              * Save to file

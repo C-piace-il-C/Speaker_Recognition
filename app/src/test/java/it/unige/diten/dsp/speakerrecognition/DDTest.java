@@ -15,6 +15,6 @@ public class DDTest extends TestCase {
     }
 
     public void testComputeDD() throws Exception {
-        results = DD.computeDD(constant, 2);
+        results = DD.computeDD_0(constant, 2);
     }
 }

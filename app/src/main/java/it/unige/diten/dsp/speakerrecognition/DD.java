@@ -5,7 +5,7 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class DD
 {
-    public static double[][] computeDD (double[][] src, int M)
+    public static double[][] computeDD_0(double[][] src, int M)
     {
         // Per chiarezza del codice consiglio di rimpiazzare src.length
         // e src[0].length (roba asssolutamente criptica) con FRAME_COUNT e MFCC_COUNT
@@ -38,6 +38,31 @@ public abstract class DD
                 }
 
                 ret[f][k] /= adj;
+            }
+        }
+
+        return ret;
+    }
+
+    public static double[][] computeDD_1(double[][] src, int M, double[][] ret1) {
+        double ret[][] = new double[src.length][src[0].length];
+
+        // k: MFCC index
+        for (int k = 0; k < src[0].length; k++) {
+            // f: frame index
+            for (int f = 0; f < src.length; f++) {
+                ret[f][k] = .0;
+
+                for (int m = -M; m <= M; m++) {
+                    double temp = .0;
+
+                    for (int n = -M; n <= M; n++) {
+                        if ((f - m - n >= 0) && (f - m - n < src.length))
+                            temp += Math.pow(-1, n) / (double) n * src[f - m - n][k];
+                    }
+
+                    ret[f][k] += Math.pow(-1, m) / (double) m * temp;
+                }
             }
         }
 
