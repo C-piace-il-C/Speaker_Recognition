@@ -7,24 +7,20 @@ package it.unige.diten.dsp.speakerrecognition;
  *     Input: Frame(s) array.
  * </summary>
  */
-public abstract class MelScaler {
-    // Abstract here specifies MelScaler cannot be instantiated
-
-    // final specifies the variable i
+// Abstract here specifies MelScaler cannot be instantiated
+public abstract class MelScaler
+{
     public final static double  START_FREQ  = 300.0;
     public final static double  END_FREQ    = 8000.0;
     // Number of filters
     public final static int FILTERBANK_SIZE = 26;
 
+    private static boolean initialized = false;
 
     // Calculate filterbanks
     private static double[] filterFrequencies;
     private static double[][] filterBank;
 
-    public MelScaler()
-    {
-        Initialize();
-    }
 
     // Compute the filterbank matrix (set of triangle filter vectors)
     private static void Initialize()
@@ -80,7 +76,8 @@ public abstract class MelScaler {
      */
     public static double[] extractMelEnergies(double[] periodogram)
     {
-
+        if(!initialized)
+            Initialize();
         double[] energies = new double[FILTERBANK_SIZE];
 
         for( int C = 0; C < FILTERBANK_SIZE; C++ )
