@@ -11,12 +11,6 @@ public abstract class Periodogrammer {
     
     private static Complex[] ft;
     private static double[] hammingWindow;
-    private static boolean initialized = false;
-
-    public Periodogrammer()
-    {
-
-    }
 
     private static void Initialize(int size)
     {
@@ -42,6 +36,8 @@ public abstract class Periodogrammer {
      */
     public static double[] computePeriodogram (Frame frame)
     {
+        boolean initialized = false;
+
         int size = frame.data.length;
 
         if(!initialized)
