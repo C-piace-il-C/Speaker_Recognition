@@ -10,6 +10,7 @@ public class ComplexTest extends TestCase {
 
     static Complex comp = new Complex();
 
+
     public void setUp() throws Exception {
         super.setUp();
         comp.Re = 0;

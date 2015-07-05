@@ -6,6 +6,7 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class Periodogrammer {
 
+    
     private static Complex[] ft = new Complex[Framer.SAMPLES_IN_FRAME];
     private static double[] hammingWindow = new double[Framer.SAMPLES_IN_FRAME];
 
