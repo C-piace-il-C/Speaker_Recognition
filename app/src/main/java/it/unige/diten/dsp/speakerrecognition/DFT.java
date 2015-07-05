@@ -59,7 +59,8 @@ public abstract class DFT
                 // add the real part
                 dest[n] += src[k].re;
             }
-
+            // Scaling factor
+            dest[n] /= (double)N;
             // If the result has too much precision, round it
             if(Math.abs(Math.round(dest[n]) - dest[n]) < precision) dest[n] = Math.round(dest[n]);
         }
