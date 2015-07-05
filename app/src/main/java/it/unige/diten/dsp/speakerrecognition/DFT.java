@@ -1,3 +1,5 @@
+// TESTATA COMPLETAMENTE
+
 package it.unige.diten.dsp.speakerrecognition;
 
 /**
@@ -23,8 +25,8 @@ public abstract class DFT
         int N = src.length;
 
         for(int k = 0; k < N; k++) {
-            dest[k].Re = 0;
-            dest[k].Im = 0;
+            dest[k].Re = .0;
+            dest[k].Im = .0;
             for (int n = 0; n < N; n++) {
                 angle = -2*Math.PI*(double)k*(double)n/(double)N;
 
@@ -32,8 +34,8 @@ public abstract class DFT
                 dest[k].Im += src[n] * Math.sin(angle);
             }
             // Under a certain value we can consider it as if it were 0
-            if (Math.abs(dest[k].Re) < precision) dest[k].Re = 0;
-            if (Math.abs(dest[k].Im) < precision) dest[k].Im = 0;
+            if (Math.abs(dest[k].Re) < precision) dest[k].Re = .0;
+            if (Math.abs(dest[k].Im) < precision) dest[k].Im = .0;
         }
     }
     /**

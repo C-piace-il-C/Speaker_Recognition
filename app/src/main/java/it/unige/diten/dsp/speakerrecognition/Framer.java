@@ -1,3 +1,5 @@
+// CORREGGERE toDoubleArray E TESTARE
+
 package it.unige.diten.dsp.speakerrecognition;
 
 import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;

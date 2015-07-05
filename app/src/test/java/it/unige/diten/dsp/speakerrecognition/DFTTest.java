@@ -34,6 +34,7 @@ public class DFTTest extends TestCase {
 
         Complex[] expectedRes = new Complex[10];
         int k = 0;
+        // Values obtained with MATLAB
         expectedRes[k++] = new Complex(1.955209482107380,0.000000000000000);
         expectedRes[k++] = new Complex(3.151505791271589,0.594994616210640);
         expectedRes[k++] = new Complex(-3.073479308812598,-1.118520711871261);
@@ -67,6 +68,8 @@ public class DFTTest extends TestCase {
 
         Complex[] expectedRes = new Complex[10];
         int k = 0;
+
+        // Values obtained with MATLAB
         expectedRes[k++] = new Complex(45.000000000000000,0.000000000000000);
         expectedRes[k++] = new Complex(-5.000000000000000,15.388417685876266);
         expectedRes[k++] = new Complex(-5.000000000000000,6.881909602355867);
