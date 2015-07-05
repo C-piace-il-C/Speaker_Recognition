@@ -15,11 +15,11 @@ public abstract class DD
         // Sum of first N squares: (N(N + 1)(2N + 1)) / 6.
         double adj = Math.pow(2 * (M * (M + 1) * (2 * M + 1)) / 6.0, 2);
 
-        // f: frame index
-        for (int f = 0; f < src.length; f++)
+        // k: MFCC index
+        for (int k = 0; k < src[0].length; k++)
         {
-            // k: MFCC index
-            for (int k = 0; k < src[0].length; k++)
+            // f: frame index
+            for (int f = 0; f < src.length; f++)
             {
                 ret[f][k] = .0;
 
