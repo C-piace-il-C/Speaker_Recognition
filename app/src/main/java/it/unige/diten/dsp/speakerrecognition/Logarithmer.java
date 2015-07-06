@@ -6,8 +6,11 @@ public class Logarithmer
 {
     public static double[] computeLogarithm(double[] src)
     {
-        for(int C = 0; C < src.length; C++ )
+        for(int C = 0; C < src.length; C++)
+        {
             src[C] = Math.log(src[C]); // Math.log of src (logaritmo naturale)
-        return( src );
+        }
+
+        return src;
     }
 }

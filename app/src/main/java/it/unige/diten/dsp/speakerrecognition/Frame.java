@@ -1,3 +1,5 @@
+// DA CONTROLLARE.
+
 package it.unige.diten.dsp.speakerrecognition;
 
 /**
@@ -6,6 +8,12 @@ package it.unige.diten.dsp.speakerrecognition;
  * Contiene un array di short con i samples del frame.
  * short perche' i samples sono per specifica a 16 bit.
  */
-public class Frame {
-    public double[] data = null;
+public class Frame
+{
+    public double[] data;
+
+    public Frame()
+    {
+        data = null;
+    }
 }

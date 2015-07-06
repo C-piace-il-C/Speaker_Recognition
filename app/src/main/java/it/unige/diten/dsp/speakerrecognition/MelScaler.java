@@ -76,10 +76,12 @@ public abstract class MelScaler
      */
     public static double[] extractMelEnergies(double[] periodogram)
     {
-        if(!initialized) {
+        if(!initialized)
+        {
             Initialize();
             initialized = true;
         }
+
         double[] energies = new double[FILTERBANK_SIZE];
 
         for( int C = 0; C < FILTERBANK_SIZE; C++ )
@@ -89,20 +91,19 @@ public abstract class MelScaler
                 energies[C] += periodogram[i] * filterBank[C][i];
         }
 
-        return(energies);
-
+        return energies;
     }
 
     private static double melScale(double f)
     {
         // Natural logarithm of input.
-        return 1125.0*Math.log(1.0+f/700.0);
+        return (1125.0 * Math.log(1.0 + (f / 700.0)));
     }
 
 
     private static double IMelScale(double m)
     {
         // Inverse mel scale.
-        return 700.0*(Math.exp(m/1125.0)-1);
+        return (700.0 * (Math.exp(m / 1125.0) - 1));
     }
 }

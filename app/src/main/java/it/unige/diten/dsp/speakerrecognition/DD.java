@@ -1,6 +1,6 @@
 // TESTATI GROSSOLANAMENTE (ponendo come input x, x^2, x^3, e^x e osservando qualitativamente il
 // risultato) è uscito che la versione del paper (DD0) è corretta e meno onerosa computazionalmente
-// mentre la DD1, tratta dalle dispense di grattarola, è totalmente sbagliata per x^2 e x^3
+// mentre la DD1, tratta dalle dispense di GRATTAROLA, è totalmente sbagliata per x^2 e x^3
 // (resta da vedere se ci sono bug nel'implementazione)
 
 package it.unige.diten.dsp.speakerrecognition;
@@ -10,6 +10,7 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class DD
 {
+    // Buona la prima.
     public static double[][] computeDD_0(double[][] src, int M)
     {
         // Per chiarezza del codice consiglio di rimpiazzare src.length
@@ -37,6 +38,7 @@ public abstract class DD
                     //      max = Math.min(src.length - m - f, M)
                     for (int n = -M; n <= M; n++)
                     {
+                        // Check bounds
                         if ((f + m + n >= 0) && (f + m + n < src.length))
                             ret[f][k] += m * n *  src[f + m + n][k];
                     }
