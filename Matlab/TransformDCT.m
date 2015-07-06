@@ -1,3 +1,7 @@
+%%
+% 
+% $$e^{\pi i} + 1 = 0$$
+% 
 function X=TransformDCT(Data,Type)
 % this function is provide the programmer DCT-II and DCT-IV
 % these two functions are used widely in Signal and image processing
