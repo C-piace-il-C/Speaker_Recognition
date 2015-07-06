@@ -98,8 +98,9 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
 
         byte[] dataByte = new byte[2 * cNumberOfSamples];
 
-        for (int i = 0; i < cNumberOfSamples; i++) {
-            dataByte[2 * i]     =   (byte) (cAudioData[i]           & 0x00FF);
+        for (int i = 0; i < cNumberOfSamples; i++)
+        {
+            dataByte[2 * i]     =   (byte) ((cAudioData[i])         & 0x00FF);
             dataByte[2 * i + 1] =   (byte) ((cAudioData[i] >> 8)    & 0x00FF);
         }
 
@@ -109,6 +110,7 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
         /*   _behaviour:
          *     "0" - Train
          *     "1" - Recognize  */
+
         return(Integer.parseInt(_behaviour));
     }
 
@@ -128,14 +130,16 @@ public class RecAndRell extends AsyncTask<String, Void, Integer> {
         FeatureExtractor fe = new FeatureExtractor();
         fe.execute(fileName);
 
-        if(behaviour == 0) {
+        if(behaviour == 0)
+        {
             // train
         } else {
             // recognize
         }
     }
 
-    private void showError(String string) {
+    private void showError(String string)
+    {
         Toast.makeText(cContext, string, Toast.LENGTH_LONG).show();
         Log.e("ERRORE:", string);
     }
