@@ -1,10 +1,8 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 import android.util.Log;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
 import java.io.Console;
 
 public class DCTTest extends TestCase {
@@ -24,6 +22,7 @@ public class DCTTest extends TestCase {
 
     public void testComputeDCTRamp() throws Exception
     {
+
         double[] input = new double[10];
         for( int C = 0; C < 10; C++ )
             input[C] = C;
