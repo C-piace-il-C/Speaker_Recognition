@@ -1,4 +1,4 @@
-// DA TESTARE
+//  TESTATO DEBUGGATO PORCODIO CORRETTO
 //
 package it.unige.diten.dsp.speakerrecognition;
 
@@ -13,13 +13,13 @@ import java.io.IOException;
 public abstract class MelScaler
 {
     public final static double  START_FREQ      = 300.0;
-    public final static double  END_FREQ        = (double)Framer.SAMPLE_RATE / 2.0;
-    public final static int     FILTERBANK_SIZE = 5;        // Number of filters.
-    public final static int     FILTER_SIZE     = 5000;     //Framer.SAMPLES_IN_FRAME;
-
-    private static boolean      initialized     = false;    // Flag.
-
-    private static double[][]   filterBank      = null;     // Holder for filterbanks.
+    public final static double  END_FREQ        = Framer.SAMPLE_RATE / 2.0;
+    public final static int     FILTERBANK_SIZE = 26;
+    public final static int     FILTER_SIZE     = Framer.SAMPLES_IN_FRAME;
+    // Flag.
+    private static boolean      initialized     = false;
+    // Holder for filterbanks.
+    private static double[][]   filterBank      = null;
 
     /**
      * Compute the filterbank matrix (set of triangle filter vectors)
@@ -28,7 +28,6 @@ public abstract class MelScaler
     {
         double[] filterFreq;
 
-        // NOP number of positions
         /**
          * 1.   Calcolo delle frequenze che compongono i filtri
          *      le frequenze sono inserite linearmente in mels e riconvertite in hertz
@@ -39,6 +38,7 @@ public abstract class MelScaler
          *      frequenza corrispondente.
          */
 
+        // NOP number of positions
         // Filter position initialization (evenly spaced in Mel).
         int NOPs = FILTERBANK_SIZE + 2;
         filterFreq = new double[NOPs];
@@ -54,10 +54,8 @@ public abstract class MelScaler
             filterFreq[C - 1]    = IMelScale(filterFreq[C - 1]);
         }
         // Last conversion Mel -> Hertz.
-        filterFreq[NOPs - 1] = END_FREQ; //IMelScale(filterFreq[NOPs - 1])
+        filterFreq[NOPs - 1] = END_FREQ;
 
-        // stepFreq so that maximum freq is associated to N/2  ( MAX_FREQ / (N/2) )
-        double stepFreq = END_FREQ * 2.0 / ((double)FILTER_SIZE - 1.0);
         // L'indice dell'ultimo campione del filtro è N-1 quindi bisogna dividere per N-1, non per N
         // infatti la frequenza associata sarà come (N-1)*step = SAMPLE_RATE*2
 
@@ -65,73 +63,50 @@ public abstract class MelScaler
         *   - N: filter number
         *   - F: filter vector component
         */
+
         filterBank = new double[FILTERBANK_SIZE][FILTER_SIZE];
+
+        // stepFreq so that maximum freq is associated to N/2  ( MAX_FREQ / (N/2) )
+        double stepFreq = END_FREQ * 2.0 / ((double)FILTER_SIZE - 1.0);
+
         for(int N = 0; N < FILTERBANK_SIZE; N++)
         {
             // currentFreq is the frequency of the F-th component of the filter vector
             double currentFreq = .0;
-            double cnt_left = 0;
-            double cnt_right = 0;
+            double cntLeft     = .0;
+            double cntRight    = .0;
 
-
-            double centralFreq = filterFreq[N + 1];//(filterFreq[N + 1] - filterFreq[N]) / 2.0 + filterFreq[N];
+            double centralFreq = filterFreq[N + 1];
 
             for(int T=0;T<FILTER_SIZE; T++)
             {
-                if(filterFreq[N] <= currentFreq && currentFreq <= centralFreq)          // Left.
-                    cnt_left++;
-                else if( centralFreq < currentFreq && currentFreq <= filterFreq[N + 2])  // Right.
-                    cnt_right++;
+                if(filterFreq[N] <= currentFreq && currentFreq <= centralFreq)             // Left.
+                    cntLeft++;
+                else if( centralFreq < currentFreq && currentFreq <= filterFreq[N + 2])    // Right.
+                    cntRight++;
 
                 currentFreq += stepFreq;
             }
 
-            currentFreq = 0.0;
-            double slopeLeft = 1.0 / (cnt_left);
-            double slopeRight = 1.0 / (cnt_right);
+            currentFreq       = .0;
+            double slopeLeft  = 1.0 / (cntLeft);
+            double slopeRight = 1.0 / (cntRight);
 
-            cnt_left = 0;
-            cnt_right = 0;
+            cntLeft           = .0;
+            cntRight          = .0;
 
             for(int F = 0; F < FILTER_SIZE; F++)
             {
-
                 // Triangle set-up.
-                if(filterFreq[N] <= currentFreq && currentFreq <= centralFreq)          // Left.
-                    filterBank[N][F] = slopeLeft * (cnt_left++);
+                if(filterFreq[N] <= currentFreq && currentFreq <= centralFreq)           // Left.
+                    filterBank[N][F] = slopeLeft * (cntLeft++);
                 else if( centralFreq < currentFreq && currentFreq <= filterFreq[N + 2])  // Right.
-                    filterBank[N][F] = 1.0 - slopeRight * (cnt_right++);
-                else                                                                    // Out.
+                    filterBank[N][F] = 1.0 - slopeRight * (cntRight++);
+                else                                                                     // Out.
                     filterBank[N][F] = .0;
-
 
                 currentFreq += stepFreq;
             }
-        }
-
-        // Stampo su file testuale i vettori
-        try {
-            FileWriter writer = new FileWriter("C:\\Test\\test.txt", true);
-            for(int N = 0; N < FILTERBANK_SIZE; N++)
-            {
-                writer.write("% vector" + Integer.toString(N));
-                writer.write("\r\nhold on;");
-                for(int F = 1; F < FILTER_SIZE; F++)
-                {
-                    writer.write(
-                            "drawLine([" +
-                            Integer.toString(F-1) + " " +
-                            Double.toString(filterBank[N][F-1]) + "],[" +
-                            Integer.toString(F) + " " +
-                            Double.toString(filterBank[N][F]) + "],'red');\r\n"
-                    );
-                }
-            }
-            writer.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
         }
     }
 
@@ -155,7 +130,7 @@ public abstract class MelScaler
 
             for(int i = 0; i < FILTER_SIZE; i++)
             {
-
+                // Calculate half energies.
                 energies[C] += periodogram[i] * filterBank[C][i];
             }
             // 2.0 because of frequency simmetry caused by real input.
@@ -175,6 +150,6 @@ public abstract class MelScaler
     private static double IMelScale(double m)
     {
         // Inverse mel scale.
-        return (700.0 * (Math.exp(m / 1125.0) - 1));
+        return (700.0 * (Math.exp(m / 1125.0) - 1.0));
     }
 }
