@@ -32,7 +32,7 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
  */
 public class RecAndRell extends AsyncTask<String, Void, Integer> {
 
-    final int waitPreRecording = 2000;
+    private final int waitPreRecording = 2000;
     private final String TAG = "Recorder Audio";
     int cRegistrationLenghtInSeconds;
     int cFS;
