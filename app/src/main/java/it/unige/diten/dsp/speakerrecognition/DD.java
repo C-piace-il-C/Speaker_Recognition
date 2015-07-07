@@ -10,6 +10,7 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public abstract class DD
 {
+    public static final int DD_COUNT = FeatureExtractor.MFCC_COUNT;
     // Buona la prima.
     public static double[][] computeDD_0(double[][] src, int M)
     {
