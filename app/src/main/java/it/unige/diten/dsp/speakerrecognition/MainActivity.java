@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static String getCurrentDate()
     {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         Date date = new Date();
         return(dateFormat.format(date).toString());
     }
@@ -48,22 +48,24 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context = this;
+        context     = this;
 
-        btnRecord = (Button)findViewById(R.id.RecordButton);
-        etDuration = (EditText)findViewById(R.id.edt_Duration);
-        etName = (EditText)findViewById(R.id.edt_Speaker);
+        btnRecord   = (Button)findViewById(R.id.RecordButton);
+        etDuration  = (EditText)findViewById(R.id.edt_Duration);
+        etName      = (EditText)findViewById(R.id.edt_Speaker);
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
-        rbTrain = (RadioButton)findViewById(R.id.rbt_Train);
+        rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (etName.getText().length() != 0) {
+            public void onClick(View v)
+            {
+                if (etName.getText().length() != 0)
+                {
                     // Gets text from edt_Name, FORMAT: "[yyyyMMddHHmmss] Name.wav"
-                    fileName = "[" + getCurrentDate() + "] " + etName.getText().toString() + AUDIO_EXTENSION;
+                    fileName = "[" + getCurrentDate() + "]" + etName.getText().toString() + AUDIO_EXTENSION;
 
-                    RecAndRell rec = new RecAndRell(context, 5, 8000, samples);
+                    RecAndRell rec = new RecAndRell(context, Integer.valueOf(etDuration.getText().toString()) * 1000, 8000, samples);
                     rec.execute(PATH, fileName);
 
                     if(rbTrain.isChecked()) {
