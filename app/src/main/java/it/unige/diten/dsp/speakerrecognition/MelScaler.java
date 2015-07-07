@@ -14,8 +14,8 @@ public abstract class MelScaler
 {
     public final static double  START_FREQ      = 300.0;
     public final static double  END_FREQ        = (double)Framer.SAMPLE_RATE / 2.0;
-    public final static int     FILTERBANK_SIZE = 5;       // Number of filters.
-    public final static int     FILTER_SIZE     = 5000;//Framer.SAMPLES_IN_FRAME;
+    public final static int     FILTERBANK_SIZE = 5;        // Number of filters.
+    public final static int     FILTER_SIZE     = 5000;     //Framer.SAMPLES_IN_FRAME;
 
     private static boolean      initialized     = false;    // Flag.
 
