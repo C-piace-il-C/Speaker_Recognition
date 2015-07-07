@@ -42,20 +42,23 @@ public abstract class Framer {
      */
     public static double[] toDoubleArray(byte[] src, int byteOffset, int len, int byteStride)
     {
-        int size = len * byteStride;
-        double[] retV = new double[size];
+        // byteStride must be even.
+        if ((byteStride & 0x1) != 0)
+            return null;
+
+        double[] retV = new double[len];
 
         int i;
 
         // Convert input to double.
-        for (i = 0; (i < size) && (i + byteOffset < src.length); i++)
+        for (i = 0; (i < len) && (i + byteOffset < src.length); i++)
         {
-            retV[i] = (double) ((src[byteOffset + i * byteStride]) & 0x00FF); //LSB
-            retV[i] += (double) ((src[byteOffset + i * byteStride + 1] << 8) & 0xFF00); //MSB
+            retV[i] =  (short) ((src[byteOffset + i * byteStride])          & 0x00FF); //LSB
+            retV[i] += (short) ((src[byteOffset + i * byteStride + 1] << 8) & 0xFF00); //MSB
         }
 
         // Zero-filling.
-        while (i < size)
+        while (i < len)
             retV[i++] = .0;
 
         return (retV);
@@ -85,6 +88,7 @@ public abstract class Framer {
                     BPS                     // stride
             );
         }
+
     }
 
     /// Returns frame array

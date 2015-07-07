@@ -23,7 +23,7 @@ public class FramerTest extends TestCase {
     public void testFramer()
     {
         try {
-            Framer.readFromFile("C:\\Test\\rampaoddo.wav");
+            Framer.readFromFile("C:\\Test\\pls.wav");
         }
         catch(Exception e)
         {
