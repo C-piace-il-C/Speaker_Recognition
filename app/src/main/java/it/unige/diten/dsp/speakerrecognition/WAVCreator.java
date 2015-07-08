@@ -1,9 +1,12 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 public class WAVCreator {
+    private final static int RIFF_I = 0x46464952;
+    private final static int WAVE_I = 0x45564157;
+    private final static int FMT_I = 0x20746D66;
+    private final static int DATA_I = 0x61746164;
     public byte[] data;
     public String fileName;
-
     private int chunkSize;
     private int subChunk1Size;
     private short audioFormat;
@@ -146,32 +149,26 @@ public class WAVCreator {
      * Converts integer to byte array in LITTLE ENDIAN mode.
      *
      * @param src integer to be converted.
-     * @return byte array where first position is LSB and last position is MSB.
+     * @param dest output byte[] array.
+     * @param offset 0-based offset in output byte array.
      */
-    private byte[] integerToByteArray(final int src) {
-        byte[] retV = new byte[4];
-
-        retV[0] = (byte) ((src) & 0xFF); // LSB
-        retV[1] = (byte) ((src >> 8) & 0xFF);
-        retV[2] = (byte) ((src >> 16) & 0xFF);
-        retV[3] = (byte) ((src >> 24) & 0xFF); // MSB
-
-        return retV;
+    private void integerToByteArray(final int src, byte[] dest, int offset) {
+        dest[offset++] = (byte) ((src) & 0xFF); // LSB
+        dest[offset++] = (byte) ((src >> 8) & 0xFF);
+        dest[offset++] = (byte) ((src >> 16) & 0xFF);
+        dest[offset] = (byte) ((src >> 24) & 0xFF); // MSB
     }
 
     /**
      * Converts short to byte array in LITTLE ENDIAN mode.
      *
      * @param src short to be converted.
-     * @return byte array where first position is LSB and last position is MSB.
+     * @param dest output byte[] array.
+     * @param offset 0-based offset in output byte array.
      */
-    private byte[] shortToByteArray(final short src) {
-        byte[] retV = new byte[2];
-
-        retV[0] = (byte) ((src) & 0xFF); // LSB
-        retV[1] = (byte) ((src >> 8) & 0xFF); // MSB
-
-        return retV;
+    private void shortToByteArray(final short src, byte[] dest, int offset) {
+        dest[offset++] = (byte) ((src) & 0xFF); // LSB
+        dest[offset] = (byte) ((src >> 8) & 0xFF); // MSB
     }
 
     /**
@@ -185,10 +182,10 @@ public class WAVCreator {
 
         if (data.length > 44) {
             // Field check.
-            boolean riff_s = (0x46464952 == byteArraytoInteger(data, 0));
-            boolean wave_s = (0x45564157 == byteArraytoInteger(data, 8));
-            boolean fmt_s = (0x20746D66 == byteArraytoInteger(data, 12));
-            boolean data_s = (0x61746164 == byteArraytoInteger(data, 36));
+            boolean riff_s = (RIFF_I == byteArraytoInteger(data, 0));
+            boolean wave_s = (WAVE_I == byteArraytoInteger(data, 8));
+            boolean fmt_s = (FMT_I == byteArraytoInteger(data, 12));
+            boolean data_s = (DATA_I == byteArraytoInteger(data, 36));
 
             chunkSize = byteArraytoInteger(data, 4);
             subChunk1Size = byteArraytoInteger(data, 16);
@@ -214,7 +211,21 @@ public class WAVCreator {
     private byte[] insertHeaderInfo() {
         byte[] retV = new byte[44];
 
-        // TODO Fill retV.
+        integerToByteArray(RIFF_I, retV, 0);
+        integerToByteArray(chunkSize, retV, 4);
+
+        integerToByteArray(WAVE_I, retV, 8);
+        integerToByteArray(FMT_I, retV, 12);
+        integerToByteArray(subChunk1Size, retV, 16);
+        shortToByteArray(audioFormat, retV, 20);
+        shortToByteArray(numChannels, retV, 22);
+        integerToByteArray(sampleRate, retV, 24);
+        integerToByteArray(byteRate, retV, 28);
+        shortToByteArray(blockAlign, retV, 32);
+        shortToByteArray(bitsPerSample, retV, 34);
+
+        integerToByteArray(DATA_I, retV, 36);
+        integerToByteArray(subChunk2Size, retV, 40);
 
         return retV;
     }
