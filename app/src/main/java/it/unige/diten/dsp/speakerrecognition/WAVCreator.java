@@ -1,7 +1,9 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class WAVCreator {
     private final static int RIFF_I = 0x46464952;
@@ -81,10 +83,9 @@ public class WAVCreator {
                 byte[] header = new byte[44];
 
                 // Read first 44 bytes and store them into header.
-                int readCount = inputStream.read(header);
+                int readCount = inputStream.read(header, 0, 44);
 
                 if (44 != readCount) {
-                    status = false;
                     throw new Exception("Unable to read header from WAVE file.");
                 }
 
@@ -94,10 +95,9 @@ public class WAVCreator {
                 data = new byte[subChunk2Size];
 
                 // Read last "SubChunk2Size" of actual data.
-                readCount = inputStream.read(data);
+                readCount = inputStream.read(data, 44, subChunk2Size);
 
                 if (subChunk2Size != readCount) {
-                    status = false;
                     throw new Exception("Unable to read data from WAVE file.");
                 }
 
@@ -121,6 +121,21 @@ public class WAVCreator {
 
         if (null != fileName) {
             status = true;
+
+            try {
+                // Variables initialization.
+                DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(fileName));
+                byte[] header = insertHeaderInfo();
+
+                // Write first 44 bytes from header.
+                outputStream.write(header, 0, 44);
+                // Write data.
+                outputStream.write(data, 44, subChunk2Size);
+
+                outputStream.close();
+            } catch (Exception e) {
+                status = false;
+            }
         }
 
         return status;
