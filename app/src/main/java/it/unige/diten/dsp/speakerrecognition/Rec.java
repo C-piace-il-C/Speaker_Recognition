@@ -3,8 +3,6 @@ package it.unige.diten.dsp.speakerrecognition;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -15,20 +13,17 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
-
 public class Rec extends AsyncTask<String, Void, Boolean> {
 
-    private ProgressDialog cProgressRecorder = null, cProgressFeatures = null;
-    private Context cContext;
-    private AudioRecord cRecorder = null;
+    final int waitPreRecording = 2000;
+    private final String TAG = "Recorder Audio";
     int cRegistrationLenghtInSeconds;
     int cFS;
     int cNumberOfSamples;
-    final int waitPreRecording = 2000;
-
-    private final String TAG = "Recorder Audio";
     short[] cAudioData = null;
+    private ProgressDialog cProgressRecorder = null, cProgressFeatures = null;
+    private Context cContext;
+    private AudioRecord cRecorder = null;
 
     public Rec(Context context, int registrationLenght, int sampleFrequency) {
         this.cContext = context;
@@ -74,15 +69,8 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             if (!file.mkdir())
                 showError("Impossibile creare la cartella.");
 
-        byte[] dataByte = new byte[2 * cNumberOfSamples];
-
-        for (int i = 0; i < cNumberOfSamples; i++) {
-            dataByte[2 * i] = (byte) (cAudioData[i] & 0x00FF);
-            dataByte[2 * i + 1] = (byte) ((cAudioData[i] >> 8) & 0x00FF);
-        }
-
-        WavIO writeWav = new WavIO(Environment.getExternalStorageDirectory() + "/" + _path + "/" + _fileName, 16, 1, 1, 8000, 2, 16, dataByte);
-        writeWav.save();
+        WAVCreator wavCreator = new WAVCreator(storDir + "/" + _fileName, cAudioData, 8000, (short) 1);
+        wavCreator.write();
 
         return true;
     }

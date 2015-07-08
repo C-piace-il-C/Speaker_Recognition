@@ -96,7 +96,7 @@ public class WAVCreator {
                 byte[] header = new byte[44];
 
                 // Read first 44 bytes and store them into header.
-                int readCount = inputStream.read(header, 0, 44);
+                int readCount = inputStream.read(header);
 
                 if (44 != readCount) {
                     throw new Exception("Unable to read header from WAVE file.");
@@ -108,7 +108,7 @@ public class WAVCreator {
                 data = new byte[subChunk2Size];
 
                 // Read last "SubChunk2Size" of actual data.
-                readCount = inputStream.read(data, 44, subChunk2Size);
+                readCount = inputStream.read(data);
 
                 if (subChunk2Size != readCount) {
                     throw new Exception("Unable to read data from WAVE file.");
@@ -141,9 +141,9 @@ public class WAVCreator {
                 byte[] header = insertHeaderInfo();
 
                 // Write first 44 bytes from header.
-                outputStream.write(header, 0, 44);
+                outputStream.write(header);
                 // Write data.
-                outputStream.write(data, 44, subChunk2Size);
+                outputStream.write(data);
 
                 outputStream.close();
             } catch (Exception e) {
