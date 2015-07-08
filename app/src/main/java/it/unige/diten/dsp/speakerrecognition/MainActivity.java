@@ -2,7 +2,9 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,9 @@ public class MainActivity extends Activity
     public final static String TAG = "ASR";
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
+    public final static String PATH = "ASRSA";
+
+    public static       String fileName;
 
     private static Context context = null;
 
@@ -48,7 +53,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                String fileName = null;
+                fileName = null;
                 boolean isTraining = false;
 
                 if (rbTrain.isChecked() && etName.getText().length() != 0)
@@ -70,11 +75,15 @@ public class MainActivity extends Activity
 
                 if (null != fileName)
                 {
-                    // TODO Start recording.
+                    Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
+                    Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000, 8000);
+                    rec.execute(PATH, fileName);
                     // TODO Intent.
                 }
             }
         });
+
+        context.registerReceiver(new FE_Receiver(), new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
     }
 
     @Override
@@ -105,4 +114,6 @@ public class MainActivity extends Activity
         Date date = new Date();
         return(dateFormat.format(date));
     }
+
+
 }

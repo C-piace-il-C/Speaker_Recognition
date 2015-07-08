@@ -2,6 +2,8 @@
 
 package it.unige.diten.dsp.speakerrecognition;
 
+import android.util.Log;
+
 import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
 
 /**
@@ -10,7 +12,10 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
  * secondo i parametri noti (public final static...)
  * Il codice dovrebbe adattarsi a tutti parametri (compreso BPS a partire dal commit corrente)
  */
-public abstract class Framer {
+public abstract class Framer
+{
+    public final static String TAG = "Framer";
+
     /// Duration of the single frame in ms
     public final static int FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
@@ -51,7 +56,7 @@ public abstract class Framer {
         int i;
 
         // Convert input to double.
-        for (i = 0; (i < len) && (i + byteOffset < src.length); i++)
+        for (i = 0; (i < len) && (byteOffset + i * byteStride + 1 < src.length); i++)
         {
             retV[i] =  (short) ((src[byteOffset + i * byteStride])          & 0x00FF); //LSB
             retV[i] += (short) ((src[byteOffset + i * byteStride + 1] << 8) & 0xFF00); //MSB
@@ -67,11 +72,15 @@ public abstract class Framer {
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
+        Log.v (TAG, "Called readFromFile.");
         WavIO readWAV = new WavIO(fileName);
         readWAV.read();
 
-        if (readWAV.GetSampleRate() != SAMPLE_RATE)
+        if (readWAV.getSampleRate() != SAMPLE_RATE)
+        {
+            Log.e(TAG, "[Sample rate] found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
             throw new Exception("Framer.readFromWAV: Invalid sample rate!");
+        }
         // Clear old data (garbage collector)
         frames = null;
 
@@ -89,6 +98,7 @@ public abstract class Framer {
             );
         }
 
+        Log.v(TAG, "readFromFile: ended.");
     }
 
     /// Returns frame array

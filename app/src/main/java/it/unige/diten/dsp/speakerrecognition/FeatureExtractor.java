@@ -2,7 +2,9 @@ package it.unige.diten.dsp.speakerrecognition;
 
 // TODO FeatureExtractor: intent.
 
+import android.nfc.Tag;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,17 +12,20 @@ import java.io.IOException;
 public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
     public final static int MFCC_COUNT = 13;
+    public final static String TAG = "FeatureExtractor";
 
     @Override
     protected void onPreExecute() {
-        //nein
+        // Nein
     }
 
     @Override
     protected Boolean doInBackground(String... params) {
-        // Params[0] = filename of the file from which to extract the features
+        // Params[0] = the file's name of the file from which to extract the features
+        Log.i (TAG, TAG + " STARTED!");
         try {
             // Framing
+            Log.v (TAG, "params[0]: " + params[0]);
             Framer.readFromFile(params[0]);
             Frame[] frames = Framer.getFrames();
 
@@ -48,16 +53,18 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
              * save with the same filename of the wav with a different extension:
              * ff = feature file
              */
-            String outputFileName = params[0].replace(".wav",".ff");
-
-            printFeatureFile(outputFileName, MFCC, DeltaDelta);
+            String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);
+            Log.v (TAG, "outputFileName: " + outputFileName);
+            writeFeatureFile(outputFileName, MFCC, DeltaDelta);
 
         }
         catch(Exception ew)
         {
+            Log.e (TAG, ew.getMessage());
             return(Boolean.FALSE);
         }
 
+        Log.i(TAG, TAG + " ENDED! (the file's name is in the folder)");
 
         return(Boolean.TRUE);
     }
@@ -69,7 +76,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     }
 
 
-    private void printFeatureFile(String fileName, double[][] MFCC, double [][] DeltaDelta)
+    private void writeFeatureFile(String fileName, double[][] MFCC, double[][] DeltaDelta)
     {
         // Stampo su file testuale i vettori
         try {

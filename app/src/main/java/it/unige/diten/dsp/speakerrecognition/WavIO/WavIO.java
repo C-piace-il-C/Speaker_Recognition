@@ -311,7 +311,7 @@ a trimmed down version that most wav files adhere to.
         return summary;
     }
 
-    public long GetSampleRate()
+    public long getSampleRate()
     {
         return mySampleRate;
     }
