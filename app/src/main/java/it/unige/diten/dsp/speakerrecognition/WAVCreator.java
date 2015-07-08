@@ -66,6 +66,19 @@ public class WAVCreator {
         this.data = toByteArray(data);
         this.sampleRate = sampleRate;
         this.numChannels = numChannels;
+
+        // Because of short.
+        this.bitsPerSample = 16;
+
+        // Values for PCM Lossless.
+        this.subChunk1Size = 16;
+        this.audioFormat = 1;
+
+        this.byteRate = sampleRate * numChannels * bitsPerSample / 8;
+        this.blockAlign = (short) (numChannels * bitsPerSample / 8);
+        this.subChunk2Size = data.length * bitsPerSample / 8;
+
+        this.chunkSize = 4 + (8 + subChunk1Size) + (8 + subChunk2Size);
     }
 
     /**
