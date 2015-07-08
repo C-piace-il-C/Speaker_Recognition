@@ -11,8 +11,8 @@ public class WAVCreator {
     private final static int FMT_I = 0x20746D66;
     private final static int DATA_I = 0x61746164;
 
-    public byte[] data;
-    public String fileName;
+    private byte[] data;
+    private String fileName;
 
     private int chunkSize;
     private int subChunk1Size;
@@ -60,12 +60,12 @@ public class WAVCreator {
      * @param sampleRate  sample rate in Hertz.
      * @param numChannels numbers of channels.
      */
-    public WAVCreator(String fileName, short[] data, int sampleRate, short numChannels) {
+    public WAVCreator(String fileName, short[] data, int sampleRate, int numChannels) {
         this(fileName);
 
         this.data = toByteArray(data);
         this.sampleRate = sampleRate;
-        this.numChannels = numChannels;
+        this.numChannels = (short) numChannels;
 
         // Because of short.
         this.bitsPerSample = 16;
@@ -172,6 +172,19 @@ public class WAVCreator {
         return retV;
     }
 
+    private short[] toShortArray(final byte[] src) {
+        short[] retV = new short[src.length / 2];
+
+        for (int i = 0; i < retV.length; i++) {
+            retV[i] = 0x0000;
+            retV[i] |= (short) ((src[2 * i]) & 0x00FF);
+            retV[i] |= (short) ((src[2 * i + 1] << 8) & 0xFF00);
+        }
+
+        return retV;
+    }
+
+
     /**
      * Converts byte array to integer in LITTLE ENDIAN mode.
      *
@@ -180,7 +193,7 @@ public class WAVCreator {
      * @return LITTLE ENDIAN representation of array.
      */
     private int byteArraytoInteger(final byte[] src, int offset) {
-        int retV = 0;
+        int retV = 0x00000000;
 
         retV |= ((src[offset++]) & 0x000000FF); // LSB
         retV |= ((src[offset++] << 8) & 0x0000FF00);
@@ -198,7 +211,7 @@ public class WAVCreator {
      * @return LITTLE ENDIAN representation of array.
      */
     private short byteArrayToShort(final byte[] src, int offset) {
-        short retV = 0;
+        short retV = 0x0000;
 
         retV |= (short) ((src[offset++]) & 0x00FF); // LSB
         retV |= (short) ((src[offset] << 8) & 0xFF00); // MSB
@@ -241,22 +254,22 @@ public class WAVCreator {
     private boolean extractHeaderInfo(final byte[] data) {
         boolean status = false;
 
-        if (data.length > 44) {
+        if (data.length >= 44) {
             // Field check.
             boolean riff_s = (RIFF_I == byteArraytoInteger(data, 0));
             boolean wave_s = (WAVE_I == byteArraytoInteger(data, 8));
             boolean fmt_s = (FMT_I == byteArraytoInteger(data, 12));
             boolean data_s = (DATA_I == byteArraytoInteger(data, 36));
 
-            chunkSize = byteArraytoInteger(data, 4);
-            subChunk1Size = byteArraytoInteger(data, 16);
-            audioFormat = byteArrayToShort(data, 20);
-            numChannels = byteArrayToShort(data, 22);
-            sampleRate = byteArraytoInteger(data, 24);
-            byteRate = byteArraytoInteger(data, 28);
-            blockAlign = byteArrayToShort(data, 32);
-            bitsPerSample = byteArrayToShort(data, 34);
-            subChunk2Size = byteArraytoInteger(data, 40);
+            this.chunkSize = byteArraytoInteger(data, 4);
+            this.subChunk1Size = byteArraytoInteger(data, 16);
+            this.audioFormat = byteArrayToShort(data, 20);
+            this.numChannels = byteArrayToShort(data, 22);
+            this.sampleRate = byteArraytoInteger(data, 24);
+            this.byteRate = byteArraytoInteger(data, 28);
+            this.blockAlign = byteArrayToShort(data, 32);
+            this.bitsPerSample = byteArrayToShort(data, 34);
+            this.subChunk2Size = byteArraytoInteger(data, 40);
 
             status = (riff_s && wave_s && fmt_s && data_s);
         }
@@ -289,5 +302,21 @@ public class WAVCreator {
         integerToByteArray(subChunk2Size, retV, 40);
 
         return retV;
+    }
+
+    public int getSampleRate() {
+        return this.sampleRate;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public short[] getSamples() {
+        return toShortArray(data);
     }
 }

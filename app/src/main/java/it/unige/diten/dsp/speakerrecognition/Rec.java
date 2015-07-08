@@ -69,7 +69,7 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             if (!file.mkdir())
                 showError("Impossibile creare la cartella.");
 
-        WAVCreator wavCreator = new WAVCreator(storDir + "/" + _fileName, cAudioData, 8000, (short) 1);
+        WAVCreator wavCreator = new WAVCreator(storDir + "/" + _fileName, cAudioData, 8000, 1);
         wavCreator.write();
 
         return true;
