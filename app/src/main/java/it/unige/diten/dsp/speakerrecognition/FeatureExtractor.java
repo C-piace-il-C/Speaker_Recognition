@@ -1,5 +1,6 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+// TODO FeatureExtractor: intent.
 
 import android.os.AsyncTask;
 
