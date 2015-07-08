@@ -1,12 +1,17 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
 public class WAVCreator {
     private final static int RIFF_I = 0x46464952;
     private final static int WAVE_I = 0x45564157;
     private final static int FMT_I = 0x20746D66;
     private final static int DATA_I = 0x61746164;
+
     public byte[] data;
     public String fileName;
+
     private int chunkSize;
     private int subChunk1Size;
     private short audioFormat;
@@ -70,8 +75,37 @@ public class WAVCreator {
         boolean status = false;
 
         if (null != fileName) {
-            // TODO Read audio from fileName.
-            status = true;
+            try {
+                // Variables initialization.
+                DataInputStream inputStream = new DataInputStream(new FileInputStream(fileName));
+                byte[] header = new byte[44];
+
+                // Read first 44 bytes and store them into header.
+                int readCount = inputStream.read(header);
+
+                if (44 != readCount) {
+                    status = false;
+                    throw new Exception("Unable to read header from WAVE file.");
+                }
+
+                // Fill information variables from header.
+                status = extractHeaderInfo(header);
+
+                data = new byte[subChunk2Size];
+
+                // Read last "SubChunk2Size" of actual data.
+                readCount = inputStream.read(data);
+
+                if (subChunk2Size != readCount) {
+                    status = false;
+                    throw new Exception("Unable to read data from WAVE file.");
+                }
+
+                inputStream.close();
+
+            } catch (Exception e) {
+                status = false;
+            }
         }
 
         return status;
@@ -86,7 +120,6 @@ public class WAVCreator {
         boolean status = false;
 
         if (null != fileName) {
-            // TODO Write audio to fileName.
             status = true;
         }
 
