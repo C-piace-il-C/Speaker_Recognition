@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,17 +23,19 @@ public class MainActivity extends Activity
     public final static String TAG = "ASR";
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
-    public final static String PATH = "ASRSA";
+    public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
 
     public static       String fileName;
 
-    private static Context context = null;
+    public static Context context = null;
 
     private Button btnRecord = null;
     private EditText etName = null;
     private EditText etDuration = null;
     private RadioButton rbTrain = null;
     private RadioButton rbRecognize = null;
+
+    private FEReceiver fe_receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,16 +51,13 @@ public class MainActivity extends Activity
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
 
-        btnRecord.setOnClickListener(new View.OnClickListener()
-        {
+        btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 fileName = null;
                 boolean isTraining = false;
 
-                if (rbTrain.isChecked() && etName.getText().length() != 0)
-                {
+                if (rbTrain.isChecked() && etName.getText().length() != 0) {
                     // Train.
                     fileName = "[" + getCurrentDate() + "]"
                             + etName.getText().toString()
@@ -66,15 +66,13 @@ public class MainActivity extends Activity
                     isTraining = true;
                 }
 
-                if (rbRecognize.isChecked())
-                {
+                if (rbRecognize.isChecked()) {
                     // Recognize.
                     fileName = "[" + getCurrentDate() + "]"
                             + AUDIO_EXT;
                 }
 
-                if (null != fileName)
-                {
+                if (null != fileName) {
                     Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
                     Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000, 8000);
                     rec.execute(PATH, fileName);
@@ -83,7 +81,8 @@ public class MainActivity extends Activity
             }
         });
 
-        context.registerReceiver(new FE_Receiver(), new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
+        fe_receiver = new FEReceiver();
+        context.registerReceiver(fe_receiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
     }
 
     @Override
@@ -106,6 +105,12 @@ public class MainActivity extends Activity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        unregisterReceiver(fe_receiver);
     }
 
     private static String getCurrentDate()

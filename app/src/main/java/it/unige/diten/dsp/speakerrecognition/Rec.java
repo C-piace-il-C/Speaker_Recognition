@@ -3,13 +3,10 @@ package it.unige.diten.dsp.speakerrecognition;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,12 +16,13 @@ import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
 
 public class Rec extends AsyncTask<String, Void, Boolean> {
 
-    private ProgressDialog cProgressRecorder = null, cProgressFeatures = null;
+    private ProgressDialog cProgressRecorder = null;
     private Context cContext;
     private AudioRecord cRecorder = null;
     int cRegistrationLenghtInSeconds;
     int cFS;
     int cNumberOfSamples;
+    // TODO I do not know what to do with my life
     final int waitPreRecording = 2000;
 
     private final String TAG = "Recorder Audio";
@@ -41,20 +39,18 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         cProgressRecorder = new ProgressDialog(cContext);
         cProgressRecorder.setIndeterminate(true);
         cProgressRecorder = ProgressDialog.show(cContext, "Recording Audio...", "Speak Now.");
-
-        cProgressFeatures = new ProgressDialog(cContext);
-        cProgressFeatures.setIndeterminate(true);
 
         cRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, cFS, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, cNumberOfSamples * 2);
     }
 
     @Override
     protected Boolean doInBackground(String... params) {
-        String _path = params[0];
-        String _fileName = params[1];
+        String storDir = params[0];
+        String fileName = params[1];
 
         Log.i(TAG, "REC: Start!");
 
@@ -68,7 +64,6 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             return false;
         }
 
-        String storDir = Environment.getExternalStorageDirectory() + "/" + _path;
         File file = new File(storDir);
         if (!file.exists())
             if (!file.mkdir())
@@ -81,15 +76,14 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             dataByte[2 * i + 1] = (byte) ((cAudioData[i] >> 8) & 0x00FF);
         }
 
-        WavIO writeWav = new WavIO(Environment.getExternalStorageDirectory() + "/" + _path + "/" + _fileName, 16, 1, 1, 8000, 2, 16, dataByte);
+        WavIO writeWav = new WavIO(storDir + "/" + fileName, 16, 1, 1, 8000, 2, 16, dataByte);
         writeWav.save();
 
         return true;
     }
 
     @Override
-    protected void onPostExecute(Boolean cv)
-    {
+    protected void onPostExecute(Boolean cv) {
         super.onPostExecute(cv);
 
         cRecorder.stop();
@@ -105,8 +99,7 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
         cContext.sendBroadcast(intent);
     }
 
-    private void showError(String string)
-    {
+    private void showError(String string) {
         Toast.makeText(cContext, string, Toast.LENGTH_LONG).show();
         Log.e("ERRORE:", string);
     }

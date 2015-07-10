@@ -79,7 +79,7 @@ public abstract class Framer
         if (readWAV.getSampleRate() != SAMPLE_RATE)
         {
             Log.e(TAG, "[Sample rate] found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
-            throw new Exception("Framer.readFromWAV: Invalid sample rate!");
+            throw new Exception("Framer.readFromFile: Invalid sample rate!");
         }
         // Clear old data (garbage collector)
         frames = null;

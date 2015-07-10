@@ -2,6 +2,8 @@ package it.unige.diten.dsp.speakerrecognition;
 
 // TODO FeatureExtractor: intent.
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,14 +11,23 @@ import android.util.Log;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
+public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
     public final static int MFCC_COUNT = 13;
     public final static String TAG = "FeatureExtractor";
 
-    @Override
-    protected void onPreExecute() {
-        // Nein
+    private static ProgressDialog cProgressRecorder;
+    private static Context cContext;
+
+    protected void onPreExecute()
+    {
+        cContext = MainActivity.context;
+
+        cProgressRecorder = new ProgressDialog(cContext);
+        cProgressRecorder.setProgressNumberFormat(null);
+        cProgressRecorder.setMax(100);
+
+        cProgressRecorder = ProgressDialog.show(cContext, "Extracting features...", "just deal with it.");
     }
 
     @Override
@@ -43,6 +54,8 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                                 )
                         ), MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
                 );
+
+                publishProgress(((frame + 1) * 100) / frames.length);
             }
 
             // Delta-deltas
@@ -70,9 +83,17 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     }
 
     @Override
+    protected void onProgressUpdate(Integer... progress)
+    {
+        // TODO WTF setMessage
+        //Log.v(TAG, "onProgressUpdate: " + progress[0]);
+        cProgressRecorder.setMessage(progress[0] + "%");
+    }
+
+    @Override
     protected void onPostExecute(Boolean cv)
     {
-
+        cProgressRecorder.dismiss();
     }
 
 
