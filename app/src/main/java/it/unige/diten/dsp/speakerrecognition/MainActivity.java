@@ -26,7 +26,7 @@ public class MainActivity extends Activity
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
     public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
-    public final static String MODEL_FILENAME = PATH + "/model.model";
+    public final static String MODEL_FILENAME = PATH + "/dummy_g_05_c_05.model";
     public final static String RANGE_FILENAME = PATH + "/range.range";
 
     public static String fileName;
