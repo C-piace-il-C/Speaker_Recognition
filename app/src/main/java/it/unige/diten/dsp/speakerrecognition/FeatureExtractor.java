@@ -4,6 +4,7 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,6 +19,9 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
     private static ProgressDialog cProgressRecorder;
     private static Context cContext;
+
+    public static double[][] MFCC = null;
+    public static double[][] DeltaDelta = null;
 
     protected void onPreExecute()
     {
@@ -36,15 +40,14 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
         Log.i (TAG, TAG + " STARTED!");
         try {
             // Framing
-            Log.v (TAG, "params[0]: " + params[0]);
+            Log.v(TAG, "params[0]: " + params[0]);
             Framer.readFromFile(params[0]);
             Frame[] frames = Framer.getFrames();
 
 
             // MFCCs
-            double[][] MFCC = new double[frames.length][];
-            for(int frame = 0; frame < frames.length; frame++)
-            {
+            MFCC = new double[frames.length][];
+            for (int frame = 0; frame < frames.length; frame++) {
                 MFCC[frame] = DCT.computeDCT(
                         Logarithmer.computeLogarithm(
                                 MelScaler.extractMelEnergies(
@@ -59,7 +62,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             }
 
             // Delta-deltas
-            double[][] DeltaDelta = DD.computeDD_0(MFCC, 2);
+            DeltaDelta = DD.computeDD_0(MFCC, 2);
 
             /**
              * Save to file
@@ -67,9 +70,15 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
              * ff = feature file
              */
             String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);
-            Log.v (TAG, "outputFileName: " + outputFileName);
+            Log.v(TAG, "outputFileName: " + outputFileName);
             writeFeatureFile(outputFileName, MFCC, DeltaDelta);
 
+            // Send SVM intent (solo se sto riconoscendo)
+            if (!MainActivity.isTraining)
+            {
+                Intent intent = new Intent("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT");
+                cContext.sendBroadcast(intent);
+            }
         }
         catch(Exception ew)
         {

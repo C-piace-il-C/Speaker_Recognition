@@ -10,5 +10,8 @@ public class SVMReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         // TODO start SVM shit
+        MainActivity.updateRecognitionResults(
+                MySVM.RecognizeSpeaker()
+        );
     }
 }

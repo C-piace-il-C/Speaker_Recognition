@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,8 +26,11 @@ public class MainActivity extends Activity
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
     public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
+    public final static String MODEL_FILENAME = PATH + "/model.model";
+    public final static String RANGE_FILENAME = PATH + "/range.range";
 
-    public static       String fileName;
+    public static String fileName;
+    public static boolean isTraining;
 
     public static Context context = null;
 
@@ -34,8 +39,10 @@ public class MainActivity extends Activity
     private EditText etDuration = null;
     private RadioButton rbTrain = null;
     private RadioButton rbRecognize = null;
+    private static TextView tvResults = null;
 
     private FEReceiver fe_receiver;
+    private SVMReceiver svmReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,12 +57,13 @@ public class MainActivity extends Activity
         etName      = (EditText)findViewById(R.id.edt_Speaker);
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
+        tvResults   = (TextView)findViewById(R.id.tv_Results);
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fileName = null;
-                boolean isTraining = false;
+                isTraining = false;
 
                 if (rbTrain.isChecked() && etName.getText().length() != 0) {
                     // Train.
@@ -83,6 +91,9 @@ public class MainActivity extends Activity
 
         fe_receiver = new FEReceiver();
         context.registerReceiver(fe_receiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
+
+        svmReceiver = new SVMReceiver();
+        context.registerReceiver(svmReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT"));
     }
 
     @Override
@@ -120,5 +131,36 @@ public class MainActivity extends Activity
         return(dateFormat.format(date));
     }
 
+    public static void updateRecognitionResults(int result)
+    {
+        String speaker = "";
+        switch(result)
+        {
+            case(0):
+                speaker = "Andrea";
+                break;
+            case(1):
+                speaker = "Davide";
+                break;
+            case(2):
+                speaker = "Emanuele";
+                break;
+            default:
+                speaker = "PORCODIO";
+                break;
+        }
+
+        tvResults.setText("Who spoke?! ");
+
+        String text = tvResults.getText().toString() +
+                " " +
+                speaker +
+                " did speak."
+        ;
+        tvResults.setText( text );
+
+
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
 
 }
