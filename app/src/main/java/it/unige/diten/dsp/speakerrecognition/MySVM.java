@@ -58,13 +58,13 @@ public abstract class MySVM
             for (C = 0; C < FeatureExtractor.MFCC_COUNT; C++) {
                 features[F][C] = new svm_node();
                 features[F][C].index = C + 1;
-                features[F][C].value =  2*Math.random()-1;//FeatureExtractor.MFCC[F][C];
+                features[F][C].value =  FeatureExtractor.MFCC[F][C];
             }
 
             for (; C < FeatureExtractor.MFCC_COUNT * 2; C++) {
                 features[F][C] = new svm_node();
                 features[F][C].index = C + 1;
-                features[F][C].value = 2*Math.random()-1; //FeatureExtractor.DeltaDelta[F][C - FeatureExtractor.MFCC_COUNT];
+                features[F][C].value = FeatureExtractor.DeltaDelta[F][C - FeatureExtractor.MFCC_COUNT];
             }
 
             // Last but not least.
@@ -84,11 +84,11 @@ public abstract class MySVM
         for(int i=0; i<3; i++)
             results[i] = 0;
 
-        double[] allResults = new double[frameCount];
+        //double[] allResults = new double[frameCount];
 
-        svm_node[][] dummy = new svm_node[2][3];
+        //svm_node[][] dummy = new svm_node[2][3];
 
-        dummy[0][0] = new svm_node();
+        /*dummy[0][0] = new svm_node();
         dummy[0][0].index = 1;
         dummy[0][0].value = 1;
         dummy[0][1] = new svm_node();
@@ -107,33 +107,33 @@ public abstract class MySVM
         dummy[1][2].index = -1;
 
         Log.i(TAG,"res(1) = " + (int)svm.svm_predict(model, dummy[0]));
-        Log.i(TAG,"res(2) = " + (int)svm.svm_predict(model, dummy[1]));
+        Log.i(TAG,"res(2) = " + (int)svm.svm_predict(model, dummy[1]));*/
 
 
-        /*for(int F = 0; F < frameCount; F++)
+        int res;
+        for(int F = 0; F < frameCount; F++)
         {
-            allResults[F] = svm.svm_predict(model, dummy[F]);
-            results[(int)allResults[F]]++;
-        }*/
+            res = (int)svm.svm_predict(model, features[F]);
+            results[res]++;
+        }
 
         Log.i(TAG, "Res(0): " + results[0]);
         Log.i(TAG, "Res(1): " + results[1]);
         Log.i(TAG, "Res(2): " + results[2]);
 
-
+        // Find the most popular outcome
         int maxV = -1;
-        int maxIbon = -1;
-
+        int maxI = -1;
         for(int C = 0; C < 3; C++)
         {
             if(results[C] > maxV)
             {
-                maxIbon = C;
+                maxI = C;
                 maxV = results[C];
             }
         }
 
-        return maxIbon;
+        return maxI;
     }
 
     private static void scaleMatrix(double[][] input)
