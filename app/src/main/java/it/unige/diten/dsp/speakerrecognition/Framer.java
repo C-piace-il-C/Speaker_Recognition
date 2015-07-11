@@ -64,20 +64,10 @@ public abstract class Framer
             frames[C] = new Frame();
             frames[C].data = new double[SAMPLES_IN_FRAME];
 
-            int offset = C * FRAME_SHORT_SPACING;
-
-            int i;
-            // Copy samples to frame data.
-            for (i = 0; (i < SAMPLES_IN_FRAME) && (offset + i < audioSamples.length); i++)
+            // Copy samples to frame data (zero filling is included).
+            for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[C].data[i] = audioSamples[offset + i];
-            }
-
-            // Zero-filling.
-            while (i < SAMPLES_IN_FRAME)
-            {
-                frames[C].data[i] = .0;
-                i++;
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
             }
         }
 
