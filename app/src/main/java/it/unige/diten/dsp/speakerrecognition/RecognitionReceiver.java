@@ -1,15 +1,16 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class SVMReceiver extends BroadcastReceiver
-{
+public class RecognitionReceiver extends BroadcastReceiver {
+
+    public static int result;
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        MySVM_Async mySVM = new MySVM_Async();
-        mySVM.execute();
+        MainActivity.updateRecognitionResults(result);
     }
 }

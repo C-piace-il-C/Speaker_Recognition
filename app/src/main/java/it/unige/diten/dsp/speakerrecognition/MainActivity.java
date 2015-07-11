@@ -40,6 +40,8 @@ public class MainActivity extends Activity
     public final static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
     public final static String RANGE_FILENAME = PATH + "/range.range";
 
+    public static int[] SVMResults;
+
     public static int numCores;
 
     public static String fileName;
@@ -57,6 +59,7 @@ public class MainActivity extends Activity
 
     private FEReceiver fe_receiver;
     private SVMReceiver svmReceiver;
+    private RecognitionReceiver recognitionReceiver;
 
 
     private int getNumCores()
@@ -109,7 +112,8 @@ public class MainActivity extends Activity
                 fileName = null;
                 isTraining = false;
 
-                if (rbTrain.isChecked() && etName.getText().length() != 0) {
+                if (rbTrain.isChecked() && etName.getText().length() != 0)
+                {
                     // Train.
                     fileName = "[" + getCurrentDate() + "]"
                             + etName.getText().toString()
@@ -118,17 +122,18 @@ public class MainActivity extends Activity
                     isTraining = true;
                 }
 
-                if (rbRecognize.isChecked()) {
+                if (rbRecognize.isChecked())
+                {
                     // Recognize.
                     fileName = "[" + getCurrentDate() + "]"
                             + AUDIO_EXT;
                 }
 
-                if (null != fileName) {
+                if (null != fileName)
+                {
                     Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
                     Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000, 8000);
                     rec.execute(PATH, fileName);
-                    // TODO Intent.
                 }
             }
         });
@@ -138,6 +143,9 @@ public class MainActivity extends Activity
 
         svmReceiver = new SVMReceiver();
         context.registerReceiver(svmReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT"));
+
+        recognitionReceiver = new RecognitionReceiver();
+        context.registerReceiver(recognitionReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.UPDATE_RECOGNITION"));
     }
 
     @Override
@@ -166,6 +174,7 @@ public class MainActivity extends Activity
     protected void onDestroy()
     {
         unregisterReceiver(fe_receiver);
+        unregisterReceiver(svmReceiver);
     }
 
     private static String getCurrentDate()
@@ -204,9 +213,9 @@ public class MainActivity extends Activity
         ;
         tvResults.setText(text);
 
-        updatePieChart(names, MySVM.results);
+        updatePieChart(names, SVMResults);
 
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
     private static void updatePieChart(String[] names, int[] values)
@@ -218,7 +227,7 @@ public class MainActivity extends Activity
         // Write the x-value on the chart
         pChart.setDrawSliceText(true);
         //You spin the chart round, baby right round like a record, baby, right round round round
-        pChart.setDragDecelerationFrictionCoef(0.4f);
+        pChart.setDragDecelerationFrictionCoef(0.6f);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();

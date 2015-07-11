@@ -13,6 +13,4 @@ public class FEReceiver extends BroadcastReceiver
         FeatureExtractor featureExtractor = new FeatureExtractor();
         featureExtractor.execute(MainActivity.PATH + "/" + MainActivity.fileName);
     }
-
-
 }
