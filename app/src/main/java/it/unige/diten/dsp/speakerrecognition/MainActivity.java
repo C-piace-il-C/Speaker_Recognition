@@ -187,7 +187,7 @@ public class MainActivity extends Activity
     public static void updateRecognitionResults(int result)
     {
         String[] names = {"Andrea", "Davide", "Emanuele"};
-        String speaker = "";
+        String speaker;
         switch(result)
         {
             case(0):

@@ -122,7 +122,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         }
         catch(Exception ewww)
         {
-            // exceptions suck.
+            // TODO handle exceptions
         }
 
         MainActivity.SVMResults  = results;
@@ -131,7 +131,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         Log.i(TAG, "Res(1): " + results[1]);
         Log.i(TAG, "Res(2): " + results[2]);
 
-        // Find the most popular outcome
+        // Find most popular outcome
         int maxV = -1;
         int maxI = -1;
         for(int C = 0; C < 3; C++)
