@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
+import java.io.Console;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ public class MainActivity extends Activity
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
-
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
