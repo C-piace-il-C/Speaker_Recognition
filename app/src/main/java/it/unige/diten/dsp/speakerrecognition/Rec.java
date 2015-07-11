@@ -69,15 +69,8 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
             if (!file.mkdir())
                 showError("Impossibile creare la cartella.");
 
-        byte[] dataByte = new byte[2 * cNumberOfSamples];
-
-        for (int i = 0; i < cNumberOfSamples; i++) {
-            dataByte[2 * i] = (byte) (cAudioData[i] & 0x00FF);
-            dataByte[2 * i + 1] = (byte) ((cAudioData[i] >> 8) & 0x00FF);
-        }
-
-        WavIO writeWav = new WavIO(storDir + "/" + fileName, 16, 1, 1, 8000, 2, 16, dataByte);
-        writeWav.save();
+        WAVCreator wav = new WAVCreator(storDir + "/" + fileName, cAudioData, 8000, 1);
+        wav.write();
 
         return true;
     }
