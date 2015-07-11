@@ -132,6 +132,7 @@ public class MainActivity extends Activity
     protected void onDestroy()
     {
         unregisterReceiver(fe_receiver);
+        unregisterReceiver(svmReceiver);
     }
 
     private static String getCurrentDate()
