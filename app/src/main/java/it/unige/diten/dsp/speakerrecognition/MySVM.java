@@ -110,12 +110,8 @@ public abstract class MySVM
         Log.i(TAG,"res(2) = " + (int)svm.svm_predict(model, dummy[1]));*/
 
 
-        int res;
         for(int F = 0; F < frameCount; F++)
-        {
-            res = (int)svm.svm_predict(model, features[F]);
-            results[res]++;
-        }
+            results[(int)svm.svm_predict(model, features[F])]++;
 
         Log.i(TAG, "Res(0): " + results[0]);
         Log.i(TAG, "Res(1): " + results[1]);
