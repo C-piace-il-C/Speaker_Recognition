@@ -163,4 +163,27 @@ public class MainActivity extends Activity
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
+    private static void updatePieChart(String[] names, int[] values)
+    {
+        pChart.setVisibility(View.VISIBLE);
+        pChart.setUsePercentValues(true);
+
+        ArrayList<Entry> percentages = new ArrayList<>();
+        int totV = 0;
+
+        for(int i = 0; i < values.length; i++)
+        {
+            totV += values[i];
+        }
+        for(int i = 0; i < values.length; i++)
+        {
+            percentages.add(new Entry((values[i] * 100.0f / totV), i));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(percentages, "Results");
+        PieData pieData = new PieData(names, pieDataSet);
+
+        pChart.setData(pieData);
+    }
+
 }
