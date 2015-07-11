@@ -27,6 +27,7 @@ public abstract class MySVM
         y_max = new double[26];
         Log.v(TAG, "MySVM: fileName: " + MainActivity.MODEL_FILENAME);
 
+
         readRange(MainActivity.RANGE_FILENAME);
 
         Log.v(TAG, "Caricato range.range");
@@ -49,12 +50,12 @@ public abstract class MySVM
             initialized = true;
         }
 
-        // TODO fill "features"
         scaleMatrix(FeatureExtractor.MFCC);
         scaleMatrix(FeatureExtractor.DeltaDelta);
         int frameCount = FeatureExtractor.MFCC.length;
         svm_node[][] features = new svm_node[frameCount][FeatureExtractor.MFCC_COUNT * 2 + 1];
-        for (int F = 0; F < frameCount; F++) {
+        for (int F = 0; F < frameCount; F++)
+        {
             int C;
             for (C = 0; C < FeatureExtractor.MFCC_COUNT; C++) {
                 features[F][C] = new svm_node();
@@ -85,35 +86,27 @@ public abstract class MySVM
         for(int i=0; i<3; i++)
             results[i] = 0;
 
-        //double[] allResults = new double[frameCount];
-
-        //svm_node[][] dummy = new svm_node[2][3];
-
-        /*dummy[0][0] = new svm_node();
-        dummy[0][0].index = 1;
-        dummy[0][0].value = 1;
-        dummy[0][1] = new svm_node();
-        dummy[0][1].index = 2;
-        dummy[0][1].value = -3;
-        dummy[0][2] = new svm_node();
-        dummy[0][2].index = -1;
-
-        dummy[1][0] = new svm_node();
-        dummy[1][0].index = 1;
-        dummy[1][0].value = -1;
-        dummy[1][1] = new svm_node();
-        dummy[1][1].index = 2;
-        dummy[1][1].value = 3;
-        dummy[1][2] = new svm_node();
-        dummy[1][2].index = -1;
-
-        Log.i(TAG,"res(1) = " + (int)svm.svm_predict(model, dummy[0]));
-        Log.i(TAG,"res(2) = " + (int)svm.svm_predict(model, dummy[1]));*/
-
-
+        Runnable[] runnables = new Runnable[MainActivity.numCores];
+        Thread[] threads = new Thread[MainActivity.numCores];
+        for(int C = 0; C < MainActivity.numCores; C++)
+        {
+            runnables[C] = new RecognitionThread(C,MainActivity.numCores,features,results,model);
+            threads[C] = new Thread(runnables[C]);
+            threads[C].start();
+        }
+        try {
+            for (int C = 0; C < MainActivity.numCores; C++)
+                threads[C].join();
+        }
+        catch(Exception ewww)
+        {
+            // exceptions suck.
+        }
+/*
         for(int F = 0; F < frameCount; F++)
+            // TODO parallelizzare questa riga
             results[(int)svm.svm_predict(model, features[F])]++;
-
+*/
         Log.i(TAG, "Res(0): " + results[0]);
         Log.i(TAG, "Res(1): " + results[1]);
         Log.i(TAG, "Res(2): " + results[2]);
