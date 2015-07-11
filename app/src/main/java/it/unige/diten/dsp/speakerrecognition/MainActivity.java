@@ -146,7 +146,7 @@ public class MainActivity extends Activity
                 speaker = "Emanuele";
                 break;
             default:
-                speaker = "PORCODIO";
+                speaker = "Unexpected value";
                 break;
         }
 

@@ -22,7 +22,7 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
     int cRegistrationLenghtInSeconds;
     int cFS;
     int cNumberOfSamples;
-    // TODO I do not know what to do with my life
+    // TODO Implementing a small delay before recording
     final int waitPreRecording = 2000;
 
     private final String TAG = "Recorder Audio";
