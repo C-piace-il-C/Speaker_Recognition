@@ -82,6 +82,7 @@ public abstract class Framer
             while (i < SAMPLES_IN_FRAME)
             {
                 frames[C].data[i] = .0;
+                i++;
             }
         }
 
