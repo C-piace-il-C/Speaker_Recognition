@@ -184,7 +184,7 @@ public class MainActivity extends Activity
         // Write the x-value on the chart
         pChart.setDrawSliceText(true);
         //You spin the chart round, baby right round like a record, baby, right round round round
-        pChart.setDragDecelerationFrictionCoef(0.999f);
+        pChart.setDragDecelerationFrictionCoef(0.4f);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();

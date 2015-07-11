@@ -9,8 +9,11 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
+import java.util.regex.Pattern;
 
 public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
@@ -33,11 +36,36 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
         cProgressRecorder = ProgressDialog.show(cContext, "Extracting features...", "just deal with it.");
     }
+    private int getNumCores()
+    {
+        //Private Class to display only CPU devices in the directory listing
+        class CpuFilter implements FileFilter {
+            @Override
+            public boolean accept(File pathname) {
+                //Check if filename is "cpu", followed by a single digit number
+                if (Pattern.matches("cpu[0-9]+", pathname.getName())) {
+                    return true;
+                }
+                return false;
+            }
+        }
 
+        try {
+            //Get directory containing CPU info
+            File dir = new File("/sys/devices/system/cpu/");
+            //Filter to only list the devices we care about
+            File[] files = dir.listFiles(new CpuFilter());
+            //Return the number of cores (virtual CPU devices)
+            return files.length;
+        } catch(Exception e) {
+            //Default to return 1 core
+            return 1;
+        }
+    }
     @Override
     protected Boolean doInBackground(String... params) {
         // Params[0] = the file's name of the file from which to extract the features
-        Log.i (TAG, TAG + " STARTED!");
+        Log.i(TAG, TAG + " STARTED!");
         try {
             // Framing
             Log.v(TAG, "params[0]: " + params[0]);
@@ -48,48 +76,20 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
             MFCC = new double[frames.length][];
 
-            Thread firstThread = new Thread()
-            {
-                @Override
-                public void run()
-                {
-                    for (int frame = 0; frame < frames.length / 2; frame++) {
-                        MFCC[frame] = DCT.computeDCT(
-                                Logarithmer.computeLogarithm(
-                                        MelScaler.extractMelEnergies(
-                                                Periodogrammer.computePeriodogram(
-                                                        frames[frame]
-                                                )
-                                        )
-                                ), MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
-                        );
-                    }
-                }
-            };
+            int numCores = getNumCores();
 
-            Thread secondThread = new Thread()
-            {
-                @Override
-                public void run()
-                {
-                    for (int frame = frames.length / 2; frame < frames.length; frame++) {
-                        MFCC[frame] = DCT.computeDCT(
-                                Logarithmer.computeLogarithm(
-                                        MelScaler.extractMelEnergies(
-                                                Periodogrammer.computePeriodogram(
-                                                        frames[frame]
-                                                )
-                                        )
-                                ), MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
-                        );
-                    }
-                }
-            };
+            Runnable[] runnables = new FEThread[numCores];
+            Thread[] threads = new Thread[numCores];
+            for(int C = 0; C < numCores; C++) {
+                runnables[C] = new FEThread(C, numCores, frames, MFCC);
+                threads[C] = new Thread(runnables[C]);
+                threads[C].start();
+                threads[C].join();
+            }
+            /*for(int C = 0; C < numCores; C++) {
+                threads[C].join();
+            }*/
 
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
             // MFCCs
 /*
             MFCC = new double[frames.length][];
