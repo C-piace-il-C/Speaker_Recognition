@@ -15,7 +15,7 @@ import it.unige.diten.dsp.speakerrecognition.libsvm.svm;
 import it.unige.diten.dsp.speakerrecognition.libsvm.svm_model;
 import it.unige.diten.dsp.speakerrecognition.libsvm.svm_node;
 
-public class MySVM_Async extends AsyncTask<Void, Void, Void>
+public class MySVM_Async extends AsyncTask<Void, Integer, Void>
 {
     private static svm_model model = null;
     public static final String TAG = "MySVM_Async";
@@ -29,7 +29,7 @@ public class MySVM_Async extends AsyncTask<Void, Void, Void>
 
     private static void initialize()
     {
-        cProgressRecorder.setMessage("Loading SVM model and features range...");
+        //cProgressRecorder.setMessage("Loading SVM model and features range...");
         // TODO correggi 26 con il numero delle feature estratte
         y_min = new double[26];
         y_max = new double[26];
@@ -68,11 +68,11 @@ public class MySVM_Async extends AsyncTask<Void, Void, Void>
     {
         if (!initialized)
         {
+            publishProgress(2);
             initialize();
             initialized = true;
         }
-
-        cProgressRecorder.setMessage("Building features matrix...");
+        publishProgress(1);
         // fill features vectors (svm_node[][])
         scaleMatrix(FeatureExtractor.MFCC);
         scaleMatrix(FeatureExtractor.DeltaDelta);
@@ -100,13 +100,14 @@ public class MySVM_Async extends AsyncTask<Void, Void, Void>
 
         }
 
-        cProgressRecorder.setMessage("Performing recognition...");
+
         int[] results = new int[3];
         for(int i=0; i<3; i++)
             results[i] = 0;
 
 
         // Multithreaded recognition!
+        publishProgress(3);
         Runnable[] runnables = new Runnable[MainActivity.numCores];
         Thread[] threads = new Thread[MainActivity.numCores];
         for(int C = 0; C < MainActivity.numCores; C++)
@@ -148,6 +149,26 @@ public class MySVM_Async extends AsyncTask<Void, Void, Void>
         cContext.sendBroadcast(intent);
 
         return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer...params)
+    {
+        switch(params[0])
+        {
+            case(1):
+                cProgressRecorder.setMessage("Building features matrix...");
+                break;
+            case(2):
+                cProgressRecorder.setMessage("Loading SVM model and range...");
+                break;
+            case(3):
+                cProgressRecorder.setMessage("Speaker recognition...");
+                break;
+            default:
+                cProgressRecorder.setMessage("Unknown event");
+                break;
+        }
     }
 
     private static void scaleMatrix(double[][] input)
