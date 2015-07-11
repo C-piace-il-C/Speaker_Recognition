@@ -12,42 +12,26 @@ public abstract class DD
 {
     public static final int DD_COUNT = FeatureExtractor.MFCC_COUNT;
     // Buona la prima.
-    public static double[][] computeDD_0(double[][] src, int M)
+    public static double[][] computeDD_0(double[][] src, int M) throws Exception
     {
         // Per chiarezza del codice consiglio di rimpiazzare src.length
         // e src[0].length (roba asssolutamente criptica) con FRAME_COUNT e MFCC_COUNT
         // visto che li abbiamo...
         double ret[][] = new double[src.length][src[0].length];
 
-        // Sum of first N squares: (N(N + 1)(2N + 1)) / 6.
-        double adj = Math.pow(2 * (M * (M + 1) * (2 * M + 1)) / 6.0, 2);
+        int numCores = MainActivity.numCores;
+        Runnable[] runnables    = new DDThread[numCores];
+        Thread[] threads        = new Thread[numCores];
 
-        // k: MFCC index
-        for (int k = 0; k < src[0].length; k++)
+        for(int C = 0; C < numCores; C++)
         {
-            // f: frame index
-            for (int f = 0; f < src.length; f++)
-            {
-                ret[f][k] = .0;
-
-                for (int m = -M; m <= M; m++)
-                {
-                    // meglio: 
-                    // for(int n = min; n <= max; n++) invece di un if dentro ogni iterazione del for
-                    // visto che f+m+n >= 0, e quindi n >= -f -m, allora min = Math.max(-f-m,-M)
-                    // visto che f+m+n < src.length, e quindi n < src.length - m - f, allora 
-                    //      max = Math.min(src.length - m - f, M)
-                    for (int n = -M; n <= M; n++)
-                    {
-                        // Check bounds
-                        if ((f + m + n >= 0) && (f + m + n < src.length))
-                            ret[f][k] += m * n *  src[f + m + n][k];
-                    }
-                }
-
-                ret[f][k] /= adj;
-            }
+            runnables[C] = new DDThread(C,numCores,ret,src,M);
+            threads[C] = new Thread(runnables[C]);
+            threads[C].start();
         }
+
+        for(int C = 0; C < numCores; C++)
+            threads[C].join();
 
         return ret;
     }

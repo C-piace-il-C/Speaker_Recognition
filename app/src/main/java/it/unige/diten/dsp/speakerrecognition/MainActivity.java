@@ -22,11 +22,14 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
 import java.io.Console;
+import java.io.File;
+import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class MainActivity extends Activity
 {
@@ -36,6 +39,8 @@ public class MainActivity extends Activity
     public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
     public final static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
     public final static String RANGE_FILENAME = PATH + "/range.range";
+
+    public static int numCores;
 
     public static String fileName;
     public static boolean isTraining;
@@ -53,11 +58,40 @@ public class MainActivity extends Activity
     private FEReceiver fe_receiver;
     private SVMReceiver svmReceiver;
 
+
+    private int getNumCores()
+    {
+        //Private Class to display only CPU devices in the directory listing
+        class CpuFilter implements FileFilter {
+            @Override
+            public boolean accept(File pathname) {
+                //Check if filename is "cpu", followed by a single digit number
+                if (Pattern.matches("cpu[0-9]+", pathname.getName())) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        try {
+            //Get directory containing CPU info
+            File dir = new File("/sys/devices/system/cpu/");
+            //Filter to only list the devices we care about
+            File[] files = dir.listFiles(new CpuFilter());
+            //Return the number of cores (virtual CPU devices)
+            return files.length;
+        } catch(Exception e) {
+            //Default to return 1 core
+            return 1;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        numCores = getNumCores();
 
         context = this;
 

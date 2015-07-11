@@ -36,32 +36,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
         cProgressRecorder = ProgressDialog.show(cContext, "Extracting features...", "just deal with it.");
     }
-    private int getNumCores()
-    {
-        //Private Class to display only CPU devices in the directory listing
-        class CpuFilter implements FileFilter {
-            @Override
-            public boolean accept(File pathname) {
-                //Check if filename is "cpu", followed by a single digit number
-                if (Pattern.matches("cpu[0-9]+", pathname.getName())) {
-                    return true;
-                }
-                return false;
-            }
-        }
 
-        try {
-            //Get directory containing CPU info
-            File dir = new File("/sys/devices/system/cpu/");
-            //Filter to only list the devices we care about
-            File[] files = dir.listFiles(new CpuFilter());
-            //Return the number of cores (virtual CPU devices)
-            return files.length;
-        } catch(Exception e) {
-            //Default to return 1 core
-            return 1;
-        }
-    }
     @Override
     protected Boolean doInBackground(String... params) {
         // Params[0] = the file's name of the file from which to extract the features
@@ -76,7 +51,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
             MFCC = new double[frames.length][];
 
-            int numCores = getNumCores();
+            int numCores = MainActivity.numCores;
 
             Runnable[] runnables = new FEThread[numCores];
             Thread[] threads = new Thread[numCores];
@@ -84,11 +59,11 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
                 runnables[C] = new FEThread(C, numCores, frames, MFCC);
                 threads[C] = new Thread(runnables[C]);
                 threads[C].start();
+                //threads[C].join();
+            }
+            for(int C = 0; C < numCores; C++) {
                 threads[C].join();
             }
-            /*for(int C = 0; C < numCores; C++) {
-                threads[C].join();
-            }*/
 
             // MFCCs
 /*
@@ -116,6 +91,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
              * save with the same filename of the .wav with a different extension:
              * ff = feature file
              */
+            Log.v(TAG, "Ended extracting DD");
             String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);
             Log.v(TAG, "outputFileName: " + outputFileName);
             writeFeatureFile(outputFileName, MFCC, DeltaDelta);
