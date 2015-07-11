@@ -43,9 +43,7 @@ public abstract class Framer
         Log.v(TAG, "Called readFromFile: fileName = " + fileName);
 
         WAVCreator readWAV = new WAVCreator(fileName);
-        boolean status = readWAV.read();
-
-        Log.v(TAG, "readFromFile: read status = " + status);
+        readWAV.read();
 
         if (readWAV.getSampleRate() != SAMPLE_RATE)
         {
@@ -53,7 +51,6 @@ public abstract class Framer
             throw new Exception("Framer.readFromFile: Invalid sample rate!");
         }
 
-        Log.v(TAG, "readFromFile: Sample Rate = " + readWAV.getSampleRate());
         // Clear old data (garbage collector)
         frames = null;
 
@@ -61,8 +58,6 @@ public abstract class Framer
 
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
-
-        Log.v(TAG, "readFromFile: frameCount = " + frameCount);
 
         for (int C = 0; C < frameCount; C++)
         {

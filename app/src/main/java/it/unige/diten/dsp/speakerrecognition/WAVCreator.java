@@ -175,9 +175,9 @@ public class WAVCreator {
     private short[] toShortArray(final byte[] src) {
         short[] retV = new short[src.length / 2];
 
-        for (int i = 0; i < retV.length; i++) {
-            retV[i] = 0x0000;
-            retV[i] |= (short) ((src[2 * i]) & 0x00FF);
+        for (int i = 0; i < retV.length; i++)
+        {
+            retV[i] = (short) ((src[2 * i]) & 0x00FF);
             retV[i] |= (short) ((src[2 * i + 1] << 8) & 0xFF00);
         }
 
@@ -193,9 +193,9 @@ public class WAVCreator {
      * @return LITTLE ENDIAN representation of array.
      */
     private int byteArraytoInteger(final byte[] src, int offset) {
-        int retV = 0x00000000;
+        int retV;
 
-        retV |= ((src[offset++]) & 0x000000FF); // LSB
+        retV = ((src[offset++]) & 0x000000FF); // LSB
         retV |= ((src[offset++] << 8) & 0x0000FF00);
         retV |= ((src[offset++] << 16) & 0x00FF0000);
         retV |= ((src[offset] << 24) & 0xFF000000); // MSB
