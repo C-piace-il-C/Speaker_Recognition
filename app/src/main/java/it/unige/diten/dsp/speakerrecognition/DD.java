@@ -12,7 +12,7 @@ public abstract class DD
 {
     public static final int DD_COUNT = FeatureExtractor.MFCC_COUNT;
     // Buona la prima.
-    public static double[][] computeDD_0(double[][] src, int M) throws Exception
+    public static double[][] computeDD_0(double[][] src, int M)
     {
         // Per chiarezza del codice consiglio di rimpiazzare src.length
         // e src[0].length (roba asssolutamente criptica) con FRAME_COUNT e MFCC_COUNT
@@ -30,8 +30,14 @@ public abstract class DD
             threads[C].start();
         }
 
-        for(int C = 0; C < numCores; C++)
-            threads[C].join();
+        try {
+            for (int C = 0; C < numCores; C++)
+                threads[C].join();
+        }
+        catch(Exception e)
+        {
+
+        }
 
         return ret;
     }

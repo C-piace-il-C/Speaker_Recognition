@@ -65,24 +65,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
                 threads[C].join();
             }
 
-            // MFCCs
-/*
-            MFCC = new double[frames.length][];
-            for (int frame = 0; frame < frames.length; frame++) {
-                MFCC[frame] = DCT.computeDCT(
-                        Logarithmer.computeLogarithm(
-                                MelScaler.extractMelEnergies(
-                                        Periodogrammer.computePeriodogram(
-                                                frames[frame]
-                                        )
-                                )
-                        ), MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
-                );
-
-                publishProgress(((frame + 1) * 100) / frames.length);
-            }
-*/
-            Log.v(TAG, "Ended extracting MFCC");
+            Log.i(TAG, "Ended extracting MFCC");
             // Delta-deltas
             DeltaDelta = DD.computeDD_0(MFCC, 2);
 

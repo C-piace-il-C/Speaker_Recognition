@@ -31,13 +31,13 @@ public class DDThread implements Runnable
                     // visto che f+m+n >= 0, e quindi n >= -f -m, allora min = Math.max(-f-m,-M)
                     // visto che f+m+n < src.length, e quindi n < src.length - m - f, allora
                     //      max = Math.min(src.length - m - f, M)
-                    int min = Math.max(-f -m, -precision);
-                    int max = Math.min(MFCCPtr.length - m - f, precision);
-                    for (int n = min; n <= max; n++)
+                    //int min = Math.max(-f -m, -precision);
+                    //int max = Math.min(MFCCPtr.length - m - f, precision);
+                    for (int n = -precision; n <= precision; n++)
                     {
                         // Check bounds
-                        //if ((f + m + n >= 0) && (f + m + n < MFCCPtr.length))
-                        DDPtr[f][k] += m * n *  MFCCPtr[f + m + n][k];
+                        if ((f + m + n >= 0) && (f + m + n < MFCCPtr.length))
+                            DDPtr[f][k] += m * n *  MFCCPtr[f + m + n][k];
                     }
                 }
 
