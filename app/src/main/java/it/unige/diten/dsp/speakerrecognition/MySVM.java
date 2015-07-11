@@ -14,6 +14,7 @@ public abstract class MySVM
 {
     private static svm_model model = null;
     public static final String TAG = "MySVM";
+    public static int[] results;
 
     private static boolean initialized = false;
     private static double[] y_min;
@@ -80,7 +81,7 @@ public abstract class MySVM
                 Log.i(TAG, "FEAT - value[" + i + "][" + j + "]: " + features[i][j].value);
             }
         }*/
-        int[] results = new int[3];
+        results = new int[3];
         for(int i=0; i<3; i++)
             results[i] = 0;
 

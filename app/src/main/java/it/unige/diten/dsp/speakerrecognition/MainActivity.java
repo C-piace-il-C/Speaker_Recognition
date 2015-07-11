@@ -3,6 +3,7 @@ package it.unige.diten.dsp.speakerrecognition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -147,13 +148,13 @@ public class MainActivity extends Activity
         switch(result)
         {
             case(0):
-                speaker = "Andrea";
+                speaker = names[0];
                 break;
             case(1):
-                speaker = "Davide";
+                speaker = names[1];
                 break;
             case(2):
-                speaker = "Emanuele";
+                speaker = names[2];
                 break;
             default:
                 speaker = "<unknown_speaker>";
@@ -176,24 +177,34 @@ public class MainActivity extends Activity
 
     private static void updatePieChart(String[] names, int[] values)
     {
+        // By default the chart is not visible
         pChart.setVisibility(View.VISIBLE);
+        // The output is automatically in percentages
         pChart.setUsePercentValues(true);
+        // Write the x-value on the chart
+        pChart.setDrawSliceText(true);
+        //You spin the chart round, baby right round like a record, baby, right round round round
+        pChart.setDragDecelerationFrictionCoef(0.999f);
 
-        ArrayList<Entry> percentages = new ArrayList<>();
-        int totV = 0;
+        // List of Entry(float val, int index), necessary for the ChartDataSet
+        ArrayList<Entry> results = new ArrayList<>();
 
         for(int i = 0; i < values.length; i++)
         {
-            totV += values[i];
-        }
-        for(int i = 0; i < values.length; i++)
-        {
-            percentages.add(new Entry((values[i] * 100.0f / totV), i));
+            // TODO change 666f with values[i] when they are right
+            results.add(new Entry(666f, i));
         }
 
-        PieDataSet pieDataSet = new PieDataSet(percentages, "Results");
+        // Create a new data set for the pie chart with the desired values
+        PieDataSet pieDataSet = new PieDataSet(results, "");
+        // Set colors for each slice
+        pieDataSet.setColors(new int[] {Color.RED, Color.BLUE, Color.GREEN});
+        // Space between slices (in degrees
+        pieDataSet.setSliceSpace(10f);
+        // Create the data that will be displayed by the chart
         PieData pieData = new PieData(names, pieDataSet);
 
+        // Display the data
         pChart.setData(pieData);
     }
 
