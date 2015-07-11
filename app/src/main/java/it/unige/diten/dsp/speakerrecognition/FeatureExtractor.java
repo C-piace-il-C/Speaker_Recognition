@@ -66,7 +66,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
             /**
              * Save to file
-             * save with the same filename of the wav with a different extension:
+             * save with the same filename of the .wav with a different extension:
              * ff = feature file
              */
             String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);

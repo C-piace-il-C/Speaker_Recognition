@@ -9,7 +9,7 @@ public class SVMReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        // TODO start SVM shit
+        // TODO put MySVM in an Async Task
         MainActivity.updateRecognitionResults(
                 MySVM.RecognizeSpeaker()
         );
