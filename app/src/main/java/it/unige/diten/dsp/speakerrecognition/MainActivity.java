@@ -15,8 +15,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -40,6 +46,7 @@ public class MainActivity extends Activity
     private RadioButton rbTrain = null;
     private RadioButton rbRecognize = null;
     private static TextView tvResults = null;
+    private static PieChart pChart = null;
 
     private FEReceiver fe_receiver;
     private SVMReceiver svmReceiver;
@@ -52,12 +59,14 @@ public class MainActivity extends Activity
 
         context = this;
 
+        pChart      = (PieChart)findViewById(R.id.chart);
         btnRecord   = (Button)findViewById(R.id.RecordButton);
         etDuration  = (EditText)findViewById(R.id.edt_Duration);
         etName      = (EditText)findViewById(R.id.edt_Speaker);
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
+
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +142,7 @@ public class MainActivity extends Activity
 
     public static void updateRecognitionResults(int result)
     {
+        String[] names = {"Andrea", "Davide", "Emanuele"};
         String speaker = "";
         switch(result)
         {
@@ -157,8 +167,9 @@ public class MainActivity extends Activity
                 speaker +
                 " did speak."
         ;
-        tvResults.setText( text );
+        tvResults.setText(text);
 
+        updatePieChart(names, MySVM.results);
 
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
