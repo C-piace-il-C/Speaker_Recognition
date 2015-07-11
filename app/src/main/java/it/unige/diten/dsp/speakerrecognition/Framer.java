@@ -2,6 +2,7 @@
 
 package it.unige.diten.dsp.speakerrecognition;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
@@ -39,18 +40,20 @@ public abstract class Framer
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-        Log.v (TAG, "Called readFromFile.");
-        //WavIO readWAV = new WavIO(fileName);
-        //readWAV.read();
+        Log.v(TAG, "Called readFromFile: fileName = " + fileName);
 
         WAVCreator readWAV = new WAVCreator(fileName);
-        readWAV.read();
+        boolean status = readWAV.read();
+
+        Log.v(TAG, "readFromFile: read status = " + status);
 
         if (readWAV.getSampleRate() != SAMPLE_RATE)
         {
             Log.e(TAG, "[Sample rate] found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
             throw new Exception("Framer.readFromFile: Invalid sample rate!");
         }
+
+        Log.v(TAG, "readFromFile: Sample Rate = " + readWAV.getSampleRate());
         // Clear old data (garbage collector)
         frames = null;
 
@@ -59,6 +62,7 @@ public abstract class Framer
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
 
+        Log.v(TAG, "readFromFile: frameCount = " + frameCount);
 
         for (int C = 0; C < frameCount; C++)
         {
