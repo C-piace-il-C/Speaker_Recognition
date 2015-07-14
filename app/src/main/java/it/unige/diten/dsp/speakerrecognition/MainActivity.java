@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -191,22 +192,16 @@ public class MainActivity extends Activity
         switch(result)
         {
             case(0):
-                speaker = names[0];
-                break;
             case(1):
-                speaker = names[1];
-                break;
             case(2):
-                speaker = names[2];
+                speaker = names[result];
                 break;
             default:
                 speaker = "<unknown_speaker>";
                 break;
         }
 
-        tvResults.setText("Who spoke?! ");
-
-        String text = tvResults.getText().toString() +
+        String text =
                 " " +
                 speaker +
                 " did speak."
@@ -227,28 +222,31 @@ public class MainActivity extends Activity
         // Write the x-value on the chart
         pChart.setDrawSliceText(true);
         //You spin the chart round, baby right round like a record, baby, right round round round
-        pChart.setDragDecelerationFrictionCoef(0.6f);
+        pChart.setDragDecelerationFrictionCoef(0.95f);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();
 
         for(int i = 0; i < values.length; i++)
         {
-            // TODO change 666f with values[i] when they are right
             results.add(new Entry(values[i], i));
         }
 
         // Create a new data set for the pie chart with the desired values
         PieDataSet pieDataSet = new PieDataSet(results, "");
         // Set colors for each slice
-        pieDataSet.setColors(new int[] {Color.RED, Color.BLUE, Color.GREEN});
+        pieDataSet.setColors(new int[] {Color.rgb(164,230,255), Color.rgb(0,185,255), Color.rgb(0,116,159)});
         // Space between slices (in degrees
-        pieDataSet.setSliceSpace(10f);
+        pieDataSet.setSliceSpace(5f);
         // Create the data that will be displayed by the chart
         PieData pieData = new PieData(names, pieDataSet);
 
+        pChart.setRotationAngle(0);
+        pChart.spin(5000,0,360*2, Easing.EasingOption.EaseOutCubic);
+
         // Display the data
         pChart.setData(pieData);
+        pChart.refreshDrawableState();
     }
 
 }
