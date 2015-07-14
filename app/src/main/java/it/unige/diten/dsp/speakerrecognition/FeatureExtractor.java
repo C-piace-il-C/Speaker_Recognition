@@ -38,61 +38,43 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
-        // Params[0] = the file's name of the file from which to extract the features
-        Log.i(TAG, TAG + " STARTED!");
+    protected Boolean doInBackground(String... params)
+    {
         try {
-            // Framing
-            Log.v(TAG, "params[0]: " + params[0]);
-            Framer.readFromFile(params[0]);
-            final Frame[] frames = Framer.getFrames();
+            // params[0] = name of the audio file
+            Log.i(TAG,"Feature extraction started");
+            MFCC = extractMFCC(params[0]);
+            Log.i(TAG,"Feature extraction ended.");
+            DeltaDelta = DD.computeDD_0(MFCC, 2); // 2 is precision
 
-            Log.v(TAG, "Start extracting MFCC");
 
-            MFCC = new double[frames.length][];
-
-            int numCores = MainActivity.numCores;
-
-            Runnable[] runnables = new FEThread[numCores];
-            Thread[] threads = new Thread[numCores];
-            for(int C = 0; C < numCores; C++) {
-                runnables[C] = new FEThread(C, numCores, frames, MFCC);
-                threads[C] = new Thread(runnables[C]);
-                threads[C].start();
-                //threads[C].join();
-            }
-            for(int C = 0; C < numCores; C++) {
-                threads[C].join();
-            }
-
-            Log.i(TAG, "Ended extracting MFCC");
-            // Delta-deltas
-            DeltaDelta = DD.computeDD_0(MFCC, 2);
-
-            /**
-             * Save to file
-             * save with the same filename of the .wav with a different extension:
-             * ff = feature file
-             */
-            Log.v(TAG, "Ended extracting DD");
-            String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);
-            Log.v(TAG, "outputFileName: " + outputFileName);
-            writeFeatureFile(outputFileName, MFCC, DeltaDelta);
-
-            // Send SVM intent (solo se sto riconoscendo)
+            // If recognition mode is on:
             if (!MainActivity.isTraining)
             {
+                // Delete wav file
+                File file = new File(params[0]);
+                file.delete();
+                // Send SVM intent so that SVM recognition may start
                 Intent intent = new Intent("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT");
                 cContext.sendBroadcast(intent);
             }
+            else
+            // if training mode is on:
+            {
+                /**
+                 * Save to file
+                 * save with the same filename of the .wav with a different extension:
+                 * ff = feature file
+                 */
+                String outputFileName = params[0].replace(MainActivity.AUDIO_EXT, MainActivity.FEATURE_EXT);
+                writeFeatureFile(outputFileName, MFCC, DeltaDelta);
+            }
         }
-        catch(Exception ew)
+        catch(Exception e)
         {
-            Log.e (TAG, ew.getMessage());
+            Log.e(TAG, e.getMessage());
             return(Boolean.FALSE);
         }
-
-        Log.i(TAG, TAG + " ENDED! (the file's name is in the folder)");
 
         return(Boolean.TRUE);
     }
@@ -100,8 +82,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... progress)
     {
-        // TODO WTF setMessage
-        //Log.v(TAG, "onProgressUpdate: " + progress[0]);
+        // TODO: this is never called. Make this statement false.
         cProgressRecorder.setMessage(progress[0] + "%");
     }
 
@@ -112,13 +93,12 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     }
 
 
-    private void writeFeatureFile(String fileName, double[][] MFCC, double[][] DeltaDelta)
+    public static void writeFeatureFile(String fileName, double[][] MFCC, double[][] DeltaDelta)
     {
         // Stampo su file testuale i vettori
-        try {
-
+        try
+        {
             FileWriter writer = new FileWriter(fileName, true);
-
             /*
             * output:
             * %MFCC                             %DD
@@ -129,21 +109,16 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             * .
             * .
             */
-
             for(int f = 0; f < Framer.getFrames().length; f++)
             {
                 String line = "";
 
                 for (int k = 0; k < MFCC_COUNT; k++)
-                {
                     line += Double.toString(MFCC[f][k]) + "\t";
-                }
 
 
                 for (int k = 0; k < DD.DD_COUNT; k++)
-                {
                     line += Double.toString(DeltaDelta[f][k]) + "\t";
-                }
 
                 line = line.substring(0, line.length() - 2) + "\r\n";
 
@@ -153,8 +128,29 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
+    public static double [][] extractMFCC(String audioFilename) throws java.lang.Exception
+    {
+        Framer.readFromFile(audioFilename);
+        final Frame[] frames = Framer.getFrames();
+
+        double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
+
+        int numCores = MainActivity.numCores;
+
+        Runnable[] runnables = new FEThread[numCores];
+        Thread[] threads = new Thread[numCores];
+        for(int C = 0; C < numCores; C++) {
+            runnables[C] = new FEThread(C, numCores, frames, mfcc);
+            threads[C] = new Thread(runnables[C]);
+            threads[C].start();
+        }
+        for(int C = 0; C < numCores; C++)
+            threads[C].join();
+
+        return mfcc;
+    }
 }

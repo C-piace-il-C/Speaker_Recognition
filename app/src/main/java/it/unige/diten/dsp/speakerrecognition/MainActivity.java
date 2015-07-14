@@ -222,7 +222,7 @@ public class MainActivity extends Activity
         // The output is automatically in percentages
         pChart.setUsePercentValues(true);
         // Write the x-value on the chart
-        pChart.setDrawSliceText(true);
+        pChart.setDrawSliceText(false);
         //You spin the chart round, baby right round like a record, baby, right round round round
         pChart.setDragDecelerationFrictionCoef(0.95f);
 
@@ -244,7 +244,8 @@ public class MainActivity extends Activity
         PieData pieData = new PieData(names, pieDataSet);
 
         pChart.setRotationAngle(0);
-        pChart.spin(5000,0,360*2, Easing.EasingOption.EaseOutCubic);
+        // Impress an initial spin that fades away within 3 seconds and makes the pie rotate 720 degrees
+        pChart.spin(3000,0,720, Easing.EasingOption.EaseOutCubic);
 
         // Display the data
         pChart.setData(pieData);
