@@ -49,30 +49,42 @@ public abstract class MySVM
             initialized = true;
         }
 
-        // TODO fill "features"
-        scaleMatrix(FeatureExtractor.MFCC);
-        scaleMatrix(FeatureExtractor.DeltaDelta);
+
         int frameCount = FeatureExtractor.MFCC.length;
+
+        // TODO fill "features"
+        // feature matrix
+        double[][] allFeatures = new double[frameCount][FeatureExtractor.MFCC_COUNT*2];
+        //scaleMatrix(FeatureExtractor.MFCC);
+        //scaleMatrix(FeatureExtractor.DeltaDelta);
+        // Unite the two matrices
+        for(int C = 0; C < frameCount; C++)
+        {
+            int K = 0;
+            for(K = 0; K < FeatureExtractor.MFCC_COUNT; K++ )
+                allFeatures[C][K] = FeatureExtractor.MFCC[C][K];
+
+            for(; K < FeatureExtractor.MFCC_COUNT * 2; K++)
+                allFeatures[C][K] = FeatureExtractor.DeltaDelta[C][K-FeatureExtractor.MFCC_COUNT];
+        }
+        scaleMatrix(allFeatures);
+
+
         svm_node[][] features = new svm_node[frameCount][FeatureExtractor.MFCC_COUNT * 2 + 1];
-        for (int F = 0; F < frameCount; F++) {
+        for (int F = 0; F < frameCount; F++)
+        {
             int C;
-            for (C = 0; C < FeatureExtractor.MFCC_COUNT; C++) {
+            for(C = 0; C < FeatureExtractor.MFCC_COUNT*2; C++) {
                 features[F][C] = new svm_node();
-                features[F][C].index = C + 1;
-                features[F][C].value =  FeatureExtractor.MFCC[F][C];
+                features[F][C].value = allFeatures[F][C];
+                features[F][C].index = C+1;
             }
-
-            for (; C < FeatureExtractor.MFCC_COUNT * 2; C++) {
-                features[F][C] = new svm_node();
-                features[F][C].index = C + 1;
-                features[F][C].value = FeatureExtractor.DeltaDelta[F][C - FeatureExtractor.MFCC_COUNT];
-            }
-
             // Last but not least.
             features[F][C] = new svm_node();
             features[F][C].index = -1;
             features[F][C].value = 0;
         }
+
 
 
         /*for (int i = 0; i < features.length; i++){ //feats
@@ -133,7 +145,7 @@ public abstract class MySVM
         return maxI;
     }
 
-    private static void scaleMatrix(double[][] input)
+    public static void scaleMatrix(double[][] input)
     {
         double y_lower = -1;
         double y_upper = 1;
@@ -159,15 +171,15 @@ public abstract class MySVM
             int lineNumber = 1;
             while ((sCurrentLine = br.readLine()) != null)
             {
-                Log.v(TAG,"readRange: line read '" + sCurrentLine + "'");
+                //Log.v(TAG,"readRange: line read '" + sCurrentLine + "'");
                 if(lineNumber >= 3)
                 {
                     String[] arr = sCurrentLine.split(" ");
                     y_min[lineNumber - 3] = Double.valueOf(arr[1]);
                     y_max[lineNumber - 3] = Double.valueOf(arr[2]);
 
-                    Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + y_min[lineNumber - 3]);
-                    Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + y_max[lineNumber - 3]);
+                    //Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + y_min[lineNumber - 3]);
+                    //Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + y_max[lineNumber - 3]);
                 }
                 lineNumber++;
             }
