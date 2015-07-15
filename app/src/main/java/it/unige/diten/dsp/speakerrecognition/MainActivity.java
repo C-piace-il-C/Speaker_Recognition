@@ -145,6 +145,7 @@ public class MainActivity extends Activity
     protected void onDestroy()
     {
         unregisterReceiver(fe_receiver);
+        unregisterReceiver(svmReceiver);
     }
 
     private static String getCurrentDate()
@@ -205,7 +206,7 @@ public class MainActivity extends Activity
         for(int i = 0; i < values.length; i++)
         {
             // TODO change 666f with values[i] when they are right
-            results.add(new Entry(666f, i));
+            results.add(new Entry(values[i], i));
         }
 
         // Create a new data set for the pie chart with the desired values
