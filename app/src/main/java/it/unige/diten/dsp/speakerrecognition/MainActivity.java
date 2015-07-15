@@ -109,6 +109,20 @@ public class MainActivity extends Activity
 
         pChart.setDescription("");
 
+        rbRecognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etName.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        rbTrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etName.setVisibility(View.VISIBLE);
+            }
+        });
+
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
