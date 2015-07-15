@@ -72,7 +72,7 @@ public abstract class Framer
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-        Log.v (TAG, "Called readFromFile.");
+        //Log.v (TAG, "Called readFromFile.");
         WavIO readWAV = new WavIO(fileName);
         readWAV.read();
 
@@ -98,7 +98,7 @@ public abstract class Framer
             );
         }
 
-        Log.v(TAG, "readFromFile: ended.");
+        //Log.v(TAG, "readFromFile: ended.");
     }
 
     /// Returns frame array

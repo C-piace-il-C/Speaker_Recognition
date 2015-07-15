@@ -92,7 +92,7 @@ public class Rec extends AsyncTask<String, Void, Boolean> {
         Log.i("OnClick", "Rec: Stop!");
 
         cProgressRecorder.dismiss();
-        cProgressRecorder = null;
+        //cProgressRecorder = null;
 
         // Send intent.
         Intent intent = new Intent("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT");
