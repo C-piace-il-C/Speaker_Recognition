@@ -68,6 +68,19 @@ public class MainActivity extends Activity
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
+        rbRecognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etName.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        rbTrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etName.setVisibility(View.VISIBLE);
+            }
+        });
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
