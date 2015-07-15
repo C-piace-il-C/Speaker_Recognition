@@ -43,7 +43,8 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
         try {
             // params[0] = name of the audio file
             Log.i(TAG,"Feature extraction started");
-            MFCC = extractMFCC(params[0]);
+            //MFCC = extractMFCC(params[0]);
+            MFCC = extractMFCC(MainActivity.PATH + "/" + "test.wav");
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD_0(MFCC, 2); // 2 is precision
 

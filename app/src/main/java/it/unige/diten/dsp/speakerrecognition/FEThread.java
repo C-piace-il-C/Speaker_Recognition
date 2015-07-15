@@ -9,6 +9,7 @@ public class FEThread implements Runnable
     private Frame[] framesPtr;
     private int threadCount;
     private double[][] MFCCPtr;
+    private Periodogrammer periodogrammer;
 
     public FEThread(int threadNumber, int threadCount, Frame[] frames, double[][] MFCC)
     {
@@ -16,6 +17,7 @@ public class FEThread implements Runnable
         this.framesPtr      = frames;
         this.threadCount    = threadCount;
         this.MFCCPtr        = MFCC;
+        this.periodogrammer = new Periodogrammer(frames[0].data.length);
     }
 
     public void run()
@@ -25,7 +27,7 @@ public class FEThread implements Runnable
             MFCCPtr[frame] = DCT.computeDCT(
                     Logarithmer.computeLogarithm(
                             MelScaler.extractMelEnergies(
-                                    Periodogrammer.computePeriodogram(
+                                    periodogrammer.computePeriodogram(
                                             framesPtr[frame]
                                     )
                             )

@@ -6,15 +6,15 @@ package it.unige.diten.dsp.speakerrecognition;
  * Periodogrammer
  * Classe per calcolare il periodogramma di un frame
  */
-public abstract class Periodogrammer {
+public class Periodogrammer {
 
     
-    private static Complex[] ft;
-    private static double[] hammingWindow;
-    private static boolean initialized = false;
+    private Complex[] ft;
+    private double[] hammingWindow;
+    private boolean initialized = false;
 
 
-    private static void Initialize(int size)
+    public Periodogrammer(int size)
     {
         hammingWindow = new double[size];
         // Create an hamming window and then computeWindowedDFT
@@ -36,16 +36,17 @@ public abstract class Periodogrammer {
      * @param   frame   Il frame del quale calcolare il periodogramma
      * @return  Double array contenente il periodogramma
      */
-    public static double[] computePeriodogram (Frame frame)
+    public double[] computePeriodogram (Frame frame)
     {
         int size = frame.data.length;
 
+/*
         if(!initialized)
         {
             Initialize(size);
             initialized = true;
         }
-
+*/
         // Initialize return value
         double[] periodogram = new double[size];
 
