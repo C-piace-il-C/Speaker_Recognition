@@ -108,7 +108,7 @@ public class MainActivity extends Activity
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
         pChart.setDescription("");
-
+/*
         rbRecognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity
                 etName.setVisibility(View.VISIBLE);
             }
         });
-
+*/
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,4 +266,8 @@ public class MainActivity extends Activity
         pChart.refreshDrawableState();
     }
 
+    private static void writeResultFile(String filename)
+    {
+
+    }
 }
