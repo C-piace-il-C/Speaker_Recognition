@@ -17,6 +17,7 @@ public abstract class DD
         // Per chiarezza del codice consiglio di rimpiazzare src.length
         // e src[0].length (roba asssolutamente criptica) con FRAME_COUNT e MFCC_COUNT
         // visto che li abbiamo...
+
         double ret[][] = new double[src.length][src[0].length];
 
         int numCores = MainActivity.numCores;

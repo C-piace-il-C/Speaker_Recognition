@@ -30,6 +30,8 @@ public abstract class Framer
     public final static int FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
     /// Distance in Bytes between the beginning of a frame and the following
     public final static int FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
+    /// Registration offset (because of galaxy ace bullshits)
+    public final static int REGISTRATION_FRAME_OFFSET = 125;
 
     /// Container for all frames
     private static Frame[] frames = null;
@@ -85,12 +87,12 @@ public abstract class Framer
         frames = null;
 
         int frameCount = readWAV.myData.length / FRAME_BYTE_SPACING;
-        frames = new Frame[frameCount];
+        frames = new Frame[frameCount-REGISTRATION_FRAME_OFFSET];
 
-
-        for (int C = 0; C < frameCount; C++) {
-            frames[C] = new Frame();
-            frames[C].data = toDoubleArray(
+        // (frameCount - 1 - REG_OFFSET)
+        for (int C = REGISTRATION_FRAME_OFFSET; C < frameCount; C++) {
+            frames[C-REGISTRATION_FRAME_OFFSET] = new Frame();
+            frames[C-REGISTRATION_FRAME_OFFSET].data = toDoubleArray(
                     readWAV.myData,         // src
                     C * FRAME_BYTE_SPACING, // byte offset
                     SAMPLES_IN_FRAME,       // len

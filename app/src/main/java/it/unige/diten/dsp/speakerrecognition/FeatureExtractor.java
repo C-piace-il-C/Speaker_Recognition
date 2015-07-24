@@ -46,8 +46,15 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             MFCC = extractMFCC(params[0]);
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD_0(MFCC, 2); // 2 is precision
-
-
+/*
+            for(int C = 0; C < DeltaDelta.length; C++)
+            {
+                for(int J = 0; J < DeltaDelta[0].length; J++)
+                    if(DeltaDelta[C][J] == Double.NaN ||
+                            DeltaDelta[C][J] == Double.NEGATIVE_INFINITY)
+                        DeltaDelta[C][J] = 0;
+            }
+*/
             // If recognition mode is on:
             if (!MainActivity.isTraining)
             {

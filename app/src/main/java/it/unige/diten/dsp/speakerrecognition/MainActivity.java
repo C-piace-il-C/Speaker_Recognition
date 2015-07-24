@@ -149,7 +149,7 @@ public class MainActivity extends Activity
                 if (null != fileName)
                 {
                     Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
-                    Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000, 8000);
+                    Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);  // +1 because of samsung galaxy ace bullshits.
                     rec.execute(PATH, fileName);
                 }
             }

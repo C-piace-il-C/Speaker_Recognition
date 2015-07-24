@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -34,16 +35,41 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         y_min = new double[26];
         y_max = new double[26];
         Log.v(TAG, "fileName: " + MainActivity.MODEL_FILENAME);
+        // Search for the first .model file.
+        String path = MainActivity.PATH;
+        //Log.d("Files", "Path: " + path);
+        File f = new File(path);
+        File file[] = f.listFiles();
+        String modelFname = null, rangeFname = null;
+        boolean fileFound = false;
+        for (int i=0; i < file.length; i++)
+        {
+            String fname = file[i].getName();
+            if( fname.endsWith(".model") )
+            {
+                modelFname = MainActivity.PATH + "/" + fname;
+                if(rangeFname != null)
+                    break;
+            }
+            if( fname.endsWith(".range"))
+            {
+                rangeFname = MainActivity.PATH + "/" + fname;
+                if(modelFname != null)
+                    break;
+            }
 
-        readRange(MainActivity.RANGE_FILENAME);
+        }
+
+        readRange(rangeFname);//MainActivity.RANGE_FILENAME);
 
         Log.v(TAG, "Caricato range.range");
 
         try
         {
-            model = svm.svm_load_model(MainActivity.MODEL_FILENAME);
 
-            Log.v(TAG, "Caricato model.model");
+            model = svm.svm_load_model(modelFname);//MainActivity.MODEL_FILENAME);
+
+            Log.v(TAG, "Caricato model.model: " + modelFname);
         }
         catch(IOException ew)
         {
