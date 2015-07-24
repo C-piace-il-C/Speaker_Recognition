@@ -22,9 +22,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
+import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,13 +36,15 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import it.unige.diten.dsp.speakerrecognition.libsvm.svm;
+
 public class MainActivity extends Activity
 {
     public final static String TAG = "ASR";
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
     public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
-    public final static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
+    public static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
     public final static String RANGE_FILENAME = PATH + "/range.range";
 
     public static int[] SVMResults;
@@ -51,8 +57,8 @@ public class MainActivity extends Activity
     public static Context context = null;
 
     private Button btnRecord = null;
-    private EditText etName = null;
-    private EditText etDuration = null;
+    private static EditText etName = null;
+    private static EditText etDuration = null;
     private RadioButton rbTrain = null;
     private RadioButton rbRecognize = null;
     private static TextView tvResults = null;
@@ -226,6 +232,8 @@ public class MainActivity extends Activity
 
         updatePieChart(names, SVMResults);
 
+        writeResultFile(PATH + "/results.txt");
+
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
@@ -268,6 +276,25 @@ public class MainActivity extends Activity
 
     private static void writeResultFile(String filename)
     {
-
+        try
+        {
+            File file = new File(filename);
+            FileWriter fileWriter = new FileWriter(file, true);
+            fileWriter.append("andrea = ");
+            fileWriter.append(String.valueOf(SVMResults[0]));
+            fileWriter.append("\tdavide = ");
+            fileWriter.append(String.valueOf(SVMResults[1]));
+            fileWriter.append("\temanuele = ");
+            fileWriter.append(String.valueOf(SVMResults[2]));
+            fileWriter.append("\tactualSpeaker = " + etName.getText().toString());
+            fileWriter.append("\tseconds = " + String.valueOf((Double.valueOf(etDuration.getText().toString())/1000)));
+            fileWriter.append("\tmodel = " + MODEL_FILENAME);
+            fileWriter.append("\n");
+            fileWriter.close();
+        }
+        catch(Exception ew)
+        {
+            //shtua fako
+        }
     }
 }
