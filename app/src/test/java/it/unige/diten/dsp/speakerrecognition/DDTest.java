@@ -37,6 +37,6 @@ public class DDTest extends TestCase {
             input[F][0] = 0.0;
             input[F][1] = Math.exp((double)F);
         }
-        result2 = DD.computeDD_0(input, 2);
+        result2 = DD.computeDD(input, 2);
     }
 }

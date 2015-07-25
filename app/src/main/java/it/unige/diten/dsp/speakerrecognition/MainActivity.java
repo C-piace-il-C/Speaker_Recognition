@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,21 +21,15 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
-import java.io.BufferedReader;
-import java.io.Console;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import it.unige.diten.dsp.speakerrecognition.libsvm.svm;
 
 public class MainActivity extends Activity
 {
@@ -64,7 +57,7 @@ public class MainActivity extends Activity
     private static TextView tvResults = null;
     private static PieChart pChart = null;
 
-    private FEReceiver fe_receiver;
+    private FEReceiver feReceiver;
     private SVMReceiver svmReceiver;
     private RecognitionReceiver recognitionReceiver;
 
@@ -131,7 +124,8 @@ public class MainActivity extends Activity
 */
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 fileName = null;
                 isTraining = false;
 
@@ -154,15 +148,17 @@ public class MainActivity extends Activity
 
                 if (null != fileName)
                 {
-                    Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
-                    Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);  // +1 because of samsung galaxy ace bullshits.
+                    Rec rec = new Rec(context,
+                            Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);
+                            // +1 here because the first second of registration will be ignored
+                            // during the features extraction.
                     rec.execute(PATH, fileName);
                 }
             }
         });
 
-        fe_receiver = new FEReceiver();
-        context.registerReceiver(fe_receiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
+        feReceiver = new FEReceiver();
+        context.registerReceiver(feReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
 
         svmReceiver = new SVMReceiver();
         context.registerReceiver(svmReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT"));
@@ -196,8 +192,9 @@ public class MainActivity extends Activity
     @Override
     protected void onDestroy()
     {
-        unregisterReceiver(fe_receiver);
+        unregisterReceiver(feReceiver);
         unregisterReceiver(svmReceiver);
+        unregisterReceiver(recognitionReceiver);
     }
 
     private static String getCurrentDate()
@@ -294,7 +291,7 @@ public class MainActivity extends Activity
         }
         catch(Exception ew)
         {
-            //shtua fako
+            ew.printStackTrace();
         }
     }
 }

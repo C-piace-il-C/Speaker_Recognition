@@ -1,8 +1,6 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-/**
- * Created by PCAndreaLu on 11/07/2015.
- */
+
 public class FEThread implements Runnable
 {
     private int threadNumber;
@@ -31,7 +29,7 @@ public class FEThread implements Runnable
                                             framesPtr[frame]
                                     )
                             )
-                    ), FeatureExtractor.MFCC_COUNT // Only keep the first MFCC_COUNT coefficients of the resulting DCT sequence
+                    ), FeatureExtractor.MFCC_COUNT // Only keep the first MFCC_COUNT coefficients
             );
         }
     }

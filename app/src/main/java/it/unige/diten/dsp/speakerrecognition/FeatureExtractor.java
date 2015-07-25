@@ -5,15 +5,12 @@ package it.unige.diten.dsp.speakerrecognition;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
-import java.util.regex.Pattern;
 
 public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
@@ -45,7 +42,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             Log.i(TAG,"Feature extraction started");
             MFCC = extractMFCC(params[0]);
             Log.i(TAG,"Feature extraction ended.");
-            DeltaDelta = DD.computeDD_0(MFCC, 2); // 2 is precision
+            DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
 /*
             for(int C = 0; C < DeltaDelta.length; C++)
             {

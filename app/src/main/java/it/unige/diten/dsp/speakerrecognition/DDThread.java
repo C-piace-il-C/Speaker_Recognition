@@ -2,10 +2,13 @@ package it.unige.diten.dsp.speakerrecognition;
 
 public class DDThread implements Runnable
 {
-    private int threadNumber, threadCount;
+    // threadNumber ranges from 0 to threadCount-1
+    private int threadNumber;
+    private int threadCount;
     private double[][] DDPtr;
     private double[][] MFCCPtr;
     private int precision;
+
     public DDThread(int threadNumber, int threadCount, double[][] DD, double[][] MFCC, int precision)
     {
         this.threadNumber   = threadNumber;
@@ -17,31 +20,28 @@ public class DDThread implements Runnable
 
     public void run()
     {
-        double adj = Math.pow(2 * (precision * (precision + 1) * (2 * precision + 1)) / 6.0, 2);
+        double denominator =
+                Math.pow(2 * (precision * (precision + 1) * (2 * precision + 1)) / 6.0, 2);
+        int frameCount = MFCCPtr.length;
+        int featureCount = MFCCPtr[0].length;
 
-        for (int k = threadNumber; k < MFCCPtr[0].length; k += threadCount)
+        // Multithread: each thread works on different values of k.
+        // Eventually, all values of k (from 0 to featureCount-1) are covered.
+        for (int k = threadNumber; k < featureCount; k += threadCount)
         {
             // f: frame index
-            for (int f = 0; f < MFCCPtr.length; f++)
+            for (int f = 0; f < frameCount; f++)
             {
                 for (int m = -precision; m <= precision; m++)
                 {
-                    // meglio:
-                    // for(int n = min; n <= max; n++) invece di un if dentro ogni iterazione del for
-                    // visto che f+m+n >= 0, e quindi n >= -f -m, allora min = Math.max(-f-m,-M)
-                    // visto che f+m+n < src.length, e quindi n < src.length - m - f, allora
-                    //      max = Math.min(src.length - m - f, M)
-                    //int min = Math.max(-f -m, -precision);
-                    //int max = Math.min(MFCCPtr.length - m - f, precision);
                     for (int n = -precision; n <= precision; n++)
                     {
-                        // Check bounds
-                        if ((f + m + n >= 0) && (f + m + n < MFCCPtr.length))
-                            DDPtr[f][k] += m * n *  MFCCPtr[f + m + n][k];
+                        // Boundaries check (this prevents IndexOutOfBoundException)
+                        if ( (f + m + n >= 0) && (f + m + n < frameCount) )
+                            DDPtr[f][k] += m * n * MFCCPtr[f + m + n][k];
                     }
                 }
-
-                DDPtr[f][k] /= adj;
+                DDPtr[f][k] /= denominator;
             }
         }
     }

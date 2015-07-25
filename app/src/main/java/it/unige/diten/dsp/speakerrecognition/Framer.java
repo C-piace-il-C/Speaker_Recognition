@@ -30,22 +30,21 @@ public abstract class Framer
     public final static int FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
     /// Distance in Bytes between the beginning of a frame and the following
     public final static int FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
-    /// Registration offset (because of galaxy ace bullshits)
+    /// Registration offset (number of frames to skip)
     public final static int REGISTRATION_FRAME_OFFSET = 125;
 
-    /// Container for all frames
+    /// Container for all the frames
     private static Frame[] frames = null;
 
     /**
-     * @brief   Converts a raw data source (array of bytes) to an array of double with zero-filling.
-     *          The raw data source is expected to contain integer elements.
-     *          by ALu. For info contact me at alu@cumallover.me.
-     *          note: yet to be debugged
-     * @param src Reference to the source.
-     * @param byteOffset Index of the first byte read from src.
-     * @param len        Number of elements to be read from src.
-     * @param byteStride Size in bytes of a single elment of src.
-     *                   note: byteStride must be in the range [1,8]
+     * @brief   Converts a raw data source (array of bytes) to a double array with zero-filling.
+     *          The raw data source is expected to contain integer elements of fixed size.
+     * @param src           Reference to the source.
+     * @param byteOffset    Index of the first byte read from src.
+     * @param len           Number of elements to be read from src.
+     * @param byteStride    Size in bytes of a single element of src.
+     *                      note: byteStride must be in the range [1,8].
+     * @return  The zero-filled double array.
      */
     public static double[] toDoubleArray(byte[] src, int byteOffset, int len, int byteStride)
     {
@@ -74,23 +73,22 @@ public abstract class Framer
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-        //Log.v (TAG, "Called readFromFile.");
+        // Collect audio data
         WavIO readWAV = new WavIO(fileName);
         readWAV.read();
 
         if (readWAV.getSampleRate() != SAMPLE_RATE)
         {
-            Log.e(TAG, "[Sample rate] found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
+            Log.e(TAG, "Sample rate found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
             throw new Exception("Framer.readFromFile: Invalid sample rate!");
         }
-        // Clear old data (garbage collector)
-        frames = null;
 
+        // Divide audio data into frames (a frame is a double array)
         int frameCount = readWAV.myData.length / FRAME_BYTE_SPACING;
         frames = new Frame[frameCount-REGISTRATION_FRAME_OFFSET];
 
-        // (frameCount - 1 - REG_OFFSET)
-        for (int C = REGISTRATION_FRAME_OFFSET; C < frameCount; C++) {
+        for (int C = REGISTRATION_FRAME_OFFSET; C < frameCount; C++)
+        {
             frames[C-REGISTRATION_FRAME_OFFSET] = new Frame();
             frames[C-REGISTRATION_FRAME_OFFSET].data = toDoubleArray(
                     readWAV.myData,         // src
@@ -100,7 +98,7 @@ public abstract class Framer
             );
         }
 
-        //Log.v(TAG, "readFromFile: ended.");
+
     }
 
     /// Returns frame array
