@@ -280,15 +280,15 @@ public class MainActivity extends Activity
         {
             File file = new File(filename);
             FileWriter fileWriter = new FileWriter(file, true);
-            fileWriter.append("andrea = ");
+            fileWriter.append("Andrea = ");
             fileWriter.append(String.valueOf(SVMResults[0]));
-            fileWriter.append("\tdavide = ");
+            fileWriter.append("\tDavide = ");
             fileWriter.append(String.valueOf(SVMResults[1]));
-            fileWriter.append("\temanuele = ");
+            fileWriter.append("\tEmanuele = ");
             fileWriter.append(String.valueOf(SVMResults[2]));
-            fileWriter.append("\tactualSpeaker = " + etName.getText().toString());
-            fileWriter.append("\tseconds = " + String.valueOf((Double.valueOf(etDuration.getText().toString())/1000)));
-            fileWriter.append("\tmodel = " + MODEL_FILENAME);
+            fileWriter.append("\tActualSpeaker = " + etName.getText().toString());
+            fileWriter.append("\tSeconds = " + String.valueOf((Double.valueOf(etDuration.getText().toString())/1000)));
+            fileWriter.append("\tModel = " + MODEL_FILENAME);
             fileWriter.append("\n");
             fileWriter.close();
         }
