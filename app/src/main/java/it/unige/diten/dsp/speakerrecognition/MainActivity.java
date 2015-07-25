@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,9 +21,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 
-import java.io.Console;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class MainActivity extends Activity
     public final static String AUDIO_EXT = ".wav";
     public final static String FEATURE_EXT = ".ff";
     public final static String PATH = Environment.getExternalStorageDirectory() + "/ASR";
-    public final static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
+    public static String MODEL_FILENAME = PATH + "/model.model";//"/dummy_g_05_c_05.model";
     public final static String RANGE_FILENAME = PATH + "/range.range";
 
     public static int[] SVMResults;
@@ -51,14 +50,14 @@ public class MainActivity extends Activity
     public static Context context = null;
 
     private Button btnRecord = null;
-    private EditText etName = null;
-    private EditText etDuration = null;
+    private static EditText etName = null;
+    private static EditText etDuration = null;
     private RadioButton rbTrain = null;
     private RadioButton rbRecognize = null;
     private static TextView tvResults = null;
     private static PieChart pChart = null;
 
-    private FEReceiver fe_receiver;
+    private FEReceiver feReceiver;
     private SVMReceiver svmReceiver;
     private RecognitionReceiver recognitionReceiver;
 
@@ -108,7 +107,7 @@ public class MainActivity extends Activity
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
         pChart.setDescription("");
-
+/*
         rbRecognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,10 +121,11 @@ public class MainActivity extends Activity
                 etName.setVisibility(View.VISIBLE);
             }
         });
-
+*/
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 fileName = null;
                 isTraining = false;
 
@@ -148,15 +148,17 @@ public class MainActivity extends Activity
 
                 if (null != fileName)
                 {
-                    Log.i(TAG, "Registration Length (sec): " + (Integer.valueOf(etDuration.getText().toString()) / 1000));
-                    Rec rec = new Rec(context, Integer.valueOf(etDuration.getText().toString()) / 1000, 8000);
+                    Rec rec = new Rec(context,
+                            Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);
+                            // +1 here because the first second of registration will be ignored
+                            // during the features extraction.
                     rec.execute(PATH, fileName);
                 }
             }
         });
 
-        fe_receiver = new FEReceiver();
-        context.registerReceiver(fe_receiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
+        feReceiver = new FEReceiver();
+        context.registerReceiver(feReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACT"));
 
         svmReceiver = new SVMReceiver();
         context.registerReceiver(svmReceiver, new IntentFilter("it.unige.diten.dsp.speakerrecognition.SVM_EXTRACT"));
@@ -190,8 +192,11 @@ public class MainActivity extends Activity
     @Override
     protected void onDestroy()
     {
-        unregisterReceiver(fe_receiver);
+        super.onDestroy();
+
+        unregisterReceiver(feReceiver);
         unregisterReceiver(svmReceiver);
+        unregisterReceiver(recognitionReceiver);
     }
 
     private static String getCurrentDate()
@@ -217,15 +222,12 @@ public class MainActivity extends Activity
                 break;
         }
 
-        String text =
-                " " +
-                speaker +
-                " did speak."
-        ;
-        tvResults.setText(text);
+        writeResultFile(PATH + "/results.txt");
 
+        // Show the results in a PieChart, in a Toast and in a TextView.
         updatePieChart(names, SVMResults);
-
+        String text = " " + speaker + " did speak.";
+        tvResults.setText(text);
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
@@ -238,7 +240,7 @@ public class MainActivity extends Activity
         // Write the x-value on the chart
         pChart.setDrawSliceText(false);
         //You spin the chart round, baby right round like a record, baby, right round round round
-        pChart.setDragDecelerationFrictionCoef(0.95f);
+        pChart.setDragDecelerationFrictionCoef(0.96f);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();
@@ -266,4 +268,27 @@ public class MainActivity extends Activity
         pChart.refreshDrawableState();
     }
 
+    private static void writeResultFile(String filename)
+    {
+        try
+        {
+            File file = new File(filename);
+            FileWriter fileWriter = new FileWriter(file, true);
+            fileWriter.append("Andrea = ");
+            fileWriter.append(String.valueOf(SVMResults[0]));
+            fileWriter.append("\tDavide = ");
+            fileWriter.append(String.valueOf(SVMResults[1]));
+            fileWriter.append("\tEmanuele = ");
+            fileWriter.append(String.valueOf(SVMResults[2]));
+            fileWriter.append("\tActualSpeaker = " + etName.getText().toString());
+            fileWriter.append("\tSeconds = " + String.valueOf((Double.valueOf(etDuration.getText().toString())/1000)));
+            fileWriter.append("\tModel = " + MODEL_FILENAME);
+            fileWriter.append("\n");
+            fileWriter.close();
+        }
+        catch(Exception ew)
+        {
+            ew.printStackTrace();
+        }
+    }
 }

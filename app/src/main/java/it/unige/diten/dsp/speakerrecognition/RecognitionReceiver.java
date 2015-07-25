@@ -11,6 +11,7 @@ public class RecognitionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        // MySVM_Async just performed the recognition, set result and sent this intent
         MainActivity.updateRecognitionResults(result);
     }
 }

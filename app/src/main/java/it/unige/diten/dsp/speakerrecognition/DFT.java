@@ -4,16 +4,16 @@ package it.unige.diten.dsp.speakerrecognition;
 
 /**
  * DFT
- * Classe astratta che si occupa di calcolare la DFT di una sequenza di double.
+ * Abstract class to compute the DFT of a real sequence.
  */
 
 public abstract class DFT
 {
     /**
-     * @brief   compute the DFT of the real sequence src and saves it in dest.
+     * @brief       compute the DFT of the real sequence src and saves it in dest.
      * @param src   The source sequence.
      * @param dest  The destination sequence. This must be large enough to
-     *              contain src.
+     *              contain src, otherwise IndexOutOfBoundExceptions will eventually occur.
      */
     public static void computeDFT(double[] src, Complex[] dest) 
     {
@@ -22,18 +22,18 @@ public abstract class DFT
         
         double angle;
         int N = src.length;
-
-        for(int k = 0; k < N; k++) {
+        double angleFactor = -2.0*Math.PI/(double)N;
+        for(int k = 0; k < N; k++)
+        {
             dest[k].Re = .0;
             dest[k].Im = .0;
-            for (int n = 0; n < N; n++) {
-                angle = -2*Math.PI*(double)k*(double)n/(double)N;
-
+            for (int n = 0; n < N; n++)
+            {
+                //angle = -2.0*Math.PI*(double)k*(double)n/(double)N;
+                angle = angleFactor*(double)k*(double)n;
                 dest[k].Re += src[n] * Math.cos(angle);
                 dest[k].Im += src[n] * Math.sin(angle);
             }
-            // Under a certain value we can consider it as if it were 0
-
         }
     }
     /**

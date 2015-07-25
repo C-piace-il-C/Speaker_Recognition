@@ -4,8 +4,7 @@ package it.unige.diten.dsp.speakerrecognition;
 
 /**
  * Complex
- * Tipo per i numeri complessi. Viene utilizzato durante l'elaborazione dei samples
- * a partire DFT.
+ * Class to handle complex numbers
  */
 public class Complex {
     public double Re;
