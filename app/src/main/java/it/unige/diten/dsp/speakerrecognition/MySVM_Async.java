@@ -30,51 +30,45 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
 
     private static void initialize()
     {
-        //cProgressRecorder.setMessage("Loading SVM model and features range...");
-        // TODO correggi 26 con il numero delle feature estratte
+        // TODO sostituisci 26 con il numero delle feature estratte
         y_min = new double[26];
         y_max = new double[26];
-        Log.v(TAG, "fileName: " + MainActivity.MODEL_FILENAME);
-        // Search for the first .model file.
-        String path = MainActivity.PATH;
-        //Log.d("Files", "Path: " + path);
-        File f = new File(path);
-        File file[] = f.listFiles();
-        String modelFname = null, rangeFname = null;
-        boolean fileFound = false;
-        for (int i=0; i < file.length; i++)
-        {
-            String fname = file[i].getName();
-            if( fname.endsWith(".model") )
-            {
-                modelFname = MainActivity.PATH + "/" + fname;
-                MainActivity.MODEL_FILENAME = fname;
-                if(rangeFname != null)
-                    break;
-            }
-            if( fname.endsWith(".range"))
-            {
-                rangeFname = MainActivity.PATH + "/" + fname;
-                if(modelFname != null)
-                    break;
-            }
 
+        // Search for and use the first .model and .range files
+        String path             = MainActivity.PATH;
+        File f                  = new File(path);
+        File files[]            = f.listFiles();
+        String modelFilename    = null, rangeFilename = null;
+
+        for (int i=0; i < files.length; i++)
+        {
+            String filename = files[i].getName();
+            if( filename.endsWith(".model") )
+            {
+                modelFilename = path + "/" + filename;
+                MainActivity.MODEL_FILENAME = filename;
+                if(rangeFilename != null)
+                    break;
+            }
+            if( filename.endsWith(".range"))
+            {
+                rangeFilename = path + "/" + filename;
+                if(modelFilename != null)
+                    break;
+            }
         }
 
-        readRange(rangeFname);//MainActivity.RANGE_FILENAME);
-
-        Log.v(TAG, "Caricato range.range");
+        readRange(rangeFilename);
+        Log.v(TAG, "range.range loaded");
 
         try
         {
-
-            model = svm.svm_load_model(modelFname);//MainActivity.MODEL_FILENAME);
-
-            Log.v(TAG, "Caricato model.model: " + modelFname);
+            model = svm.svm_load_model(modelFilename);//MainActivity.MODEL_FILENAME);
+            Log.v(TAG, "model: " + modelFilename + " loaded.");
         }
         catch(IOException ew)
         {
-            Log.e(TAG, "initialize: " + ew.getMessage());
+            ew.printStackTrace();
         }
     }
 
@@ -87,7 +81,6 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         cProgressRecorder = new ProgressDialog(cContext);
         cProgressRecorder.setIndeterminate(true);
         cProgressRecorder = ProgressDialog.show(cContext, "Recognition", "recognition in progress...");
-
     }
 
     @Override
@@ -106,8 +99,6 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         // TODO fill "features"
         // feature matrix
         double[][] allFeatures = new double[frameCount][FeatureExtractor.MFCC_COUNT*2];
-        //scaleMatrix(FeatureExtractor.MFCC);
-        //scaleMatrix(FeatureExtractor.DeltaDelta);
         // Unite the two matrices
         for(int C = 0; C < frameCount; C++)
         {
@@ -130,43 +121,34 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
                 features[F][C].value = allFeatures[F][C];
                 features[F][C].index = C+1;
             }
-            // Last but not least.
             features[F][C] = new svm_node();
             features[F][C].index = -1;
             features[F][C].value = 0;
         }
-
-
-
-        /*for (int i = 0; i < features.length; i++){ //feats
-            for (int j = 0; j < features[0].length; j++) {
-                Log.i(TAG, "FEAT - index[" + i + "][" + j + "]: " + features[i][j].index);
-                Log.i(TAG, "FEAT - value[" + i + "][" + j + "]: " + features[i][j].value);
-            }
-        }*/
 
         int[] results = new int[3];
         for(int i=0; i<3; i++)
             results[i] = 0;
 
 
-        // Multithreaded recognition!
+        // Multithreaded recognition
         publishProgress(3);
-        Runnable[] runnables = new Runnable[MainActivity.numCores];
-        Thread[] threads = new Thread[MainActivity.numCores];
-        for(int C = 0; C < MainActivity.numCores; C++)
+        try
         {
-            runnables[C] = new RecognitionThread(C,MainActivity.numCores,features,results,model);
-            threads[C] = new Thread(runnables[C]);
-            threads[C].start();
-        }
-        try {
+            Thread[] threads = new Thread[MainActivity.numCores];
+            for(int C = 0; C < MainActivity.numCores; C++)
+            {
+                threads[C] = new Thread(new RecognitionThread(C, MainActivity.numCores, features, results, model));
+                threads[C].start();
+            }
+
+            // Pause the current thread until all threads are done.
             for (int C = 0; C < MainActivity.numCores; C++)
                 threads[C].join();
         }
-        catch(Exception ewww)
+        catch(Exception ew)
         {
-            // TODO handle exceptions
+            ew.printStackTrace();
         }
 
         MainActivity.SVMResults  = results;
@@ -175,7 +157,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         Log.i(TAG, "Res(1): " + results[1]);
         Log.i(TAG, "Res(2): " + results[2]);
 
-        // Find most popular outcome
+        // Find the most popular outcome
         int maxV = -1;
         int maxI = -1;
         for(int C = 0; C < 3; C++)

@@ -9,6 +9,7 @@ public class RecognitionThread implements Runnable
     private svm_node[][] featuresPtr;
     private int[] resultPtr;
     private svm_model model;
+
     public RecognitionThread(int tn, int tc, svm_node[][] featuresPtr, int[] resultsPtr, svm_model model)
     {
         this.threadNumber   = tn;
@@ -17,9 +18,13 @@ public class RecognitionThread implements Runnable
         this.resultPtr      = resultsPtr;
         this.model          = model;
     }
+
     public void run()
     {
         int frameCount = FeatureExtractor.MFCC.length;
+
+        // Multithread: each thread works on different values of C.
+        // Eventually, all values of C (from 0 to frameCount-1) are covered.
         for(int C = threadNumber; C < frameCount; C += threadCount)
         {
             resultPtr[(int)svm.svm_predict(model, featuresPtr[C])] ++;

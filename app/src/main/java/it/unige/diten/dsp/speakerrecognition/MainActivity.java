@@ -220,17 +220,12 @@ public class MainActivity extends Activity
                 break;
         }
 
-        String text =
-                " " +
-                speaker +
-                " did speak."
-        ;
-        tvResults.setText(text);
-
-        updatePieChart(names, SVMResults);
-
         writeResultFile(PATH + "/results.txt");
 
+        // Show the results in a PieChart, in a Toast and in a TextView.
+        updatePieChart(names, SVMResults);
+        String text = " " + speaker + " did speak.";
+        tvResults.setText(text);
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
@@ -243,7 +238,7 @@ public class MainActivity extends Activity
         // Write the x-value on the chart
         pChart.setDrawSliceText(false);
         //You spin the chart round, baby right round like a record, baby, right round round round
-        pChart.setDragDecelerationFrictionCoef(0.95f);
+        pChart.setDragDecelerationFrictionCoef(0.96f);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();

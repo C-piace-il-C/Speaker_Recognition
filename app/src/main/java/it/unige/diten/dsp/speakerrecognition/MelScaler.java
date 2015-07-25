@@ -1,9 +1,7 @@
-//  TESTATO DEBUGGATO PORCODIO CORRETTO
-//
+//  Completely tested
+
 package it.unige.diten.dsp.speakerrecognition;
 
-import java.io.FileWriter;
-import java.io.IOException;
 /**
  * <summary>
  *     Input: Frame(s) array.
@@ -12,13 +10,16 @@ import java.io.IOException;
 // Abstract here specifies MelScaler cannot be instantiated
 public abstract class MelScaler
 {
+    /// Frequency range for the energies extraction
     public final static double  START_FREQ      = 300.0;
     public final static double  END_FREQ        = Framer.SAMPLE_RATE / 2.0;
+    /// Number of filters in the filterbank
     public final static int     FILTERBANK_SIZE = 26;
+    /// Size in samples of a single filter
     public final static int     FILTER_SIZE     = Framer.SAMPLES_IN_FRAME;
-    // Flag.
+    /// This allows one-time initialization without a constructor
     private static boolean      initialized     = false;
-    // Holder for filterbanks.
+    /// The filterbank
     private static double[][]   filterBank      = null;
 
     /**
@@ -78,7 +79,7 @@ public abstract class MelScaler
 
             double centralFreq = filterFreq[N + 1];
 
-            for(int T=0;T<FILTER_SIZE; T++)
+            for(int T = 0; T < FILTER_SIZE; T++)
             {
                 if(filterFreq[N] <= currentFreq && currentFreq <= centralFreq)             // Left.
                     cntLeft++;
@@ -111,8 +112,10 @@ public abstract class MelScaler
     }
 
     /**
-     * @param periodogram double array with periodogram computed by Periodogrammer
-     * @return array with Mel energies
+     * @brief   Extract Mel energies from a periodogram. The energies are then returned as a double
+     *          array.
+     * @param   periodogram double array with the periodogram computed by Periodogrammer
+     * @return  array with Mel energies
      */
     public static double[] extractMelEnergies(double[] periodogram)
     {
@@ -130,7 +133,6 @@ public abstract class MelScaler
 
             for(int i = 0; i < FILTER_SIZE; i++)
             {
-                // Calculate half energies.
                 energies[C] += periodogram[i] * filterBank[C][i];
             }
             // 2.0 because of frequency simmetry caused by real input.

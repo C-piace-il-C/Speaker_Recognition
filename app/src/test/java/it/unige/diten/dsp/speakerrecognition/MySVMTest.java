@@ -117,7 +117,7 @@ public class MySVMTest extends TestCase
         }
 
 
-        MySVM.scaleMatrix(MFCC);
+        MySVM_Async.scaleMatrix(MFCC);
         int a = 2;
     }
 }
