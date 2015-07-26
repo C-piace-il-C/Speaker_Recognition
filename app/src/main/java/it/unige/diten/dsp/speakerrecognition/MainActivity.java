@@ -194,7 +194,8 @@ public class MainActivity extends Activity
     public boolean onMenuOpened(int featureld, Menu menu)
     {
         infos.setVisibility(View.INVISIBLE);
-
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
         return true;
     }
 
