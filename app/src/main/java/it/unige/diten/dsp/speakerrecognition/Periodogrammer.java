@@ -10,6 +10,7 @@ public class Periodogrammer
 {
     private Complex[] ft;
     private double[] hammingWindow;
+    private TransformSelector transformSelector;
 
     public Periodogrammer(int size)
     {
@@ -22,6 +23,8 @@ public class Periodogrammer
         // Initialize ft
         for(int C = 0; C < ft.length; C++)
             ft[C] = new Complex();
+
+        transformSelector = MainActivity.transformType;
     }
 
     /**
@@ -41,20 +44,42 @@ public class Periodogrammer
         double N = (double)size; // Convert once, use many times! ~Xat
 
         // Compute DFT of windowed sequence
-        //double[]  windowedFrame = new double[size];
-        Complex[]   windowedFrame = new Complex[size];
-        for( int C = 0; C < size; C++) {
-            windowedFrame[C] = new Complex();
-            windowedFrame[C].Re = frame.data[C] * hammingWindow[C];
-            windowedFrame[C].Im = 0;
+
+        switch (transformSelector) {
+            case TT_DFT:
+                double[]  windowedFrame = new double[size];
+
+                for( int C = 0; C < size; C++) {
+                    windowedFrame[C] = frame.data[C] * hammingWindow[C];
+                }
+
+                DFT.computeDFT(
+                        windowedFrame,  // src
+                        ft              // dest
+                );
+
+                break;
+
+            case TT_FFT:
+                Complex[] cWindowedFrame = new Complex[size];
+
+                for( int C = 0; C < size; C++) {
+
+                    cWindowedFrame[C] = new Complex();
+                    cWindowedFrame[C].Re = frame.data[C] * hammingWindow[C];
+                    cWindowedFrame[C].Im = 0;
+
+                    //windowedFrame[C] = frame.data[C] * hammingWindow[C];
+                }
+
+                ft = FFT.fft(cWindowedFrame);
+
+                break;
+
+            default:
+                throw new IllegalStateException();
         }
-/*
-        DFT.computeDFT(
-                windowedFrame,  // src
-                ft              // dest
-        );
-*/
-        ft = FFT.fft(windowedFrame);
+
 
         // Compute periodogram
         for (int C = 0; C < size; C++)
