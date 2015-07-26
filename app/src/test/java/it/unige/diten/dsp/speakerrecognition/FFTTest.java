@@ -3,24 +3,15 @@ package it.unige.diten.dsp.speakerrecognition;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.security.Timestamp;
-
-/**
- *
- */
-public class DFTTest extends TestCase
+public class FFTTest extends TestCase
 {
-    public static void testDFTOfSin() throws Exception
+    /*public static void testFFTOfSin() throws Exception
     {
         int len = 256;
 
-        double[] input = new double[len];
+        Complex[] input = new Complex[len];
         for(int C = 0; C < len; C ++)
-            input[C] = Math.sin((double)(C+1));
+            input[C] = new Complex(Math.sin((double)C),.0);
 
 
 
@@ -283,298 +274,23 @@ public class DFTTest extends TestCase
         expectation[k++] = new Complex(4.513872e-01,-7.570705e-02);
         expectation[k++] = new Complex(4.518907e-01,-3.779047e-02);
 
-        Complex[] output = new Complex[len];
+        Complex[] real = new Complex[256];
         for(int C = 0; C < 256; C++)
-            output[C] = new Complex();
+            real[C] = new Complex();
 
-        DFT.computeDFT(input,output);
+        FFT ffter = new FFT();
 
+        ffter.fft(input, real);
 
-        for(int C = 0; C < 256; C++)
-        {
-            Assert.assertTrue(areEqual(expectation[C],output[C]));
-        }
-
-    }
-
-    public static void testDFTOfRamp() throws Exception
-    {
-        int len = 256;
-
-        double[] input = new double[len];
-        for(int C = 0; C < len; C ++)
-            input[C] = (double)C+1.0;
-
-        Complex[] expectation = new Complex[256];
-        int k = 0;
-        expectation[k++] = new Complex(32896,0);
-        expectation[k++] = new Complex(-1.280000e+02,1.042985e+04);
-        expectation[k++] = new Complex(-128,5.214142e+03);
-        expectation[k++] = new Complex(-1.280000e+02,3.475222e+03);
-        expectation[k++] = new Complex(-128,2.605500e+03);
-        expectation[k++] = new Complex(-1.280000e+02,2.083457e+03);
-        expectation[k++] = new Complex(-1.280000e+02,1.735254e+03);
-        expectation[k++] = new Complex(-1.280000e+02,1.486387e+03);
-        expectation[k++] = new Complex(-128,1.299606e+03);
-        expectation[k++] = new Complex(-1.280000e+02,1.154215e+03);
-        expectation[k++] = new Complex(-1.280000e+02,1.037797e+03);
-        expectation[k++] = new Complex(-128,9.424496e+02);
-        expectation[k++] = new Complex(-128,8.629059e+02);
-        expectation[k++] = new Complex(-1.280000e+02,7.955184e+02);
-        expectation[k++] = new Complex(-128,7.376822e+02);
-        expectation[k++] = new Complex(-1.280000e+02,6.874868e+02);
-        expectation[k++] = new Complex(-128,6.434995e+02);
-        expectation[k++] = new Complex(-1.280000e+02,6.046246e+02);
-        expectation[k++] = new Complex(-128,5.700099e+02);
-        expectation[k++] = new Complex(-1.280000e+02,5.389827e+02);
-        expectation[k++] = new Complex(-128,5.110046e+02);
-        expectation[k++] = new Complex(-128,4.856401e+02);
-        expectation[k++] = new Complex(-1.280000e+02,4.625326e+02);
-        expectation[k++] = new Complex(-1.280000e+02,4.413875e+02);
-        expectation[k++] = new Complex(-128,4.219595e+02);
-        expectation[k++] = new Complex(-1.280000e+02,4.040423e+02);
-        expectation[k++] = new Complex(-1.280000e+02,3.874615e+02);
-        expectation[k++] = new Complex(-1.280000e+02,3.720686e+02);
-        expectation[k++] = new Complex(-128,3.577360e+02);
-        expectation[k++] = new Complex(-1.280000e+02,3.443541e+02);
-        expectation[k++] = new Complex(-128,3.318275e+02);
-        expectation[k++] = new Complex(-1.280000e+02,3.200735e+02);
-        expectation[k++] = new Complex(-128,3.090193e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.986014e+02);
-        expectation[k++] = new Complex(-128,2.887634e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.794554e+02);
-        expectation[k++] = new Complex(-128,2.706333e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.622573e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.542923e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.467065e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.394712e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.325607e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.259516e+02);
-        expectation[k++] = new Complex(-128,2.196228e+02);
-        expectation[k++] = new Complex(-128,2.135551e+02);
-        expectation[k++] = new Complex(-1.280000e+02,2.077309e+02);
-        expectation[k++] = new Complex(-128,2.021341e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.967501e+02);
-        expectation[k++] = new Complex(-128,1.915655e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.865680e+02);
-        expectation[k++] = new Complex(-128,1.817460e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.770893e+02);
-        expectation[k++] = new Complex(-128,1.725880e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.682333e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.640168e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.599309e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.559685e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.521227e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.483876e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.447572e+02);
-        expectation[k++] = new Complex(-128,1.412262e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.377896e+02);
-        expectation[k++] = new Complex(-128,1.344426e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.311808e+02);
-        expectation[k++] = new Complex(-128,128);
-        expectation[k++] = new Complex(-1.280000e+02,1.248963e+02);
-        expectation[k++] = new Complex(-128,1.218661e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.189059e+02);
-        expectation[k++] = new Complex(-128,1.160124e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.131826e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.104136e+02);
-        expectation[k++] = new Complex(-128,1.077025e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.050469e+02);
-        expectation[k++] = new Complex(-1.280000e+02,1.024442e+02);
-        expectation[k++] = new Complex(-1.280000e+02,9.989218e+01);
-        expectation[k++] = new Complex(-1.280000e+02,9.738856e+01);
-        expectation[k++] = new Complex(-128,9.493127e+01);
-        expectation[k++] = new Complex(-1.280000e+02,9.251830e+01);
-        expectation[k++] = new Complex(-128,9.014777e+01);
-        expectation[k++] = new Complex(-1.280000e+02,8.781786e+01);
-        expectation[k++] = new Complex(-128,8.552687e+01);
-        expectation[k++] = new Complex(-1.280000e+02,8.327313e+01);
-        expectation[k++] = new Complex(-128,8.105511e+01);
-        expectation[k++] = new Complex(-1.280000e+02,7.887129e+01);
-        expectation[k++] = new Complex(-128,7.672025e+01);
-        expectation[k++] = new Complex(-1.280000e+02,7.460062e+01);
-        expectation[k++] = new Complex(-1.280000e+02,7.251110e+01);
-        expectation[k++] = new Complex(-1.280000e+02,7.045044e+01);
-        expectation[k++] = new Complex(-1.280000e+02,6.841743e+01);
-        expectation[k++] = new Complex(-1.280000e+02,6.641091e+01);
-        expectation[k++] = new Complex(-1.280000e+02,6.442979e+01);
-        expectation[k++] = new Complex(-1.280000e+02,6.247299e+01);
-        expectation[k++] = new Complex(-128,6.053949e+01);
-        expectation[k++] = new Complex(-1.280000e+02,5.862831e+01);
-        expectation[k++] = new Complex(-128,5.673850e+01);
-        expectation[k++] = new Complex(-1.280000e+02,5.486913e+01);
-        expectation[k++] = new Complex(-1.280000e+02,5.301934e+01);
-        expectation[k++] = new Complex(-1.280000e+02,5.118825e+01);
-        expectation[k++] = new Complex(-128,4.937505e+01);
-        expectation[k++] = new Complex(-1.280000e+02,4.757893e+01);
-        expectation[k++] = new Complex(-128,4.579913e+01);
-        expectation[k++] = new Complex(-1.280000e+02,4.403489e+01);
-        expectation[k++] = new Complex(-1.280000e+02,4.228549e+01);
-        expectation[k++] = new Complex(-1.280000e+02,4.055021e+01);
-        expectation[k++] = new Complex(-1.280000e+02,3.882838e+01);
-        expectation[k++] = new Complex(-1.280000e+02,3.711931e+01);
-        expectation[k++] = new Complex(-1.280000e+02,3.542237e+01);
-        expectation[k++] = new Complex(-1.280000e+02,3.373692e+01);
-        expectation[k++] = new Complex(-128,3.206233e+01);
-        expectation[k++] = new Complex(-1.280000e+02,3.039801e+01);
-        expectation[k++] = new Complex(-128,2.874336e+01);
-        expectation[k++] = new Complex(-1.280000e+02,2.709781e+01);
-        expectation[k++] = new Complex(-128,2.546078e+01);
-        expectation[k++] = new Complex(-1.280000e+02,2.383173e+01);
-        expectation[k++] = new Complex(-128,2.221011e+01);
-        expectation[k++] = new Complex(-1.280000e+02,2.059537e+01);
-        expectation[k++] = new Complex(-128,1.898701e+01);
-        expectation[k++] = new Complex(-1.280000e+02,1.738448e+01);
-        expectation[k++] = new Complex(-1.280000e+02,1.578729e+01);
-        expectation[k++] = new Complex(-1.280000e+02,1.419493e+01);
-        expectation[k++] = new Complex(-1.280000e+02,1.260690e+01);
-        expectation[k++] = new Complex(-1.280000e+02,1.102270e+01);
-        expectation[k++] = new Complex(-1.280000e+02,9.441847e+00);
-        expectation[k++] = new Complex(-128,7.863853e+00);
-        expectation[k++] = new Complex(-128,6.288237e+00);
-        expectation[k++] = new Complex(-1.280000e+02,4.714519e+00);
-        expectation[k++] = new Complex(-128,3.142224e+00);
-        expectation[k++] = new Complex(-1.280000e+02,1.570875e+00);
-        expectation[k++] = new Complex(-128,0);
-        expectation[k++] = new Complex(-1.280000e+02,-1.570875e+00);
-        expectation[k++] = new Complex(-128,-3.142224e+00);
-        expectation[k++] = new Complex(-1.280000e+02,-4.714519e+00);
-        expectation[k++] = new Complex(-128,-6.288237e+00);
-        expectation[k++] = new Complex(-128,-7.863853e+00);
-        expectation[k++] = new Complex(-1.280000e+02,-9.441847e+00);
-        expectation[k++] = new Complex(-1.280000e+02,-1.102270e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-1.260690e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-1.419493e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-1.578729e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-1.738448e+01);
-        expectation[k++] = new Complex(-128,-1.898701e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-2.059537e+01);
-        expectation[k++] = new Complex(-128,-2.221011e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-2.383173e+01);
-        expectation[k++] = new Complex(-128,-2.546078e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-2.709781e+01);
-        expectation[k++] = new Complex(-128,-2.874336e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-3.039801e+01);
-        expectation[k++] = new Complex(-128,-3.206233e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-3.373692e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-3.542237e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-3.711931e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-3.882838e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-4.055021e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-4.228549e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-4.403489e+01);
-        expectation[k++] = new Complex(-128,-4.579913e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-4.757893e+01);
-        expectation[k++] = new Complex(-128,-4.937505e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-5.118825e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-5.301934e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-5.486913e+01);
-        expectation[k++] = new Complex(-128,-5.673850e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-5.862831e+01);
-        expectation[k++] = new Complex(-128,-6.053949e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-6.247299e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-6.442979e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-6.641091e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-6.841743e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-7.045044e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-7.251110e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-7.460062e+01);
-        expectation[k++] = new Complex(-128,-7.672025e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-7.887129e+01);
-        expectation[k++] = new Complex(-128,-8.105511e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-8.327313e+01);
-        expectation[k++] = new Complex(-128,-8.552687e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-8.781786e+01);
-        expectation[k++] = new Complex(-128,-9.014777e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-9.251830e+01);
-        expectation[k++] = new Complex(-128,-9.493127e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-9.738856e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-9.989218e+01);
-        expectation[k++] = new Complex(-1.280000e+02,-1.024442e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.050469e+02);
-        expectation[k++] = new Complex(-128,-1.077025e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.104136e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.131826e+02);
-        expectation[k++] = new Complex(-128,-1.160124e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.189059e+02);
-        expectation[k++] = new Complex(-128,-1.218661e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.248963e+02);
-        expectation[k++] = new Complex(-128,-128);
-        expectation[k++] = new Complex(-1.280000e+02,-1.311808e+02);
-        expectation[k++] = new Complex(-128,-1.344426e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.377896e+02);
-        expectation[k++] = new Complex(-128,-1.412262e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.447572e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.483876e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.521227e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.559685e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.599309e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.640168e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.682333e+02);
-        expectation[k++] = new Complex(-128,-1.725880e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.770893e+02);
-        expectation[k++] = new Complex(-128,-1.817460e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.865680e+02);
-        expectation[k++] = new Complex(-128,-1.915655e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.967501e+02);
-        expectation[k++] = new Complex(-128,-2.021341e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.077309e+02);
-        expectation[k++] = new Complex(-128,-2.135551e+02);
-        expectation[k++] = new Complex(-128,-2.196228e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.259516e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.325607e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.394712e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.467065e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.542923e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.622573e+02);
-        expectation[k++] = new Complex(-128,-2.706333e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.794554e+02);
-        expectation[k++] = new Complex(-128,-2.887634e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-2.986014e+02);
-        expectation[k++] = new Complex(-128,-3.090193e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-3.200735e+02);
-        expectation[k++] = new Complex(-128,-3.318275e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-3.443541e+02);
-        expectation[k++] = new Complex(-128,-3.577360e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-3.720686e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-3.874615e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-4.040423e+02);
-        expectation[k++] = new Complex(-128,-4.219595e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-4.413875e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-4.625326e+02);
-        expectation[k++] = new Complex(-128,-4.856401e+02);
-        expectation[k++] = new Complex(-128,-5.110046e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-5.389827e+02);
-        expectation[k++] = new Complex(-128,-5.700099e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-6.046246e+02);
-        expectation[k++] = new Complex(-128,-6.434995e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-6.874868e+02);
-        expectation[k++] = new Complex(-128,-7.376822e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-7.955184e+02);
-        expectation[k++] = new Complex(-128,-8.629059e+02);
-        expectation[k++] = new Complex(-128,-9.424496e+02);
-        expectation[k++] = new Complex(-1.280000e+02,-1.037797e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-1.154215e+03);
-        expectation[k++] = new Complex(-128,-1.299606e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-1.486387e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-1.735254e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-2.083457e+03);
-        expectation[k++] = new Complex(-128,-2.605500e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-3.475222e+03);
-        expectation[k++] = new Complex(-128,-5.214142e+03);
-        expectation[k++] = new Complex(-1.280000e+02,-1.042985e+04);
-
-        Complex[] output = new Complex[len];
-        for(int C = 0; C < len; C++)
-            output[C] = new Complex();
-
-        DFT.computeDFT(input,output);
+        int a = 2;
 
         for(int C = 0; C < 256; C++)
         {
-            Assert.assertTrue(areEqual(expectation[C],output[C]));
+            Assert.assertTrue(areEqual(expectation[C],real[C]));
         }
+
     }
+*/
     private static boolean areEqual(Complex a, Complex b)
     {
         double prec = 0.01;
@@ -588,6 +304,4 @@ public class DFTTest extends TestCase
 
         return( abs1 <= prec && abs2 <= prec );
     }
-
-
 }
