@@ -42,6 +42,8 @@ public class MainActivity extends Activity
 
     public static int[] SVMResults;
 
+    public static TransformSelector transformType;
+
     public static int numCores;
 
     public static String fileName;
@@ -49,6 +51,7 @@ public class MainActivity extends Activity
 
     public static Context context = null;
 
+    private static TextView infos =  null;
     private static EditText etName = null;
     private static EditText etDuration = null;
     private RadioButton rbTrain = null;
@@ -96,6 +99,9 @@ public class MainActivity extends Activity
 
         Button btnRecord = (Button) findViewById(R.id.RecordButton);
 
+        transformType = TransformSelector.TT_DFT;
+
+        infos       = (TextView)findViewById(R.id.Infos);
         pChart      = (PieChart)findViewById(R.id.chart);
         etDuration  = (EditText)findViewById(R.id.edt_Duration);
         etName      = (EditText)findViewById(R.id.edt_Speaker);
@@ -168,18 +174,48 @@ public class MainActivity extends Activity
     }
 
     @Override
+    public boolean onMenuOpened(int featureld, Menu menu)
+    {
+        infos.setVisibility(View.INVISIBLE);
+
+        return true;
+    }
+
+    @Override
+    public void onOptionsMenuClosed(Menu menu)
+    {
+        infos.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.dft:
+                if (item.isChecked())
+                    return true;
+                else
+                    item.setChecked(true);
+
+                transformType = TransformSelector.TT_DFT;
+                return true;
+
+            case R.id.fft:
+                if (item.isChecked())
+                    return true;
+                else
+                    item.setChecked(true);
+
+                transformType = TransformSelector.TT_FFT;
+                return true;
+            default:
+                return true;
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
