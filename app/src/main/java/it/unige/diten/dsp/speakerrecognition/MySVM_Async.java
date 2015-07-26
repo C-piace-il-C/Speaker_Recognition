@@ -46,7 +46,6 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
             if( filename.endsWith(".model") )
             {
                 modelFilename = path + "/" + filename;
-                MainActivity.MODEL_FILENAME = filename;
                 if(rangeFilename != null)
                     break;
             }
