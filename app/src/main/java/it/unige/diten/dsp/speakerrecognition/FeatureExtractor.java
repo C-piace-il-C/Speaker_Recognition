@@ -10,8 +10,10 @@ import android.util.Log;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
+public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
     public final static int MFCC_COUNT = 13;
     public final static String TAG = "FeatureExtractor";
@@ -21,6 +23,8 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
     public static double[][] MFCC = null;
     public static double[][] DeltaDelta = null;
+
+    public static int frameExtracted = 0;
 
     protected void onPreExecute()
     {
@@ -36,9 +40,18 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(String... params)
     {
-        try {
+
+        try
+        {
             // params[0] = name of the audio file
             Log.i(TAG,"Feature extraction started");
+            Timer t = new Timer();
+            t.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    publishProgress();
+                }
+            }, 0, 50);
             MFCC = extractMFCC(params[0]);
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
@@ -75,9 +88,11 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Integer... progress)
+    protected void onProgressUpdate(Void... ouat)
     {
-        cProgressRecorder.setMessage(progress[0] + "%");
+        int frameCount = Framer.getFrames().length;
+        //int perc = (int)Math.floor(((float)frameExtracted / (float)frameCount * 100.0));
+        cProgressRecorder.setMessage(frameExtracted + "/" + frameCount);
     }
 
     @Override
@@ -128,10 +143,13 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
     public static double [][] extractMFCC(String audioFilename) throws java.lang.Exception
     {
+        frameExtracted = 0;
         Framer.readFromFile(audioFilename);
         final Frame[] frames = Framer.getFrames();
 
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
+
+
 
         int numCores = MainActivity.numCores;
 
@@ -141,7 +159,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             threads[C].start();
         }
         for(int C = 0; C < numCores; C++)
-            threads[C].join();
+        threads[C].join();
 
         return mfcc;
     }

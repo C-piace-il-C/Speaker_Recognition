@@ -1,4 +1,3 @@
-// TODO: percentuale completamento feature extraction
 // TODO: rimuovere secondo iniziale in favore di pulitura zeri iniziali nei samples registrati
 // TODO: testare wavcreator e implementarla
 // TODO: taggare 1.1, mergiare multimodel, taggare 2.0

@@ -31,6 +31,8 @@ public class FEThread implements Runnable
                             )
                     ), FeatureExtractor.MFCC_COUNT // Only keep the first MFCC_COUNT coefficients
             );
+
+            FeatureExtractor.frameExtracted++;
         }
     }
 }
