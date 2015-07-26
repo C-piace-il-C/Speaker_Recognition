@@ -107,7 +107,7 @@ public class MainActivity extends Activity
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
         pChart.setDescription("");
-/*
+
         rbRecognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class MainActivity extends Activity
                 etName.setVisibility(View.VISIBLE);
             }
         });
-*/
+
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -222,8 +222,6 @@ public class MainActivity extends Activity
                 break;
         }
 
-        writeResultFile(PATH + "/results.txt");
-
         // Show the results in a PieChart, in a Toast and in a TextView.
         updatePieChart(names, SVMResults);
         String text = " " + speaker + " did speak.";
@@ -266,29 +264,5 @@ public class MainActivity extends Activity
         // Display the data
         pChart.setData(pieData);
         pChart.refreshDrawableState();
-    }
-
-    private static void writeResultFile(String filename)
-    {
-        try
-        {
-            File file = new File(filename);
-            FileWriter fileWriter = new FileWriter(file, true);
-            fileWriter.append("Andrea = ");
-            fileWriter.append(String.valueOf(SVMResults[0]));
-            fileWriter.append("\tDavide = ");
-            fileWriter.append(String.valueOf(SVMResults[1]));
-            fileWriter.append("\tEmanuele = ");
-            fileWriter.append(String.valueOf(SVMResults[2]));
-            fileWriter.append("\tActualSpeaker = " + etName.getText().toString());
-            fileWriter.append("\tSeconds = " + String.valueOf((Double.valueOf(etDuration.getText().toString())/1000)));
-            fileWriter.append("\tModel = " + MODEL_FILENAME);
-            fileWriter.append("\n");
-            fileWriter.close();
-        }
-        catch(Exception ew)
-        {
-            ew.printStackTrace();
-        }
     }
 }
