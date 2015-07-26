@@ -23,13 +23,12 @@ public class Rec extends AsyncTask<String, Void, Boolean>
     int                     cFS;
     int                     cNumberOfSamples;
 
-    private final String    TAG = "Audio Recorder";
     short[]                 cAudioData = null;
 
-    public Rec(Context context, int registrationLenght, int sampleFrequency)
+    public Rec(Context context, int registrationLength, int sampleFrequency)
     {
         this.cContext                       = context;
-        this.cRegistrationLenghtInSeconds   = registrationLenght;
+        this.cRegistrationLenghtInSeconds   = registrationLength;
         this.cFS                            = sampleFrequency;
         this.cNumberOfSamples               = this.cFS * this.cRegistrationLenghtInSeconds;
     }
@@ -69,6 +68,7 @@ public class Rec extends AsyncTask<String, Void, Boolean>
         File file = new File(storDir);
         if (!file.exists())
             if (!file.mkdir()) {
+                String TAG = "Audio Recorder";
                 Log.e(TAG,"An error occurred while trying to create the directory.");
                 return false;
             }

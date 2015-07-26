@@ -40,9 +40,9 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         File files[]            = f.listFiles();
         String modelFilename    = null, rangeFilename = null;
 
-        for (int i=0; i < files.length; i++)
+        for (File file: files)
         {
-            String filename = files[i].getName();
+            String filename = file.getName();
             if( filename.endsWith(".model") )
             {
                 modelFilename = path + "/" + filename;
