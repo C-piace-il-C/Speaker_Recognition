@@ -41,14 +41,20 @@ public class Periodogrammer
         double N = (double)size; // Convert once, use many times! ~Xat
 
         // Compute DFT of windowed sequence
-        double[]  windowedFrame = new double[size];
-        for( int C = 0; C < size; C++)
-            windowedFrame[C] = frame.data[C] * hammingWindow[C];
-
+        //double[]  windowedFrame = new double[size];
+        Complex[]   windowedFrame = new Complex[size];
+        for( int C = 0; C < size; C++) {
+            windowedFrame[C] = new Complex();
+            windowedFrame[C].Re = frame.data[C] * hammingWindow[C];
+            windowedFrame[C].Im = 0;
+        }
+/*
         DFT.computeDFT(
                 windowedFrame,  // src
                 ft              // dest
         );
+*/
+        ft = FFT.fft(windowedFrame);
 
         // Compute periodogram
         for (int C = 0; C < size; C++)
