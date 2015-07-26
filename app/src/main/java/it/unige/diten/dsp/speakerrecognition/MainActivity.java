@@ -127,8 +127,9 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
                 etName.setVisibility(View.VISIBLE);
+                // Hide previous chart
                 pChart.setVisibility(View.INVISIBLE);
-
+                // Hide previous result
                 tvResults.setText("");
                 tvResults.setVisibility(View.INVISIBLE);
             }
@@ -158,7 +159,6 @@ public class MainActivity extends Activity
                     pChart.setVisibility(View.INVISIBLE);
                     // Hide previous result
                     tvResults.setText("");
-                    tvResults.setVisibility(View.INVISIBLE);
                     // Recognize.
                     fileName = "[" + getCurrentDate() + "]"
                             + AUDIO_EXT;
