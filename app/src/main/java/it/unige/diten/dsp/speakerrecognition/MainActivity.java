@@ -49,7 +49,6 @@ public class MainActivity extends Activity
 
     public static Context context = null;
 
-    private Button btnRecord = null;
     private static EditText etName = null;
     private static EditText etDuration = null;
     private RadioButton rbTrain = null;
@@ -98,8 +97,9 @@ public class MainActivity extends Activity
 
         context = this;
 
+        Button btnRecord = (Button) findViewById(R.id.RecordButton);
+
         pChart      = (PieChart)findViewById(R.id.chart);
-        btnRecord   = (Button)findViewById(R.id.RecordButton);
         etDuration  = (EditText)findViewById(R.id.edt_Duration);
         etName      = (EditText)findViewById(R.id.edt_Speaker);
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
@@ -124,13 +124,11 @@ public class MainActivity extends Activity
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 fileName = null;
                 isTraining = false;
 
-                if (rbTrain.isChecked() && etName.getText().length() != 0)
-                {
+                if (rbTrain.isChecked() && etName.getText().length() != 0) {
                     // Train.
                     fileName = "[" + getCurrentDate() + "]"
                             + etName.getText().toString()
@@ -139,19 +137,17 @@ public class MainActivity extends Activity
                     isTraining = true;
                 }
 
-                if (rbRecognize.isChecked())
-                {
+                if (rbRecognize.isChecked()) {
                     // Recognize.
                     fileName = "[" + getCurrentDate() + "]"
                             + AUDIO_EXT;
                 }
 
-                if (null != fileName)
-                {
+                if (null != fileName) {
                     Rec rec = new Rec(context,
                             Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);
-                            // +1 here because the first second of registration will be ignored
-                            // during the features extraction.
+                    // +1 here because the first second of registration will be ignored
+                    // during the features extraction.
                     rec.execute(PATH, fileName);
                 }
             }
