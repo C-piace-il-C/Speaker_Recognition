@@ -578,7 +578,7 @@ public class DFTTest extends TestCase
         }
     }
 
-    public static void TestDFTMultithread() throws Exception
+    public static void testDFTMultithread() throws Exception
     {
         int len = 256;
         // Crea due frame
@@ -603,7 +603,7 @@ public class DFTTest extends TestCase
         }
         Thread t1,t2;
         t1 = new Thread(new DFTTestThread(f1,out1));
-        t2 = new Thread(new DFTTestThread(f1,out2));
+        t2 = new Thread(new DFTTestThread(f2,out2));
         t1.start();
         t2.start();
         t1.join();

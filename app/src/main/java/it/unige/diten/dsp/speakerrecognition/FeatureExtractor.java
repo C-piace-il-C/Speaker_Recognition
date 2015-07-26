@@ -77,7 +77,6 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... progress)
     {
-        // TODO: this is never called. Make this statement false.
         cProgressRecorder.setMessage(progress[0] + "%");
     }
 

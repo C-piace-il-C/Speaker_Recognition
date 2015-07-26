@@ -1,3 +1,8 @@
+// TODO: percentuale completamento feature extraction
+// TODO: rimuovere secondo iniziale in favore di pulitura zeri iniziali nei samples registrati
+// TODO: testare wavcreator e implementarla
+// TODO: taggare 1.1, mergiare multimodel, taggare 2.0
+
 package it.unige.diten.dsp.speakerrecognition;
 
 import android.app.Activity;
@@ -165,8 +170,13 @@ public class MainActivity extends Activity
                 }
 
                 if (null != fileName) {
-                    Rec rec = new Rec(context,
-                            Integer.valueOf(etDuration.getText().toString()) / 1000 + 1, 8000);
+                    int durationSecs;
+                    if(etDuration.getText().toString().length() == 0)
+                        durationSecs = 10;
+                    else
+                        durationSecs = (Integer.valueOf(etDuration.getText().toString()) / 1000);
+
+                    Rec rec = new Rec(context, durationSecs + 1, 8000);
                     // +1 here because the first second of registration will be ignored
                     // during the features extraction.
                     rec.execute(PATH, fileName);
@@ -202,8 +212,7 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onOptionsMenuClosed(Menu menu)
-    {
+    public void onOptionsMenuClosed(Menu menu) {
         infos.setVisibility(View.VISIBLE);
     }
 
