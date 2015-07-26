@@ -5,13 +5,13 @@ import junit.framework.TestCase;
 
 public class FFTTest extends TestCase
 {
-    /*public static void testFFTOfSin() throws Exception
+    public static void testFFTOfSin() throws Exception
     {
         int len = 256;
 
         Complex[] input = new Complex[len];
         for(int C = 0; C < len; C ++)
-            input[C] = new Complex(Math.sin((double)C),.0);
+            input[C] = new Complex(Math.sin((double)C+1.0),.0);
 
 
 
@@ -274,26 +274,18 @@ public class FFTTest extends TestCase
         expectation[k++] = new Complex(4.513872e-01,-7.570705e-02);
         expectation[k++] = new Complex(4.518907e-01,-3.779047e-02);
 
-        Complex[] real = new Complex[256];
-        for(int C = 0; C < 256; C++)
-            real[C] = new Complex();
-
-        FFT ffter = new FFT();
-
-        ffter.fft(input, real);
-
-        int a = 2;
+        Complex[] output = FFT.fft(input);
 
         for(int C = 0; C < 256; C++)
         {
-            Assert.assertTrue(areEqual(expectation[C],real[C]));
+            Assert.assertTrue(areEqual(expectation[C],output[C]));
         }
 
     }
-*/
+
     private static boolean areEqual(Complex a, Complex b)
     {
-        double prec = 0.01;
+        double prec = 0.0001;
 
         double abs1, abs2;
 
