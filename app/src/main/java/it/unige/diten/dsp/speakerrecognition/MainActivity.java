@@ -1,5 +1,3 @@
-// TODO: secondo iniziale rimosso: bisogna ancora togliere gli 0 iniziali dai dati registrati
-// TODO: testare wavcreator e implementarla
 // TODO: taggare 1.1, mergiare multimodel, taggare 2.0
 
 package it.unige.diten.dsp.speakerrecognition;
@@ -8,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -29,7 +26,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

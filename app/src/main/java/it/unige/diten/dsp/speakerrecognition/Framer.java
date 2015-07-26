@@ -54,8 +54,18 @@ public abstract class Framer
         // Clear old data (garbage collector)
         frames = null;
 
-        short[] audioSamples = readWAV.getSamples();
+        short[] samples = readWAV.getSamples();
 
+        // Remove eventual zeros at the beginning
+        int offset = 0;
+        while(samples[offset] == 0)
+            offset++;
+
+        short[] audioSamples = new short[samples.length - offset];
+        for(int C = 0; C < samples.length - offset; C++)
+        {
+            audioSamples[C] = samples[C + offset];
+        }
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
 
