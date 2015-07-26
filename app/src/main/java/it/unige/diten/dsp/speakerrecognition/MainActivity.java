@@ -115,6 +115,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
                 etName.setVisibility(View.INVISIBLE);
+                tvResults.setVisibility(View.VISIBLE);
             }
         });
 
@@ -122,6 +123,10 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v) {
                 etName.setVisibility(View.VISIBLE);
+                pChart.setVisibility(View.INVISIBLE);
+
+                tvResults.setText("");
+                tvResults.setVisibility(View.INVISIBLE);
             }
         });
 
