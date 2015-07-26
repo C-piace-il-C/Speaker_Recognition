@@ -72,8 +72,7 @@ public class ModelTest  extends TestCase
         audioTrackFilenames[8] = "C:\\Tests\\Audio\\newEma8.wav";
         actualSpeaker[9] = "Emanuele";
         audioTrackFilenames[9] = "C:\\Tests\\Audio\\newEma9.wav";
-
-        // TODO: fill arrays
+        
         for(int M = 0; M < modelCount; M++)
         {
             // Load model and range

@@ -1,6 +1,5 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-// TODO FeatureExtractor: intent.
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -43,15 +42,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
             MFCC = extractMFCC(params[0]);
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
-/*
-            for(int C = 0; C < DeltaDelta.length; C++)
-            {
-                for(int J = 0; J < DeltaDelta[0].length; J++)
-                    if(DeltaDelta[C][J] == Double.NaN ||
-                            DeltaDelta[C][J] == Double.NEGATIVE_INFINITY)
-                        DeltaDelta[C][J] = 0;
-            }
-*/
+
             // If recognition mode is on:
             if (!MainActivity.isTraining)
             {
@@ -143,13 +134,11 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
 
-        int numCores = 8; // TODO replace with MainActivity.numerodicoreporcodio
+        int numCores = MainActivity.numCores;
 
-        Runnable[] runnables = new FEThread[numCores];
         Thread[] threads = new Thread[numCores];
         for(int C = 0; C < numCores; C++) {
-            runnables[C] = new FEThread(C, numCores, frames, mfcc);
-            threads[C] = new Thread(runnables[C]);
+            threads[C] = new Thread(new FEThread(C, numCores, frames, mfcc));
             threads[C].start();
         }
         for(int C = 0; C < numCores; C++)

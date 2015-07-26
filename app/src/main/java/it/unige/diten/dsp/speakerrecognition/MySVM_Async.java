@@ -96,7 +96,6 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         // fill features vectors (svm_node[][])
         int frameCount = FeatureExtractor.MFCC.length;
 
-        // TODO fill "features"
         // feature matrix
         double[][] allFeatures = new double[frameCount][FeatureExtractor.MFCC_COUNT*2];
         // Unite the two matrices
@@ -135,15 +134,17 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         publishProgress(3);
         try
         {
+            int numCores = MainActivity.numCores;
+
             Thread[] threads = new Thread[MainActivity.numCores];
             for(int C = 0; C < MainActivity.numCores; C++)
             {
-                threads[C] = new Thread(new RecognitionThread(C, MainActivity.numCores, features, results, model));
+                threads[C] = new Thread(new RecognitionThread(C, numCores, features, results, model));
                 threads[C].start();
             }
 
             // Pause the current thread until all threads are done.
-            for (int C = 0; C < MainActivity.numCores; C++)
+            for (int C = 0; C < numCores; C++)
                 threads[C].join();
         }
         catch(Exception ew)
