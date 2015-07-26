@@ -6,17 +6,17 @@ public class RecognitionThread implements Runnable
 {
     private int threadNumber;
     private int threadCount;
-    private svm_node[][] featuresPtr;
-    private int[] resultPtr;
-    private svm_model model;
+    private svm_node[][][] featuresPtr;
+    private int[][] resultPtr;
+    private svm_model[] models;
 
-    public RecognitionThread(int tn, int tc, svm_node[][] featuresPtr, int[] resultsPtr, svm_model model)
+    public RecognitionThread(int tn, int tc, svm_node[][][] featuresPtr, int[][] resultsPtr, svm_model[] models)
     {
         this.threadNumber   = tn;
         this.threadCount    = tc;
         this.featuresPtr    = featuresPtr;
         this.resultPtr      = resultsPtr;
-        this.model          = model;
+        this.models         = models;
     }
 
     public void run()
@@ -27,7 +27,11 @@ public class RecognitionThread implements Runnable
         // Eventually, all values of C (from 0 to frameCount-1) are covered.
         for(int C = threadNumber; C < frameCount; C += threadCount)
         {
-            resultPtr[(int)svm.svm_predict(model, featuresPtr[C])] ++;
+            for(int M = 0; M < MySVM_Async.modelCount; M++)
+            {
+                resultPtr[M][(int)svm.svm_predict(models[M], featuresPtr[M][C])]++;
+            }
+
         }
     }
 }
