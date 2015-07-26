@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -62,6 +64,7 @@ public class MainActivity extends Activity
     private FEReceiver feReceiver;
     private SVMReceiver svmReceiver;
     private RecognitionReceiver recognitionReceiver;
+    private InputMethodManager inputManager;
 
 
     private int getNumCores()
@@ -99,7 +102,8 @@ public class MainActivity extends Activity
 
         Button btnRecord = (Button) findViewById(R.id.RecordButton);
 
-        transformType = TransformSelector.TT_DFT;
+        transformType   = TransformSelector.TT_DFT;
+        inputManager    = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
         infos       = (TextView)findViewById(R.id.Infos);
         pChart      = (PieChart)findViewById(R.id.chart);
@@ -133,6 +137,9 @@ public class MainActivity extends Activity
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
                 fileName = null;
                 isTraining = false;
 

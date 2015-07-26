@@ -76,7 +76,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/RecordButton"
-        android:layout_toStartOf="@+id/RecordButton" />
+        android:layout_toStartOf="@+id/RecordButton"
+        android:autoText="false" />
 
     <EditText
         android:layout_width="180dp"
