@@ -27,17 +27,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
     private static Context cContext;
 
     private static boolean initialized = false;
-    private class Range
-    {
-        public double[] y_min;
-        public double[] y_max;
-        public Range()
-        {
-            y_min = new double[FeatureExtractor.MFCC_COUNT * 2];
-            y_max = new double[FeatureExtractor.MFCC_COUNT * 2];
-        }
 
-    }
     private static Range[] ranges;
 
     private static void initialize()
@@ -45,6 +35,8 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         models = new svm_model[modelCount];
 
         ranges = new Range[modelCount];
+        for(int C=0; C<modelCount; C++)
+            ranges[C] = new Range();
 
         // Search for and use the first .model and .range files
         String   path            = MainActivity.PATH;

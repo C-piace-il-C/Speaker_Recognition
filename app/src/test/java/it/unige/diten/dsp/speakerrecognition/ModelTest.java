@@ -29,7 +29,7 @@ public class ModelTest  extends TestCase
         int[] results = {0,0,0};
 
         int modelCount = 16;
-        int audioTrackCount = 10;
+        int audioTrackCount = 5;
 
         String[] modelFilenames = new String[modelCount];
         String[] rangeFilenames = new String[modelCount];
@@ -52,26 +52,17 @@ public class ModelTest  extends TestCase
             }
         }
 
-        actualSpeaker[0] = "Emanuele";
-        audioTrackFilenames[0] = "C:\\Tests\\Audio\\newEma0.wav";
-        actualSpeaker[1] = "Emanuele";
-        audioTrackFilenames[1] = "C:\\Tests\\Audio\\newEma1.wav";
-        actualSpeaker[2] = "Emanuele";
-        audioTrackFilenames[2] = "C:\\Tests\\Audio\\newEma2.wav";
-        actualSpeaker[3] = "Emanuele";
-        audioTrackFilenames[3] = "C:\\Tests\\Audio\\newEma3.wav";
-        actualSpeaker[4] = "Emanuele";
-        audioTrackFilenames[4] = "C:\\Tests\\Audio\\newEma4.wav";
-        actualSpeaker[5] = "Emanuele";
-        audioTrackFilenames[5] = "C:\\Tests\\Audio\\newEma5.wav";
-        actualSpeaker[6] = "Emanuele";
-        audioTrackFilenames[6] = "C:\\Tests\\Audio\\newEma6.wav";
-        actualSpeaker[7] = "Emanuele";
-        audioTrackFilenames[7] = "C:\\Tests\\Audio\\newEma7.wav";
-        actualSpeaker[8] = "Emanuele";
-        audioTrackFilenames[8] = "C:\\Tests\\Audio\\newEma8.wav";
-        actualSpeaker[9] = "Emanuele";
-        audioTrackFilenames[9] = "C:\\Tests\\Audio\\newEma9.wav";
+        actualSpeaker[0] = "Davide";
+        audioTrackFilenames[0] = "C:\\Tests\\Audio\\newAceDavide0Corretto.wav";
+        actualSpeaker[1] = "Davide";
+        audioTrackFilenames[1] = "C:\\Tests\\Audio\\newAceDavide1Corretto.wav";
+        actualSpeaker[2] = "Davide";
+        audioTrackFilenames[2] = "C:\\Tests\\Audio\\newAceDavide2Corretto.wav";
+        actualSpeaker[3] = "Davide";
+        audioTrackFilenames[3] = "C:\\Tests\\Audio\\newAceDavide3Corretto.wav";
+        actualSpeaker[4] = "Davide";
+        audioTrackFilenames[4] = "C:\\Tests\\Audio\\newAceDavide4Corretto.wav";
+
 
         // TODO: fill arrays
         for(int M = 0; M < modelCount; M++)
