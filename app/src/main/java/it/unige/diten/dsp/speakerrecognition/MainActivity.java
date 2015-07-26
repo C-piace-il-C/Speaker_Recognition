@@ -1,4 +1,4 @@
-// TODO: rimuovere secondo iniziale in favore di pulitura zeri iniziali nei samples registrati
+// TODO: secondo iniziale rimosso: bisogna ancora togliere gli 0 iniziali dai dati registrati
 // TODO: testare wavcreator e implementarla
 // TODO: taggare 1.1, mergiare multimodel, taggare 2.0
 
@@ -175,7 +175,10 @@ public class MainActivity extends Activity
                     else
                         durationSecs = (Integer.valueOf(etDuration.getText().toString()) / 1000);
 
-                    Rec rec = new Rec(context, durationSecs + 1, 8000);
+                    if( durationSecs == 0)
+                        durationSecs = 1;
+
+                    Rec rec = new Rec(context, durationSecs, 8000);
                     // +1 here because the first second of registration will be ignored
                     // during the features extraction.
                     rec.execute(PATH, fileName);

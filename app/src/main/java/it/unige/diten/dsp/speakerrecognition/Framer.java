@@ -31,7 +31,7 @@ public abstract class Framer
     /// Distance in Bytes between the beginning of a frame and the following
     public final static int FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
     /// Registration offset (number of frames to skip)
-    public final static int REGISTRATION_FRAME_OFFSET = 125;
+    /// public final static int REGISTRATION_FRAME_OFFSET = 125;
 
     /// Container for all the frames
     private static Frame[] frames = null;
@@ -85,12 +85,13 @@ public abstract class Framer
 
         // Divide audio data into frames (a frame is a double array)
         int frameCount = readWAV.myData.length / FRAME_BYTE_SPACING;
-        frames = new Frame[frameCount-REGISTRATION_FRAME_OFFSET];
+        frames = new Frame[frameCount];
 
-        for (int C = REGISTRATION_FRAME_OFFSET; C < frameCount; C++)
+
+        for (int C = 0; C < frameCount; C++)
         {
-            frames[C-REGISTRATION_FRAME_OFFSET] = new Frame();
-            frames[C-REGISTRATION_FRAME_OFFSET].data = toDoubleArray(
+            frames[C] = new Frame();
+            frames[C].data = toDoubleArray(
                     readWAV.myData,         // src
                     C * FRAME_BYTE_SPACING, // byte offset
                     SAMPLES_IN_FRAME,       // len
