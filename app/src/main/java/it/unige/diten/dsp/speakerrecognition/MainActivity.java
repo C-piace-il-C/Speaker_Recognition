@@ -137,7 +137,8 @@ public class MainActivity extends Activity
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                inputManager.hideSoftInputFromWindow(
+                        (null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
 
                 fileName = null;
@@ -194,7 +195,8 @@ public class MainActivity extends Activity
     public boolean onMenuOpened(int featureld, Menu menu)
     {
         infos.setVisibility(View.INVISIBLE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+        inputManager.hideSoftInputFromWindow(
+                (null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
         return true;
     }
