@@ -3,14 +3,9 @@ package it.unige.diten.dsp.speakerrecognition;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.security.Timestamp;
-
 /**
- *
+ * This tests wether DFT works in singlethread.
+ * FeatureExtractorTest tests the multithreaded version of DFT and DD.
  */
 public class DFTTest extends TestCase
 {
@@ -296,7 +291,6 @@ public class DFTTest extends TestCase
         }
 
     }
-
     public static void testDFTOfRamp() throws Exception
     {
         int len = 256;
@@ -588,6 +582,4 @@ public class DFTTest extends TestCase
 
         return( abs1 <= prec && abs2 <= prec );
     }
-
-
 }
