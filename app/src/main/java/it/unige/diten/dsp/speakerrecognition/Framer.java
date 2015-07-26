@@ -2,10 +2,8 @@
 
 package it.unige.diten.dsp.speakerrecognition;
 
-import android.nfc.Tag;
 import android.util.Log;
 
-import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
 
 /**
  * Framer

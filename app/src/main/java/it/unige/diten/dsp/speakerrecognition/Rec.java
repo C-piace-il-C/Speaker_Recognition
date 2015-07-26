@@ -8,11 +8,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.io.File;
 
-import it.unige.diten.dsp.speakerrecognition.WavIO.WavIO;
 
 public class Rec extends AsyncTask<String, Void, Boolean>
 {
