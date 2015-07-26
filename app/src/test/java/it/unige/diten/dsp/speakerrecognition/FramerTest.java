@@ -1,4 +1,3 @@
-// TODO: non saprei nemmeno dove iniziare..
 package it.unige.diten.dsp.speakerrecognition;
 
 import junit.framework.TestCase;

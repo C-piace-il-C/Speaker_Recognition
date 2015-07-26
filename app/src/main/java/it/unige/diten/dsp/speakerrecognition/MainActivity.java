@@ -1,5 +1,3 @@
-// TODO: mergiare multimodel, taggare 2.0
-
 package it.unige.diten.dsp.speakerrecognition;
 
 import android.app.Activity;

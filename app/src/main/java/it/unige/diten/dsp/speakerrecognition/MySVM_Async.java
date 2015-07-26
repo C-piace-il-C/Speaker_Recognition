@@ -21,7 +21,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
     public static final String  TAG                 = "MySVM_Async";
     public static final int     modelCount          = 3;
     private static svm_model[]  models              = null;
-    private static int          decisionAlgorithm   = 1;
+    private static final int    decisionAlgorithm   = 1;
 
     private static ProgressDialog cProgressRecorder;
     private static Context cContext;
@@ -46,14 +46,12 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         String[] rangeFilenames  = new String[modelCount];
         int      modelsFound     = 0;
 
-        for (int i=0; i < files.length; i++)
-        {
-            String filename = files[i].getName();
-            if( filename.endsWith(".model") )
-            {
+        for (File file : files) {
+            String filename = file.getName();
+            if (filename.endsWith(".model")) {
                 modelFilenames[modelsFound] = path + "/" + filename;
                 modelsFound++;
-                if(modelsFound == modelCount)
+                if (modelsFound == modelCount)
                     break;
             }
         }
@@ -147,10 +145,10 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         {
             int numCores = MainActivity.numCores;
 
-            Thread[] threads = new Thread[MainActivity.numCores];
-            for(int C = 0; C < MainActivity.numCores; C++)
+            Thread[] threads = new Thread[numCores];
+            for(int C = 0; C < numCores; C++)
             {
-                threads[C] = new Thread(new RecognitionThread(C, MainActivity.numCores, features, results, models));
+                threads[C] = new Thread(new RecognitionThread(C, numCores, features, results, models));
                 threads[C].start();
             }
 

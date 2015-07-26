@@ -1,4 +1,3 @@
-// TODO: Testa sto melscaler con matlab
 package it.unige.diten.dsp.speakerrecognition;
 
 import junit.framework.Assert;
