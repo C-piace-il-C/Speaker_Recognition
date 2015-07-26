@@ -1,21 +1,20 @@
+// TODO: Perform feature extraction on MATLAB to get values to compare with
+
 package it.unige.diten.dsp.speakerrecognition;
 
 import junit.framework.TestCase;
 
-/**
- * Created by doddo on 7/15/15.
- */
-public class FeatureExtractorTest extends TestCase {
+public class FeatureExtractorTest extends TestCase
+{
 
     public void setUp() throws Exception {
         super.setUp();
 
     }
 
-    public void testExtractMFCC() throws Exception {
-
-        double[][] result = FeatureExtractor.extractMFCC("/home/doddo/Tests/test.wav");
-
-        int a = 2;
+    public void testExtractFeatures() throws Exception
+    {
+        double[][] MFCC = FeatureExtractor.extractMFCC("/home/doddo/Tests/test.wav");
+        double[][] DeDe = DD.computeDD(MFCC,2);
     }
 }

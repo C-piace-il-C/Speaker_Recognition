@@ -6,9 +6,9 @@ import junit.framework.TestCase;
 /**
  *
  */
-public class DFTTest extends TestCase {
+public class DFTTest extends TestCase
+{
 
-    static double[] values = {0, 2, 4, 8, 16, 8, 4, 2, 0};
 
     public boolean areEqual(double a, double b)
     {

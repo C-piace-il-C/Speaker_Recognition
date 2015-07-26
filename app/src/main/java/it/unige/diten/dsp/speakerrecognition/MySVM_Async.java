@@ -102,7 +102,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         // Unite the two matrices
         for(int C = 0; C < frameCount; C++)
         {
-            int K = 0;
+            int K;
             for(K = 0; K < FeatureExtractor.MFCC_COUNT; K++ )
                 allFeatures[C][K] = FeatureExtractor.MFCC[C][K];
 

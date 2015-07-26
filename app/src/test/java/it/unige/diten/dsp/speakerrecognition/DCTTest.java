@@ -1,23 +1,16 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-import android.util.Log;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import java.io.Console;
 
-public class DCTTest extends TestCase {
 
-    static double[] values = {8, 8, 8, 8, 8, 8, 8, 8};
-    static double[] results = new double[values.length];
-
+public class DCTTest extends TestCase
+{
     public boolean areEqual(double a, double b)
     {
         double abs = a-b < 0 ? (b-a) : (a-b);
         return(abs <= 0.1);
-    }
-    public void setUp() throws Exception {
-        super.setUp();
-
     }
 
     public void testComputeDCTRamp() throws Exception

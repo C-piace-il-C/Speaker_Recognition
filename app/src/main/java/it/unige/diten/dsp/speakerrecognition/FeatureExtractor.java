@@ -143,7 +143,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
 
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
 
-        int numCores = MainActivity.numCores;
+        int numCores = 8; // TODO replace with MainActivity.numerodicoreporcodio
 
         Runnable[] runnables = new FEThread[numCores];
         Thread[] threads = new Thread[numCores];

@@ -18,7 +18,7 @@ public abstract class DD
 
         try
         {
-            int numCores = MainActivity.numCores;
+            int numCores = 8; // TODO replace 8 with MainActivity.numCores;
 
             Thread[] threads        = new Thread[numCores];
             for(int C = 0; C < numCores; C++)

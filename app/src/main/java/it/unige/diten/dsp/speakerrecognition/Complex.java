@@ -1,4 +1,4 @@
-// TESTATA COMPLETAMENTE
+// Completely tested
 
 package it.unige.diten.dsp.speakerrecognition;
 

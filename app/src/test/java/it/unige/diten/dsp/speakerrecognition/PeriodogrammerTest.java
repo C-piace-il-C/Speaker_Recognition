@@ -4,25 +4,18 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 
-public class PeriodogrammerTest extends TestCase {
-    static Frame f;
-    public void setUp() throws Exception {
-        super.setUp();
+public class PeriodogrammerTest extends TestCase
+{
+    public void testComputePeriodogramOfSin() throws Exception
+    {
+        Periodogrammer periodogrammer = new Periodogrammer(10);
 
-    }
-    public boolean areEqual(double a, double b)
-    {
-        double abs = a-b < 0 ? (b-a) : (a-b);
-        return(abs <= 0.00000000000001);
-    }
-    public void testComputePeriodogramSin() throws Exception
-    {
-        /*f = new Frame();
+        Frame f = new Frame();
         f.data = new double[10];
         for(int C=0;C<10;C++)
             f.data[C] = Math.sin((double)C);
 
-        double[] periodogram = Periodogrammer.computePeriodogram(f);
+        double[] periodogram = periodogrammer.computePeriodogram(f);
         double[] expectation = new double[10];
         int k = 0;
 
@@ -38,18 +31,19 @@ public class PeriodogrammerTest extends TestCase {
         expectation[k++] = 0.470100665735951;
         expectation[k] = 0.370815577298035;
 
-        for(int C = 0;C<10;C++)
-            Assert.assertTrue(areEqual(expectation[C], periodogram[C]));*/
-        Assert.assertTrue(true);
+        for(int C = 0; C < 10; C++)
+            Assert.assertTrue(areEqual(expectation[C], periodogram[C]));
     }
     public void testComputePeriodogramRamp() throws Exception
     {
-        /*f = new Frame();
+        Frame f = new Frame();
         f.data = new double[10];
         for(int C=0;C<10;C++)
             f.data[C] = (double)C;
 
-        double[] periodogram = Periodogrammer.computePeriodogram(f);
+        Periodogrammer periodogrammer = new Periodogrammer(10);
+
+        double[] periodogram = periodogrammer.computePeriodogram(f);
         double[] expectation = new double[10];
         int k = 0;
 
@@ -67,7 +61,14 @@ public class PeriodogrammerTest extends TestCase {
 
         for(int C = 0;C<10;C++)
             Assert.assertTrue(areEqual(expectation[C], periodogram[C]));
-            */
+
         Assert.assertTrue(true);
+    }
+
+
+    private boolean areEqual(double a, double b)
+    {
+        double abs = (a-b < 0) ? (b-a) : (a-b);
+        return(abs <= 0.00000000001);
     }
 }

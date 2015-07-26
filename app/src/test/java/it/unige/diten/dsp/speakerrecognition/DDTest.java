@@ -1,3 +1,4 @@
+// TODO Implementa la DD in matlab e fai la verifica qui
 package it.unige.diten.dsp.speakerrecognition;
 
 import junit.framework.TestCase;

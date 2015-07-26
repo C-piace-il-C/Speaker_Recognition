@@ -1,30 +1,21 @@
+// TODO: Testa sto melscaler con matlab
 package it.unige.diten.dsp.speakerrecognition;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
-/**
- * Created by Emanuele on 06/07/2015.
- */
+
 public class MelScalerTest extends TestCase
 {
-    static double[] constantIn  = null;
-    static double[] constantOut = null;
 
-    public void setUp() throws Exception
+    public void testExtractMelEnergiesOfConstant() throws Exception
     {
-        super.setUp();
+        double[] constantIn = new double[Framer.SAMPLES_IN_FRAME];
+        for(int C = 0; C < Framer.SAMPLES_IN_FRAME; C++)
+            constantIn[C] = 1.0;
+        double[] constantOut = MelScaler.extractMelEnergies(constantIn);
 
-        constantIn = new double[Framer.SAMPLES_IN_FRAME];
-        for (int i = 0; i < constantIn.length; i++)
-        {
-            constantIn[i] = 1.0;
-        }
-    }
-
-    public void testExtractMelEnergies() throws Exception
-    {
-        constantOut = MelScaler.extractMelEnergies(constantIn);
-
+        Assert.assertEquals(26, constantOut.length);
         System.out.println(constantOut);
     }
 }
