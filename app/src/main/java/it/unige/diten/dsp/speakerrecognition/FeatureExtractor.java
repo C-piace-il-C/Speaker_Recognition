@@ -40,23 +40,7 @@ public class FeatureExtractor extends AsyncTask <String, Integer, Boolean> {
         try {
             // params[0] = name of the audio file
             Log.i(TAG,"Feature extraction started");
-
-            long startExt = System.nanoTime();
             MFCC = extractMFCC(params[0]);
-            long endExt = System.nanoTime();
-
-            try
-            {
-                File file = new File(MainActivity.PATH + "/res.txt");
-                FileWriter fileWriter = new FileWriter(file, true);
-                fileWriter.append("FFT: " + (endExt - startExt) + "\n");
-                fileWriter.close();
-            }
-            catch(Exception ew)
-            {
-                ew.printStackTrace();
-            }
-
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
 /*
