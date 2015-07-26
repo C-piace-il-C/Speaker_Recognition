@@ -18,60 +18,53 @@ import it.unige.diten.dsp.speakerrecognition.libsvm.svm_node;
 
 public class MySVM_Async extends AsyncTask<Void, Integer, Void>
 {
-    public static final String  TAG                 = "MySVM_Async";
-    public static final int     modelCount          = 5;
-    private static svm_model[]  models              = null;
-    private static int          decisionAlgorithm   = 1;
+    private static svm_model model = null;
+    public static final String TAG = "MySVM_Async";
 
     private static ProgressDialog cProgressRecorder;
     private static Context cContext;
 
     private static boolean initialized = false;
-
-    private static Range[] ranges;
+    private static double[] y_min;
+    private static double[] y_max;
 
     private static void initialize()
     {
-        models = new svm_model[modelCount];
-
-        ranges = new Range[modelCount];
-        for(int C=0; C<modelCount; C++)
-            ranges[C] = new Range();
+        // TODO sostituisci 26 con il numero delle feature estratte
+        y_min = new double[26];
+        y_max = new double[26];
 
         // Search for and use the first .model and .range files
-        String   path            = MainActivity.PATH;
-        File     f               = new File(path);
-        File     files[]         = f.listFiles();
-        String[] modelFilenames  = new String[modelCount];
-        String[] rangeFilenames  = new String[modelCount];
-        int      modelsFound     = 0;
+        String path             = MainActivity.PATH;
+        File f                  = new File(path);
+        File files[]            = f.listFiles();
+        String modelFilename    = null, rangeFilename = null;
 
         for (int i=0; i < files.length; i++)
         {
             String filename = files[i].getName();
             if( filename.endsWith(".model") )
             {
-                modelFilenames[modelsFound] = path + "/" + filename;
-                modelsFound++;
-                if(modelsFound == modelCount)
+                modelFilename = path + "/" + filename;
+                MainActivity.MODEL_FILENAME = filename;
+                if(rangeFilename != null)
+                    break;
+            }
+            if( filename.endsWith(".range"))
+            {
+                rangeFilename = path + "/" + filename;
+                if(modelFilename != null)
                     break;
             }
         }
 
-        if(modelsFound < modelCount)
-        {
-            Log.e(TAG, "Not enough models were found. Some are missing.");
-            return;
-        }
+        readRange(rangeFilename);
+        Log.v(TAG, "range.range loaded");
 
         try
         {
-            for(int C = 0; C < modelCount; C++)
-            {
-                rangeFilenames[C] = modelFilenames[C].replace(".model",".range");
-                readRange(rangeFilenames[C], ranges[C]);
-                models[C] = svm.svm_load_model(modelFilenames[C]);
-            }
+            model = svm.svm_load_model(modelFilename);//MainActivity.MODEL_FILENAME);
+            Log.v(TAG, "model: " + modelFilename + " loaded.");
         }
         catch(IOException ew)
         {
@@ -103,42 +96,39 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         // fill features vectors (svm_node[][])
         int frameCount = FeatureExtractor.MFCC.length;
 
+        // TODO fill "features"
         // feature matrix
-        double[][][] allFeatures = new double[modelCount][frameCount][FeatureExtractor.MFCC_COUNT*2];
+        double[][] allFeatures = new double[frameCount][FeatureExtractor.MFCC_COUNT*2];
         // Unite the two matrices
-        for(int M = 0; M < modelCount; M++) {
-            for (int C = 0; C < frameCount; C++) {
-                int K;
-                for (K = 0; K < FeatureExtractor.MFCC_COUNT; K++)
-                    allFeatures[M][C][K] = FeatureExtractor.MFCC[C][K];
-
-                for (; K < FeatureExtractor.MFCC_COUNT * 2; K++)
-                    allFeatures[M][C][K] = FeatureExtractor.DeltaDelta[C][K - FeatureExtractor.MFCC_COUNT];
-            }
-            scaleMatrix(allFeatures[M], ranges[M]);
-        }
-
-
-        svm_node[][][] features = new svm_node[modelCount][frameCount][FeatureExtractor.MFCC_COUNT * 2 + 1];
-        for(int M = 0; M < modelCount; M++)
+        for(int C = 0; C < frameCount; C++)
         {
-            for (int F = 0; F < frameCount; F++) {
-                int C;
-                for (C = 0; C < FeatureExtractor.MFCC_COUNT * 2; C++) {
-                    features[M][F][C] = new svm_node();
-                    features[M][F][C].value = allFeatures[M][F][C];
-                    features[M][F][C].index = C + 1;
-                }
-                features[M][F][C] = new svm_node();
-                features[M][F][C].index = -1;
-                features[M][F][C].value = 0;
-            }
+            int K = 0;
+            for(K = 0; K < FeatureExtractor.MFCC_COUNT; K++ )
+                allFeatures[C][K] = FeatureExtractor.MFCC[C][K];
+
+            for(; K < FeatureExtractor.MFCC_COUNT * 2; K++)
+                allFeatures[C][K] = FeatureExtractor.DeltaDelta[C][K-FeatureExtractor.MFCC_COUNT];
         }
-        // Create results matrix and initialize to zero
-        int[][] results = new int[modelCount][3];
-        for(int i=0; i<modelCount; i++)
-            for( int j=0; j<3; j++)
-                results[i][j] = 0;
+        scaleMatrix(allFeatures);
+
+
+        svm_node[][] features = new svm_node[frameCount][FeatureExtractor.MFCC_COUNT * 2 + 1];
+        for (int F = 0; F < frameCount; F++)
+        {
+            int C;
+            for(C = 0; C < FeatureExtractor.MFCC_COUNT*2; C++) {
+                features[F][C] = new svm_node();
+                features[F][C].value = allFeatures[F][C];
+                features[F][C].index = C+1;
+            }
+            features[F][C] = new svm_node();
+            features[F][C].index = -1;
+            features[F][C].value = 0;
+        }
+
+        int[] results = new int[3];
+        for(int i=0; i<3; i++)
+            results[i] = 0;
 
 
         // Multithreaded recognition
@@ -148,7 +138,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
             Thread[] threads = new Thread[MainActivity.numCores];
             for(int C = 0; C < MainActivity.numCores; C++)
             {
-                threads[C] = new Thread(new RecognitionThread(C, MainActivity.numCores, features, results, models));
+                threads[C] = new Thread(new RecognitionThread(C, MainActivity.numCores, features, results, model));
                 threads[C].start();
             }
 
@@ -161,66 +151,32 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
             ew.printStackTrace();
         }
 
+        MainActivity.SVMResults  = results;
 
-        // Pass a parameter to the intent receiver before sending the intent
-        RecognitionReceiver.result = decideResult(results);
+        Log.i(TAG, "Res(0): " + results[0]);
+        Log.i(TAG, "Res(1): " + results[1]);
+        Log.i(TAG, "Res(2): " + results[2]);
+
+        // Find the most popular outcome
+        int maxV = -1;
+        int maxI = -1;
+        for(int C = 0; C < 3; C++)
+        {
+            if(results[C] > maxV)
+            {
+                maxI = C;
+                maxV = results[C];
+            }
+        }
+
+        RecognitionReceiver.result = maxI;
+
         Intent intent = new Intent("it.unige.diten.dsp.speakerrecognition.UPDATE_RECOGNITION");
         cContext.sendBroadcast(intent);
 
-        // Had to do it..
         return null;
     }
 
-    // Decides and returns the speaker (0,1,2)
-    private static int decideResult( int[][] results )
-    {
-        // results[Model][Label] = number of frames recognized as Label from Model
-        // after deciding the speaker label you have to update
-        // MainActivity.SVMResults (int[3] used by the pie chart)
-        switch(decisionAlgorithm)
-        {
-        case(1):
-            // detect most secure model
-            int mostSecureModel = -1;
-            int mostSecureValue = -1;
-            for(int M=0;M<modelCount;M++)
-                for(int L=0;L<3;L++)
-                    if(results[M][L] > mostSecureValue)
-                    {
-                        mostSecureValue = results[M][L];
-                        mostSecureModel = M;
-                    }
-
-            MainActivity.SVMResults = results[mostSecureModel];
-
-            // detect most popular recognized label
-            int mostPopularLabel = -1;
-            int mostPopularValue = -1;
-            for(int L=0;L<3;L++)
-                if(results[mostSecureModel][L] > mostPopularValue)
-                {
-                    mostPopularValue = results[mostSecureModel][L];
-                    mostPopularLabel = L;
-                }
-
-
-            return(mostPopularLabel);
-
-        default:
-            // unrecognized algorithm
-            MainActivity.SVMResults = results[0];
-            // detect most popular recognized label
-            int mpl = -1;
-            int mpv = -1;
-            for(int L=0;L<3;L++)
-                if(results[0][L] > mpv)
-                {
-                    mpv = results[0][L];
-                    mpl = L;
-                }
-            return(mpl);
-        }
-    }
     @Override
     protected void onProgressUpdate(Integer...params)
     {
@@ -241,7 +197,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         }
     }
 
-    private static void scaleMatrix(double[][] input, Range range)
+    private static void scaleMatrix(double[][] input)
     {
         double y_lower = -1;
         double y_upper = 1;
@@ -250,13 +206,12 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
         {
             for (int J = 0; J < input[0].length; J++)
             {
-                input[C][J] = y_lower + (y_upper - y_lower) * (input[C][J] - range.y_min[J]) / (range.y_max[J] - range.y_min[J]);
+                input[C][J] = y_lower + (y_upper - y_lower) * (input[C][J] - y_min[J]) / (y_max[J] - y_min[J]);
             }
         }
     }
 
-    /// reads the minimum and maximum values from filename and stores them into rangePtr
-    private static void readRange(String fileName, Range rangePtr)
+    private static void readRange(String fileName)
     {
         BufferedReader br = null;
 
@@ -272,12 +227,11 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
                 if(lineNumber >= 3)
                 {
                     String[] arr = sCurrentLine.split(" ");
+                    y_min[lineNumber - 3] = Double.valueOf(arr[1]);
+                    y_max[lineNumber - 3] = Double.valueOf(arr[2]);
 
-                    rangePtr.y_min[lineNumber - 3] = Double.valueOf(arr[1]);
-                    rangePtr.y_max[lineNumber - 3] = Double.valueOf(arr[2]);
-
-                    Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + rangePtr.y_min[lineNumber - 3]);
-                    Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + rangePtr.y_max[lineNumber - 3]);
+                    Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + y_min[lineNumber - 3]);
+                    Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + y_max[lineNumber - 3]);
                 }
                 lineNumber++;
             }
