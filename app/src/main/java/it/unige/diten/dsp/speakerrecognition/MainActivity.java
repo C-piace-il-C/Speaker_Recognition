@@ -1,4 +1,4 @@
-// TODO: taggare 1.1, mergiare multimodel, taggare 2.0
+// TODO: mergiare multimodel, taggare 2.0
 
 package it.unige.diten.dsp.speakerrecognition;
 

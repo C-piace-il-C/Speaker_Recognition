@@ -1,5 +1,3 @@
-// CORREGGERE toDoubleArray E TESTARE
-
 package it.unige.diten.dsp.speakerrecognition;
 
 import android.util.Log;
