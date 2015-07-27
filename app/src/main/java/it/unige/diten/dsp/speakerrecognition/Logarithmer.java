@@ -8,7 +8,7 @@ public class Logarithmer
     {
         for(int C = 0; C < src.length; C++)
         {
-            src[C] = Math.log(src[C]) / Math.log(2.0); // Math.log of src (logaritmo naturale)
+            src[C] = Math.log(src[C]); // Math.log of src (logaritmo naturale)
         }
 
         return src;
