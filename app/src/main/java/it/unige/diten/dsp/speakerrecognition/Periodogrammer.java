@@ -24,7 +24,7 @@ public class Periodogrammer
         for(int C = 0; C < ft.length; C++)
             ft[C] = new Complex();
 
-        transformSelector = MainActivity.transformType;
+        transformSelector = TransformSelector.TT_DFT;
     }
 
     /**
@@ -84,6 +84,60 @@ public class Periodogrammer
         // Compute periodogram
         for (int C = 0; C < size; C++)
             periodogram[C] = ft[C].getSquareLength() / N;
+
+        return (periodogram);
+    }
+
+    public double[] computePeriodogram2 (Frame frame)
+    {
+        int size = frame.data.length;
+
+        // Initialize return value
+        double[] periodogram = new double[size];
+
+        double N = (double)size; // Convert once, use many times! ~Xat
+
+        // Compute DFT of windowed sequence
+
+        switch (transformSelector) {
+            case TT_DFT:
+                double[]  windowedFrame = new double[size];
+
+                for( int C = 0; C < size; C++) {
+                    windowedFrame[C] = frame.data[C] * hammingWindow[C];
+                }
+
+                DFT.computeDFT(
+                        windowedFrame,  // src
+                        ft              // dest
+                );
+
+                break;
+
+            case TT_FFT:
+                Complex[] cWindowedFrame = new Complex[size];
+
+                for( int C = 0; C < size; C++) {
+
+                    cWindowedFrame[C] = new Complex();
+                    cWindowedFrame[C].Re = frame.data[C] * hammingWindow[C];
+                    cWindowedFrame[C].Im = 0;
+
+                    //windowedFrame[C] = frame.data[C] * hammingWindow[C];
+                }
+
+                ft = FFT.fft(cWindowedFrame);
+
+                break;
+
+            default:
+                throw new IllegalStateException();
+        }
+
+
+        // Compute periodogram
+        for (int C = 0; C < size; C++)
+            periodogram[C] = ft[C].getLength() / N;
 
         return (periodogram);
     }
