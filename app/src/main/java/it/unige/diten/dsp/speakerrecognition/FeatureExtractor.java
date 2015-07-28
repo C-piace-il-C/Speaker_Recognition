@@ -51,7 +51,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                 public void run() {
                     publishProgress();
                 }
-            }, 50, 50);
+            }, 0, 50);
             MFCC = extractMFCC(params[0]);
             Log.i(TAG,"Feature extraction ended.");
             DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
@@ -148,6 +148,8 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         final Frame[] frames = Framer.getFrames();
 
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
+
+
 
         int numCores = MainActivity.numCores;
 

@@ -36,14 +36,12 @@ public abstract class Framer
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-        Log.v(TAG, "Called readFromFile: fileName = " + fileName);
 
         WAVCreator readWAV = new WAVCreator(fileName);
         readWAV.read();
 
         if (readWAV.getSampleRate() != SAMPLE_RATE)
         {
-            Log.e(TAG, "[Sample rate] found: " + readWAV.getSampleRate() + ", expected: " + SAMPLE_RATE);
             throw new Exception("Framer.readFromFile: Invalid sample rate!");
         }
 
@@ -77,7 +75,6 @@ public abstract class Framer
             }
         }
 
-        Log.v(TAG, "readFromFile: ended.");
     }
 
     /// Returns frame array
