@@ -1,5 +1,13 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+// TODO: Eseguire nuovo database di registrazioni da un telefono fisso (decidiamo di prenderne uno e usare sempre quello).
+// TODO: Verificare con matlab il range delle frequenze MIN-MAX con le nuove registrazioni, con quelle dall'ace erano 90-1100 hz.
+// TODO: Costruire un modello svm con le feature di tutti i parlatori filtrate MIN-MAX.
+// TODO: Scartare i frame in cui l'energia presente all'interno delle frequenze MIN-MAX sia inferiore ad una certa soglia (= silenzio dei parlatori principali).
+// TODO: Scartare i frame in cui l'energia percentuale energia_interna / energia_esterna sia inferiore ad una certa soglia (= frame rumoroso).
+// TODO: I frame rimanenti vanno filtrati MIN-MAX, prima di estrarre le feature e mandarle al predict.
+
+// Se tutto questo non funziona possiamo arrenderci. Credo.
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,17 +52,16 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         try
         {
             // params[0] = name of the audio file
-            Log.i(TAG,"Feature extraction started");
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
                     publishProgress();
                 }
-            }, 0, 50);
+            }, 50, 50);
+
             MFCC = extractMFCC(params[0]);
-            Log.i(TAG,"Feature extraction ended.");
-            DeltaDelta = DD.computeDD(MFCC, 2); // 2 is precision
+            DeltaDelta = DD.computeDD(MFCC, 2); // 2 is the precision
 
             // If recognition mode is on:
             if (!MainActivity.isTraining)
@@ -144,23 +151,29 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     public static double [][] extractMFCC(String audioFilename) throws java.lang.Exception
     {
         frameExtracted = 0;
+
         Framer.readFromFile(audioFilename);
         final Frame[] frames = Framer.getFrames();
+
 
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
 
 
+        // TODO sostituisci 2 con MainActivity.numCores
+        int numCores = 2;// MainActivity.numCores;
 
-        int numCores = MainActivity.numCores;
 
         Thread[] threads = new Thread[numCores];
-        for(int C = 0; C < numCores; C++) {
+        for (int C = 0; C < numCores; C++)
+        {
             threads[C] = new Thread(new FEThread(C, numCores, frames, mfcc));
             threads[C].start();
         }
-        for(int C = 0; C < numCores; C++)
-        threads[C].join();
+        for (int C = 0; C < numCores; C++)
+            threads[C].join();
 
         return mfcc;
     }
+
+
 }
