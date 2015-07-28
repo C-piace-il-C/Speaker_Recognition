@@ -27,7 +27,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/RecordButton"
-        android:background="@mipmap/microphone"
+        android:background="@drawable/microphone"
         android:singleLine="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -80,7 +80,7 @@
         android:autoText="false" />
 
     <EditText
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="@string/speaker"
