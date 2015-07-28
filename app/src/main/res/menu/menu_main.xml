@@ -1,13 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" />
     <group android:checkableBehavior="single">
         <item android:id="@+id/dft"
             android:title="@string/DFT"
-            android:checked="true"/>
+            android:checked="true" />
         <item android:id="@+id/fft"
-            android:title="@string/FFT"
-            />
+            android:title="@string/FFT"/>
     </group>
 
 </menu>

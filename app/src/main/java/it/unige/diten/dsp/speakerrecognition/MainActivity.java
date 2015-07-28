@@ -1,5 +1,18 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
+
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -31,7 +44,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
 {
     public final static String TAG = "ASR";
     public final static String AUDIO_EXT = ".wav";
@@ -62,6 +75,7 @@ public class MainActivity extends Activity
     private RecognitionReceiver recognitionReceiver;
     private InputMethodManager inputManager;
 
+    private Toolbar toolbar;
 
     private int getNumCores()
     {
@@ -102,6 +116,7 @@ public class MainActivity extends Activity
         transformType   = TransformSelector.TT_DFT;
         inputManager    = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        toolbar     = (Toolbar)findViewById(R.id.toolbar);
         infos       = (TextView)findViewById(R.id.Infos);
         pChart      = (PieChart)findViewById(R.id.chart);
         etDuration  = (EditText)findViewById(R.id.edt_Duration);
@@ -110,6 +125,7 @@ public class MainActivity extends Activity
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
+        setSupportActionBar(toolbar);
         pChart.setDescription("");
 
         rbRecognize.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +233,10 @@ public class MainActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         switch (item.getItemId()) {
             case R.id.dft:
