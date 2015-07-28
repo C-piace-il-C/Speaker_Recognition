@@ -246,28 +246,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        switch (item.getItemId()) {
-            case R.id.dft:
-                if (item.isChecked())
-                    return true;
-                else
-                    item.setChecked(true);
-
-                transformType = TransformSelector.TT_DFT;
-                return true;
-
-            case R.id.fft:
-                if (item.isChecked())
-                    return true;
-                else
-                    item.setChecked(true);
-
-                transformType = TransformSelector.TT_FFT;
-                return true;
-            default:
-                return true;
-        }
-
+        return true;
     }
 
     @Override
@@ -318,8 +297,10 @@ public class MainActivity extends AppCompatActivity
         pChart.setUsePercentValues(true);
         // Write the x-value on the chart
         pChart.setDrawSliceText(false);
-        //You spin the chart round, baby right round like a record, baby, right round round round
+        // You spin the chart round, baby right round like a record, baby, right round round round
         pChart.setDragDecelerationFrictionCoef(0.96f);
+        // Avoid punching yourself in the eyes when the background isn't white
+        pChart.setHoleColorTransparent(true);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();

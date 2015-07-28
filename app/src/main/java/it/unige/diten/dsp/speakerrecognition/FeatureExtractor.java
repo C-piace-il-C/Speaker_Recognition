@@ -160,7 +160,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
 
         // TODO sostituisci 2 con MainActivity.numCores
-        int numCores = 2;// MainActivity.numCores;
+        int numCores = MainActivity.numCores;
 
 
         Thread[] threads = new Thread[numCores];

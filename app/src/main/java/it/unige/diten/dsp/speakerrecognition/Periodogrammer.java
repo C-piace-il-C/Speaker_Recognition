@@ -25,7 +25,7 @@ public class Periodogrammer
             ft[C] = new Complex();
 
         // TODO transformSelector = MainActivity.transformType (omessa perché altrimenti non funziona il debug unit test)
-        transformSelector = TransformSelector.TT_DFT; //MainActivity.transformType;
+        transformSelector = TransformSelector.TT_FFT; //MainActivity.transformType;
     }
 
     /**
