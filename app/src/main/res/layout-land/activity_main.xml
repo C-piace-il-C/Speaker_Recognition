@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:rowCount="8">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+
+        android:visibility="invisible"
+        android:clickable="true"
+        android:layout_alignParentRight="false"
+        android:layout_toRightOf="@+id/RecordButton"
+        android:layout_toEndOf="@+id/RecordButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true" />
+
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/RecordButton"
+        android:background="@drawable/microphone"
+        android:singleLine="false"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/edt_Duration"
+        android:layout_toEndOf="@+id/edt_Duration" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/radioGroup"
+        android:layout_alignStart="@+id/edt_Duration"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/train"
+            android:id="@+id/rbt_Train"
+            android:checked="true"
+            android:layout_gravity="top" />
+        <!--android:layout_row="0"
+        android:layout_column="0" -->
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recognize"
+            android:id="@+id/rbt_Recognize"
+            android:checked="true"
+            android:layout_gravity="top" />
+        <!--android:layout_row="1"
+        android:layout_column="0"-->
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/edt_Duration"
+        android:hint="@string/duration"
+        android:layout_gravity="top"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:autoText="false" />
+
+    <EditText
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/speaker"
+        android:ems="10"
+        android:id="@+id/edt_Speaker"
+        android:visibility="invisible"
+        android:layout_gravity="top"
+        android:layout_below="@+id/edt_Duration"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/edt_Duration"
+        android:layout_alignEnd="@+id/edt_Duration" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_Results"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@+id/edt_Speaker"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/infos"
+        android:id="@+id/Infos"
+        android:layout_gravity="bottom"
+        android:gravity="start|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
