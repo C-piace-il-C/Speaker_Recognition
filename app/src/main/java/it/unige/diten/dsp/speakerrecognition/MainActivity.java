@@ -1,5 +1,8 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     private InputMethodManager inputManager;
 
     private Toolbar toolbar;
+    SettingsActivity settingsActivity;
 
     private int getNumCores()
     {
@@ -124,6 +128,8 @@ public class MainActivity extends AppCompatActivity
         rbRecognize = (RadioButton)findViewById(R.id.rbt_Recognize);
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
+
+        settingsActivity = new SettingsActivity();
 
         setSupportActionBar(toolbar);
         pChart.setDescription("");
@@ -235,6 +241,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
             return true;
         }
 

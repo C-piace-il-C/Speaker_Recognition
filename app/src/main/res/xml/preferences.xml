@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/transformation"
+        android:key="pref_key_storage_settings">
+        <CheckBoxPreference
+            android:key="dftBox"
+            android:checked="true"
+            android:title="@string/DFT"
+            android:summary="@string/DFTDescription"
+            />
+        <CheckBoxPreference
+            android:key="fftBox"
+            android:checked="false"
+            android:title="@string/FFT"
+            android:summary="@string/FFTDescription"
+            />
+
+    </PreferenceCategory>
+</PreferenceScreen>
