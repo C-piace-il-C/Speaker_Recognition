@@ -7,8 +7,7 @@
     <include
         android:id="@+id/toolbar"
         layout="@xml/toolbar"
-        ></include>
-
+        />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
