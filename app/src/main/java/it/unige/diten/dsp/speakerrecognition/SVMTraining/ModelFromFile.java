@@ -23,6 +23,7 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
         TrainSVM.filename = params[0];
         CrossValidation.filename = params[0];
 
+        // TODO: replace this with selected values
         CrossValidation.cStart = -5;
         CrossValidation.cEnd = 4;
         CrossValidation.cStep = 3;
