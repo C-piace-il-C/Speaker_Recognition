@@ -2,22 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- TODO change hardcoded strings with actual strings -->
 
-    <PreferenceCategory
-        android:title="Feature Extraction"
-        android:key="feature_extraction_settings"
-        >
-
-    <SwitchPreference
-        android:title="Enable Custom Extraction"
-        android:key="custom_extraction"
-        android:defaultValue="false"/>
-        <Preference
-            android:dependency="custom_extraction"
-            android:title="Frame duration (in ms)"
-            android:key="frame_duration"
-            android:defaultValue="32"/>
-
-    </PreferenceCategory>
+    <Preference
+        android:title="@string/feature_extraction">
+        <intent
+            android:action="it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACTION"
+            android:targetClass="it.unige.diten.dsp.speakerrecognition.SettingsActivity"
+            android:targetPackage="it.unige.diten.dsp.speakerrecognition">
+        </intent>
+    </Preference>
 
 </PreferenceScreen>
 

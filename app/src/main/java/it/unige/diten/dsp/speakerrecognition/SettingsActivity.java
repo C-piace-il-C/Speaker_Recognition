@@ -34,11 +34,21 @@ public class SettingsActivity extends PreferenceActivity {
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.preferences);
-
         ActionBar actionBar = getSupportActionBar();
-
+        // Display the back button
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        String action = getIntent().getAction();
+
+        if(action != null && action.equals
+                ("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACTION"))
+        {
+            addPreferencesFromResource(R.xml.pref_extraction);
+        }
+        else
+        {
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 
     @Override
@@ -135,7 +145,7 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            addPreferencesFromResource(R.xml.preferences);
+            addPreferencesFromResource(R.xml.pref_extraction);
         }
     }
 }

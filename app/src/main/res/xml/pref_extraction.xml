@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="Feature extraction">
+
+    <SwitchPreference
+        android:title="@string/enable_feature_extraction"
+        android:key="@string/enable_feature_extraction_key"
+        android:defaultValue="false"/>
+
+    <!-- Frame-specific values -->
+    <PreferenceCategory
+        android:title="@string/frame_characteristics"
+        android:key="@string/frame_characteristics_key"
+        android:dependency="@string/enable_feature_extraction_key">
+
+        <!-- TODO: implement a number picker for frame duration -->
+
+        <ListPreference
+            android:title="@string/sample_rate"
+            android:key="@string/sample_rate_key"
+            android:entries="@array/sample_rate_numbers"
+            android:entryValues="@array/sample_rate_numbers"
+            android:defaultValue="8000">
+        </ListPreference>
+
+        <!-- Programmatically changed when its dependency are changed -->
+        <Preference
+            android:title="@string/samples_in_frame"
+            android:key="@string/samples_in_frame_key"
+            android:summary="256"
+            android:enabled="false">
+        </Preference>
+        <!-- TODO: reject input if it's less/equal zero or more/equal one -->
+        <EditTextPreference
+            android:title="@string/frame_overlap_factor"
+            android:key="@string/frame_overlap_factor_key"
+            android:inputType="numberDecimal">
+        </EditTextPreference>
+
+        <Preference
+            android:title="@string/frame_size"
+            android:key="@string/frame_size_key"
+            android:summary="512"
+            android:enabled="false">
+        </Preference>
+
+        <ListPreference
+            android:title="@string/channels"
+            android:key="@string/channels_key"
+            android:entries="@array/channels_entries"
+            android:entryValues="@array/channels_values"
+            android:defaultValue="0">
+        </ListPreference>
+
+    </PreferenceCategory>
+
+    <!-- Transform type -->
+    <PreferenceCategory
+        android:title="@string/transformation"
+        android:key="@string/transformation_key"
+        android:dependency="@string/enable_feature_extraction_key">
+
+        <ListPreference
+            android:title="@string/transform_selection"
+            android:key="@string/transform_selection_key"
+            android:entries="@array/transform_titles"
+            android:entryValues="@array/transform_values"
+            android:defaultValue="0">
+        </ListPreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
