@@ -24,7 +24,7 @@ public class Periodogrammer
         for(int C = 0; C < ft.length; C++)
             ft[C] = new Complex();
 
-        // TODO transformSelector = MainActivity.transformType (omessa perché altrimenti non funziona il debug unit test)
+        // TODO transformSelector = MainActivity.transformType (omessa perchÃ© altrimenti non funziona il debug unit test)
         transformSelector = TransformSelector.TT_DFT; //MainActivity.transformType;
     }
 
