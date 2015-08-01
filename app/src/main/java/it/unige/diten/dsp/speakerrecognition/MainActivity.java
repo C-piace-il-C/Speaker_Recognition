@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
         pChart.setDescription("");
 
         rbRecognize.setOnClickListener(new View.OnClickListener() {
@@ -240,6 +240,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
+            //super.onResume();
             startActivity(i);
             return true;
         }
