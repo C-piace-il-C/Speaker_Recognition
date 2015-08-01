@@ -4,7 +4,9 @@
 
     <PreferenceCategory
         android:title="Feature Extraction"
-        android:key="feature_extraction_settings">
+        android:key="feature_extraction_settings"
+        >
+
     <SwitchPreference
         android:title="Enable Custom Extraction"
         android:key="custom_extraction"
@@ -14,23 +16,7 @@
             android:title="Frame duration (in ms)"
             android:key="frame_duration"
             android:defaultValue="32"/>
-    </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/transformation"
-        android:key="pref_key_storage_settings">
-        <CheckBoxPreference
-            android:key="dftBox"
-            android:checked="true"
-            android:title="@string/DFT"
-            android:summary="@string/DFTDescription"
-            />
-        <CheckBoxPreference
-            android:key="fftBox"
-            android:checked="false"
-            android:title="@string/FFT"
-            android:summary="@string/FFTDescription"
-            />
     </PreferenceCategory>
 
 </PreferenceScreen>

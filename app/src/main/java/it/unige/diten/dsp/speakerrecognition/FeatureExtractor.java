@@ -95,7 +95,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Void... ouat)
+    protected void onProgressUpdate(Void... out)
     {
         int frameCount = Framer.getFrames().length;
         //int perc = (int)Math.floor(((float)frameExtracted / (float)frameCount * 100.0));

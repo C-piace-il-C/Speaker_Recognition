@@ -255,6 +255,8 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
     }
 
     /// reads the minimum and maximum values from filename and stores them into rangePtr
+
+
     private static void readRange(String fileName, Range rangePtr)
     {
         BufferedReader br = null;

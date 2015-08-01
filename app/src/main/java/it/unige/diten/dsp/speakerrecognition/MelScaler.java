@@ -135,8 +135,8 @@ public abstract class MelScaler
             {
                 energies[C] += periodogram[i] * filterBank[C][i];
             }
-            // 2.0 because of frequency simmetry caused by real input.
-            //energies[C] *= 2.0;
+            // 2.0 because of frequency symmetry caused by real input.
+            // energies[C] *= 2.0;
         }
 
         return energies;

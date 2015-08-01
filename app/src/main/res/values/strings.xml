@@ -12,20 +12,5 @@
     <string name="recognize">Recognize</string>
     <string name="speaker">Insert your name</string>
     <string name="duration">Duration (in ms)</string>
-    <string name="transformation">Transform type</string>
-    <string name="DFT">DFT</string>
-    <string name="DFTDescription">Discrete Fourier Transform</string>
-    <string name="FFT">FFT</string>
-    <string name="FFTDescription">Fast Fourier Transform</string>
 
-    <string-array
-        name="transform">
-        <item>DFT</item>
-        <item>FFT</item>
-    </string-array>
-    <string-array
-        name="trDescription">
-        <item>Discrete Fourier Transform</item>
-        <item>Fast Fourier Transform</item>
-    </string-array>
 </resources>

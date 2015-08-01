@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings related to Settings -->
+
+    <!-- Strings related to Feature extraction -->
+    <!-- Labels -->
+    <string name="feature_extraction">Feature extraction</string>
+    <string name="enable_feature_extraction">Enable custom extraction</string>
+    <string name="frame_duration">Frame duration (in ms)</string>
+    <string name="sample_rate">Sample rate (in Hz)</string>
+    <string name="samples_in_frame">Samples in frame</string>
+    <string name="frame_overlap_factor">Frame overlap factor (0 &lt; x &lt; 1)</string>
+    <string name="frame_dimension">Frame dimension</string>
+    <string name="channels">Channel</string>
+
+    <!-- Strings related to Transform selection -->
+    <!-- Labels -->
+    <string name="transform_selection">Transform selection</string>
+    <string name="transform_default">DFT</string>
+    <string-array name="transform_titles">
+        <item>DFT</item>
+        <item>FFT</item>
+    </string-array>
+    <!-- Values -->
+    <string-array name="transform_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+</resources>
