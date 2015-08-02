@@ -1,6 +1,6 @@
 # Speaker Recognition
 Progetto del corso [App Multimediali ed Internet del Futuro](http://www.dsp.diten.unige.it/index.php/teachings/multimedia-apps-and-future-internet) dell'[Università degli Studi di Genova](https://unige.it/).<br/>
-Registrazione ed elaborazione di segnali audio e riconoscimento del parlatore su piattaforma Android.<br/>
+Registrazione ed elaborazione di segnali audio e riconoscimento del parlatore su piattaforma Android.
 
 --
 
