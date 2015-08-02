@@ -3,7 +3,7 @@ package it.unige.diten.dsp.speakerrecognition.SVMTraining;
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
 
 /**
- * Created by doddo on 7/31/15.
+ * Provides a svm_parameter with default values already set
  */
 public class DefaultSVMParameter {
 

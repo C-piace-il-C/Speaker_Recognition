@@ -8,9 +8,6 @@ import java.io.InputStreamReader;
 
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
 
-/**
- * Created by doddo on 7/31/15.
- */
 /* TODO: modify the class in order to accept an array of files, label them and join them in one single file */
 
 public abstract class LoadFeatureFile {
