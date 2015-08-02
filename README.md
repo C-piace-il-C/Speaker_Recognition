@@ -7,7 +7,7 @@ Registrazione ed elaborazione di segnali audio e riconoscimento del parlatore su
 Project of the Multimedia Apps and Future Internet course of the University of Genoa. <br/>
 Recording and elaboration of audio signals and speaker recognition on Android platform. <br/>
 
---
+---
 
 Emanuele Canessa<br/>
 Andrea Luzzati<br/>
