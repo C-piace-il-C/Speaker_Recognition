@@ -3,9 +3,20 @@
     <!-- TODO change hardcoded strings with actual strings -->
 
     <Preference
-        android:title="@string/feature_extraction">
+        android:title="@string/feature_extraction"
+        android:key="@string/feature_extraction_key">
         <intent
             android:action="it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACTION"
+            android:targetClass="it.unige.diten.dsp.speakerrecognition.SettingsActivity"
+            android:targetPackage="it.unige.diten.dsp.speakerrecognition">
+        </intent>
+    </Preference>
+
+    <Preference
+        android:title="@string/modeling"
+        android:key="@string/modeling_key">
+        <intent
+            android:action="it.unige.diten.dsp.speakerrecognition.MODELING"
             android:targetClass="it.unige.diten.dsp.speakerrecognition.SettingsActivity"
             android:targetPackage="it.unige.diten.dsp.speakerrecognition">
         </intent>

@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
-            //super.onResume();
+            super.onResume();
             startActivity(i);
             return true;
         }

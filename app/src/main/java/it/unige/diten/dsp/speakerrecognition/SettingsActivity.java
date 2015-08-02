@@ -40,16 +40,23 @@ public class SettingsActivity extends PreferenceActivity {
 
         String action = getIntent().getAction();
 
-        if(action != null && action.equals
-                ("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACTION"))
-        {
-            addPreferencesFromResource(R.xml.pref_extraction);
-        }
-        else
-        {
+        if(action == null)
             addPreferencesFromResource(R.xml.preferences);
+        else
+        switch (action)
+        {
+            case ("it.unige.diten.dsp.speakerrecognition.FEATURE_EXTRACTION"):
+                addPreferencesFromResource(R.xml.pref_extraction);
+                break;
+
+            case ("it.unige.diten.dsp.speakerrecognition.MODELING"):
+                addPreferencesFromResource(R.xml.pref_modeling);
+                break;
         }
+
     }
+
+
 
     @Override
     public void onBuildHeaders(List<Header> target) {

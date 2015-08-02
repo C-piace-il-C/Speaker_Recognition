@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/modeling">
+
+    <EditTextPreference
+        android:title="@string/speakers_name"
+        android:key="@string/speakers_name_key"
+        android:hint="@string/speakers_hint"
+        android:inputType="textCapWords">
+    </EditTextPreference>
+
+    <!-- Updated at startup and when the user changes Speakers name -->
+    <Preference
+        android:title="@string/labels_association"
+        android:key="@string/labels_association_key"
+        android:enabled="false">
+    </Preference>
+</PreferenceScreen>

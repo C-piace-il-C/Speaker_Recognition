@@ -61,4 +61,29 @@
             <item>1</item>
         </string-array>
 
+    <!-- Strings related to Modeling -->
+    <!-- Labels -->
+    <string name="modeling">Modeling</string>
+    <string name="speakers_name">Speakers name</string>
+    <string name="labels_association">Label association</string>
+    <string name="training_files">Training files</string>
+    <string name="scaling_boundaries">Scaling boundaries</string>
+    <string name="lower_x_bound">Lower bound (x)</string>
+    <string name="upper_x_bound">Upper bound (x)</string>
+    <!-- Keys -->
+    <string name="modeling_key">modeling</string>
+    <string name="speakers_name_key">speakers_name</string>
+    <string name="labels_association_key">label_association_key</string>
+    <string name="training_files_key">training_files</string>
+    <string name="scaling_boundaries_key">scaling_boundaries</string>
+    <string name="lower_x_bound_key">lower_x_bound</string>
+    <string name="upper_x_bound_key">upper_x_bound</string>
+    <!-- Values -->
+    <string name="speakers_hint">Name1,Name2&#8230;</string>
+    <array name="x_scaling_values">
+        <item>-1</item>
+        <item>1</item>
+    </array>
+
+
 </resources>
