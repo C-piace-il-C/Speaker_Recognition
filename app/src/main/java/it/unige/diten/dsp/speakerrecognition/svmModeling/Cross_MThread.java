@@ -1,11 +1,8 @@
-package it.unige.diten.dsp.speakerrecognition.SVMTraining;
+package it.unige.diten.dsp.speakerrecognition.svmModeling;
 
 
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
 
-/**
- * Created by doddo on 7/31/15.
- */
 public class Cross_MThread implements Runnable {
 
     private int threadNum;

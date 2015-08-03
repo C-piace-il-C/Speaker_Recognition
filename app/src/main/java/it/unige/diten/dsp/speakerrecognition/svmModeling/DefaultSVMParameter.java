@@ -1,4 +1,4 @@
-package it.unige.diten.dsp.speakerrecognition.SVMTraining;
+package it.unige.diten.dsp.speakerrecognition.svmModeling;
 
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
 
