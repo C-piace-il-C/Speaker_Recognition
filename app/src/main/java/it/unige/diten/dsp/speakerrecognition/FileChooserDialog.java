@@ -54,13 +54,13 @@ public class FileChooserDialog {
     public interface FileSelectedListener {
         void fileSelected(File file);
     }
-    public FileChooser setFileListener(FileSelectedListener fileListener) {
+    public FileChooserDialog setFileListener(FileSelectedListener fileListener) {
         this.fileListener = fileListener;
         return this;
     }
     private FileSelectedListener fileListener;
 
-    public FileChooser(Activity activity) {
+    public FileChooserDialog(Activity activity) {
         this.activity = activity;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
