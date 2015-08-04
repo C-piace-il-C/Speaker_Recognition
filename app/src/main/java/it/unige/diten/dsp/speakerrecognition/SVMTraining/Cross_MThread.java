@@ -19,6 +19,7 @@ public class Cross_MThread implements Runnable {
 
     public Cross_MThread(int threadNum, int threadCount, svm_problem svmProblem)
     {
+        // TODO: struct
         this.threadNum = threadNum;
         this.threadCount = threadCount;
         this.svmProblem = svmProblem;
