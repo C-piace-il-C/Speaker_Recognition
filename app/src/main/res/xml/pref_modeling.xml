@@ -20,4 +20,17 @@
         android:title="@string/training_files"
         android:key="@string/training_files_key">
     </Preference>
+
+    <PreferenceCategory
+        android:title="@string/cross_validation"
+        android:key="@string/cross_validation_key"
+        >
+
+        <Preference
+            android:title="@string/c_coefficient_range"
+            android:key="@string/c_coefficient_range_key"
+            android:summary="@string/c_coefficient_range_summary">
+        </Preference>
+
+    </PreferenceCategory>
 </PreferenceScreen>

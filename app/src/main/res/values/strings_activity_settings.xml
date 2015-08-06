@@ -70,6 +70,9 @@
     <string name="scaling_boundaries">Scaling boundaries</string>
     <string name="lower_x_bound">Lower bound (x)</string>
     <string name="upper_x_bound">Upper bound (x)</string>
+    <string name="cross_validation">Cross validation</string>
+    <string name="c_coefficient_range">C coefficient range</string>
+    <string name="gamma_coefficient_range">Gamma coefficient range</string>
     <!-- Keys -->
     <string name="modeling_key">modeling</string>
     <string name="speakers_name_key">speakers_name</string>
@@ -78,12 +81,17 @@
     <string name="scaling_boundaries_key">scaling_boundaries</string>
     <string name="lower_x_bound_key">lower_x_bound</string>
     <string name="upper_x_bound_key">upper_x_bound</string>
+    <string name="cross_validation_key">cross_validation</string>
+    <string name="c_coefficient_range_key">c_coefficient_range</string>
+    <string name="gamma_coefficient_range_key">gamma_coefficient_range</string>
     <!-- Values -->
     <string name="speakers_hint">Name1,Name2&#8230;</string>
     <array name="x_scaling_values">
         <item>-1</item>
         <item>1</item>
     </array>
+    <!-- Summaries -->
+    <string name="c_coefficient_range_summary">Initial, final and step value for the C coefficient</string>
 
 
 </resources>

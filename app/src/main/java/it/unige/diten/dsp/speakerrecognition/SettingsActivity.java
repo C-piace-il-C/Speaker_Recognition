@@ -216,7 +216,7 @@ public class SettingsActivity extends PreferenceActivity {
                     labelsSummary = labelsSummary.substring(0, labelsSummary.length() - 2);
                     labelsPreference.setSummary(labelsSummary);
                     editor.putString(labelsPreference.getKey(), labelsSummary);
-                    editor.commit();
+                    editor.apply();
                     return true;
                 }
             });
@@ -225,6 +225,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onResume() {
             super.onResume();
+            // TODO: clean this sentence
             labelsPreference.setSummary(settings.getString(getString(R.string.labels_association_key), ""));
         }
 
