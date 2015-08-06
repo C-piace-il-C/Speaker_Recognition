@@ -248,7 +248,8 @@ public class SettingsActivity extends PreferenceActivity {
             }
             else if(key.equals(cCoefficientsKey))
             {
-                new CoefficientsDialog(getActivity()).showDialog();
+                CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
+                coefficientsDialog.show(getFragmentManager(), null);
             }
 
             return true;

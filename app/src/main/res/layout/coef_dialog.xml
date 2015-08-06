@@ -1,85 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/linear_lay_coef_1"
-    android:layout_alignParentEnd="false"
-    android:layout_alignParentStart="false"
-    android:layout_alignParentBottom="false"
-    android:layout_alignParentRight="false"
-    android:layout_alignParentTop="false">
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="@string/c_start"
-        android:id="@+id/c_start"
-        android:gravity="right" />
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
-    <EditText
-        android:layout_width="50dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:ems="10"
-        android:id="@+id/editText" />
+        android:id="@+id/coef_dialog_1"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout">
+        <TextView
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:text="@string/c_start"
+            android:id="@+id/textView"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/coef_dialog_1"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/linearLayout">
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker2"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_toEndOf="@id/numberPicker" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker3"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/numberPicker"
+        android:layout_toStartOf="@+id/numberPicker" />
 </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_lay_coef_2"
-        android:layout_below="@id/linear_lay_coef_1"
-        android:layout_alignEnd="@id/linear_lay_coef_1"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentTop="false">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/c_end"
-            android:id="@+id/c_end"
-            android:gravity="right" />
-
-        <EditText
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editText2" />
-    </LinearLayout>
-
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/linear_lay_coef_3"
-    android:layout_below="@id/linear_lay_coef_2"
-    android:layout_alignEnd="@id/linear_lay_coef_2"
-    android:layout_alignParentEnd="false"
-    android:layout_alignParentStart="false"
-    android:layout_alignParentBottom="false"
-    android:layout_alignParentRight="false"
-    android:layout_alignParentTop="false">
+        android:text="@string/c_end"
+        android:id="@+id/textView2"
+        android:gravity="center_horizontal"
+        android:layout_alignBottom="@+id/coef_dialog_1"
+        android:layout_centerHorizontal="true" />
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/c_step"
-        android:id="@+id/c_step"
-        android:gravity="right" />
-
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText3"/>
-</LinearLayout>
-
+        android:id="@+id/textView3"
+        android:gravity="center_horizontal"
+        android:layout_alignBottom="@+id/coef_dialog_1"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp" />
 
 
 </RelativeLayout>
