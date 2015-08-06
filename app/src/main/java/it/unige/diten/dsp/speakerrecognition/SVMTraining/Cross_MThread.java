@@ -3,9 +3,7 @@ package it.unige.diten.dsp.speakerrecognition.SVMTraining;
 
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
 
-/**
- * Created by doddo on 7/31/15.
- */
+
 public class Cross_MThread implements Runnable {
 
     private int threadNum;
@@ -17,18 +15,19 @@ public class Cross_MThread implements Runnable {
     private double[][] results;
     private String[] parameters;
 
-    public Cross_MThread(int threadNum, int threadCount, svm_problem svmProblem)
+    public Cross_MThread(int threadNum, int threadCount, svm_problem svmProblem,
+                         Coefficients coefficients, String[] parameters, double[][] results)
     {
         // TODO: struct
         this.threadNum = threadNum;
         this.threadCount = threadCount;
         this.svmProblem = svmProblem;
-        this.cLength = CrossValidation.cLength;
-        this.gLength = CrossValidation.gLength;
-        this.log_C_coef = CrossValidation.log_C_coef;
-        this.log_Gamma_coef = CrossValidation.log_Gamma_coef;
-        this.parameters = CrossValidation.parameters;
-        this.results = CrossValidation.results;
+        this.cLength = coefficients.cLength;
+        this.gLength = coefficients.gLength;
+        this.log_C_coef = coefficients.log_C_coef;
+        this.log_Gamma_coef = coefficients.log_Gamma_coef;
+        this.parameters = parameters;
+        this.results = results;
         svmParameter = new DefaultSVMParameter(LoadFeatureFile.f).svmParameter;
     }
 
