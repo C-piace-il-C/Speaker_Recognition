@@ -2,24 +2,36 @@ package it.unige.diten.dsp.speakerrecognition;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.github.mikephil.charting.utils.FileUtils;
 
+import java.io.File;
 import java.util.List;
+
+import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
+
+import static it.unige.diten.dsp.speakerrecognition.R.string.modeling_key;
+import static it.unige.diten.dsp.speakerrecognition.R.string.training_files_key;
 
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
@@ -31,6 +43,7 @@ import java.util.List;
 public class SettingsActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
     static Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
@@ -40,7 +53,7 @@ public class SettingsActivity extends PreferenceActivity {
         ActionBar actionBar = getSupportActionBar();
         // Display the back button
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+/*
         String action = getIntent().getAction();
 
         if(action == null)
@@ -56,17 +69,15 @@ public class SettingsActivity extends PreferenceActivity {
                 addPreferencesFromResource(R.xml.pref_modeling);
                 break;
         }
-
+*/
     }
-
 
 
     @Override
     public void onBuildHeaders(List<Header> target) {
         super.onBuildHeaders(target);
         setContentView(R.layout.settings_layout);
-
-
+        loadHeadersFromResource(R.xml.headers, target);
     }
 
     @Override
@@ -156,6 +167,82 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.pref_extraction);
+        }
+    }
+
+    public static class modelingFragment extends PreferenceFragment {
+        private static String speakersNameKey;
+        private static String trainingFilesKey;
+        private static Preference labelsPreference;
+        private static Preference speakersNamePreference;
+
+        private static SharedPreferences settings;
+        private static SharedPreferences.Editor editor;
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            addPreferencesFromResource(R.xml.pref_modeling);
+            speakersNameKey     = getString(R.string.speakers_name_key);
+            trainingFilesKey    = getString(R.string.training_files_key);
+
+            settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            editor = settings.edit();
+
+
+            labelsPreference = getPreferenceManager().findPreference(getString(R.string.labels_association_key));
+            speakersNamePreference = getPreferenceManager().findPreference(getString(R.string.speakers_name_key));
+
+            speakersNamePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if(newValue.toString().equals(""))
+                        return false;
+
+                    String[] names = newValue.toString().split(",");
+                    ModelingStructure.speakersNames = names;
+
+                    int N = names.length;
+
+                    ModelingStructure.labels = new int[N];
+                    String labelsSummary = "";
+
+                    for(int i = 0; i < N; i++)
+                    {
+                        ModelingStructure.labels[i] = i;
+                        labelsSummary += names[i] + ": " + i + ", ";
+                    }
+
+                    labelsSummary = labelsSummary.substring(0, labelsSummary.length() - 2);
+                    labelsPreference.setSummary(labelsSummary);
+                    editor.putString(labelsPreference.getKey(), labelsSummary);
+                    editor.commit();
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            labelsPreference.setSummary(settings.getString(getString(R.string.labels_association_key), ""));
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
+            String key = preference.getKey();
+            if(key.equals(trainingFilesKey)) {
+                new FileChooserDialog(getActivity()).setFileListener(new FileChooserDialog.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(final File[] files) {
+                        if (files != null)
+                            ModelingStructure.trainingFiles = files;
+                    }
+                }).showDialog();
+            }
+
+            return true;
         }
     }
 }

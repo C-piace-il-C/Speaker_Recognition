@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="it.unige.diten.dsp.speakerrecognition.SettingsActivity$featureExtractionFragment"
+        android:title="@string/feature_extraction"
+        />
+
+    <header
+        android:fragment="it.unige.diten.dsp.speakerrecognition.SettingsActivity$modelingFragment"
+        android:title="@string/modeling"/>
+</preference-headers>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- TODO change hardcoded strings with actual strings -->
-
+<!--
     <Preference
         android:title="@string/feature_extraction"
         android:key="@string/feature_extraction_key">
@@ -21,6 +21,6 @@
             android:targetPackage="it.unige.diten.dsp.speakerrecognition">
         </intent>
     </Preference>
-
+-->
 </PreferenceScreen>
 

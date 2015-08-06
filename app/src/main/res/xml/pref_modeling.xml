@@ -12,17 +12,12 @@
     <Preference
         android:title="@string/labels_association"
         android:key="@string/labels_association_key"
+        android:summary=""
         android:enabled="false">
     </Preference>
 
     <Preference
         android:title="@string/training_files"
         android:key="@string/training_files_key">
-        <intent
-            android:action="it.unige.diten.dsp.speakerrecognition.TRAINING_FILES"
-            android:targetClass="it.unige.diten.dsp.speakerrecognition.FileChooserDialog"
-            android:targetPackage="it.unige.diten.dsp.speakerrecognition">
-        </intent>
-
     </Preference>
 </PreferenceScreen>

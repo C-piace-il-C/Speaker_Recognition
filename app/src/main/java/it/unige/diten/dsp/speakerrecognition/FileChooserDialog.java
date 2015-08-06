@@ -52,7 +52,7 @@ public class FileChooserDialog {
 
     // file selection event handling
     public interface FileSelectedListener {
-        void fileSelected(File file);
+        void fileSelected(File[] file);
     }
     public FileChooserDialog setFileListener(FileSelectedListener fileListener) {
         this.fileListener = fileListener;
@@ -69,14 +69,20 @@ public class FileChooserDialog {
             public void onClick(DialogInterface dialog, int which) {
                 SparseBooleanArray sparsy = list.getCheckedItemPositions();
                 // Temporary, incorrect
+
+                if(list.getCheckedItemCount() == 0)
+                    return;
+
                 selectedFiles = new File[list.getCheckedItemCount()];
                 int j = 0;
                 for(int i = 0; i < list.getAdapter().getCount(); i++ )
                 {
                     if(sparsy.get(i)) {
-                        selectedFiles[j++] = new File(list.getAdapter().getItem(i).toString());
+                        String fileChosen = (String) list.getItemAtPosition(i);
+                        selectedFiles[j++] = (getChosenFile(fileChosen));
                     }
                 }
+                fileListener.fileSelected(selectedFiles);
             }
         });
 
@@ -178,16 +184,6 @@ public class FileChooserDialog {
             mergeAdapter.addAdapter(filesAdapter);
 
             list.setAdapter(mergeAdapter);
-/*
-			list.setAdapter(new ArrayAdapter(activity,
-					android.R.layout.simple_list_item_multiple_choice, fileList) {
-				@Override public View getView(int pos, View view, ViewGroup parent) {
-					view = super.getView(pos, view, parent);
-					((TextView) view).setSingleLine(true);
-					return view;
-				}
-			});
-			*/
         }
     }
 
