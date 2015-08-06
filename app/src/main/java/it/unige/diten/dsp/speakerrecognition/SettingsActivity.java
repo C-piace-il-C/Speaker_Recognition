@@ -173,8 +173,11 @@ public class SettingsActivity extends PreferenceActivity {
     public static class modelingFragment extends PreferenceFragment {
         private static String speakersNameKey;
         private static String trainingFilesKey;
+        private static String cCoefficientsKey;
+
         private static Preference labelsPreference;
         private static Preference speakersNamePreference;
+
 
         private static SharedPreferences settings;
         private static SharedPreferences.Editor editor;
@@ -185,6 +188,7 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_modeling);
             speakersNameKey     = getString(R.string.speakers_name_key);
             trainingFilesKey    = getString(R.string.training_files_key);
+            cCoefficientsKey    = getString(R.string.c_coefficient_range_key);
 
             settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
             editor = settings.edit();
@@ -241,6 +245,10 @@ public class SettingsActivity extends PreferenceActivity {
                             ModelingStructure.trainingFiles = files;
                     }
                 }).showDialog();
+            }
+            else if(key.equals(cCoefficientsKey))
+            {
+                new CoefficientsDialog(getActivity()).showDialog();
             }
 
             return true;

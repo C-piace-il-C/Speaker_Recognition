@@ -73,6 +73,9 @@
     <string name="cross_validation">Cross validation</string>
     <string name="c_coefficient_range">C coefficient range</string>
     <string name="gamma_coefficient_range">Gamma coefficient range</string>
+    <string name="c_start">Starting value</string>
+    <string name="c_end">End value</string>
+    <string name="c_step">Step</string>
     <!-- Keys -->
     <string name="modeling_key">modeling</string>
     <string name="speakers_name_key">speakers_name</string>
@@ -84,6 +87,9 @@
     <string name="cross_validation_key">cross_validation</string>
     <string name="c_coefficient_range_key">c_coefficient_range</string>
     <string name="gamma_coefficient_range_key">gamma_coefficient_range</string>
+    <string name="c_start_key">c_start</string>
+    <string name="c_end_key">c_end</string>
+    <string name="c_step_key">c_step</string>
     <!-- Values -->
     <string name="speakers_hint">Name1,Name2&#8230;</string>
     <array name="x_scaling_values">

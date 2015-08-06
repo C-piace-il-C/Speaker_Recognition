@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linear_lay_coef_1"
+    android:layout_alignParentEnd="false"
+    android:layout_alignParentStart="false"
+    android:layout_alignParentBottom="false"
+    android:layout_alignParentRight="false"
+    android:layout_alignParentTop="false">
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/c_start"
+        android:id="@+id/c_start"
+        android:gravity="right" />
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/editText" />
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_lay_coef_2"
+        android:layout_below="@id/linear_lay_coef_1"
+        android:layout_alignEnd="@id/linear_lay_coef_1"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentTop="false">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/c_end"
+            android:id="@+id/c_end"
+            android:gravity="right" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText2" />
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linear_lay_coef_3"
+    android:layout_below="@id/linear_lay_coef_2"
+    android:layout_alignEnd="@id/linear_lay_coef_2"
+    android:layout_alignParentEnd="false"
+    android:layout_alignParentStart="false"
+    android:layout_alignParentBottom="false"
+    android:layout_alignParentRight="false"
+    android:layout_alignParentTop="false">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/c_step"
+        android:id="@+id/c_step"
+        android:gravity="right" />
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText3"/>
+</LinearLayout>
+
+
+
+</RelativeLayout>
