@@ -9,4 +9,8 @@ public abstract class ModelingStructure {
     public static String[]  speakersNames;
     public static int[]     labels;
     public static File[]    trainingFiles;
+
+    // Start, ending and step values
+    public static int cStart, cEnd, cStep;
+    public static int gStart, gStep, gEnd;
 }

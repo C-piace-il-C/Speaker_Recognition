@@ -73,8 +73,8 @@
     <string name="cross_validation">Cross validation</string>
     <string name="c_coefficient_range">C coefficient range</string>
     <string name="gamma_coefficient_range">Gamma coefficient range</string>
-    <string name="c_start">Starting value</string>
-    <string name="c_end">End value</string>
+    <string name="c_start">Start</string>
+    <string name="c_end">End</string>
     <string name="c_step">Step</string>
     <!-- Keys -->
     <string name="modeling_key">modeling</string>

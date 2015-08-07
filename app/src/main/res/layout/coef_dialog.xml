@@ -4,79 +4,65 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <RelativeLayout
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/coef_dialog_1"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout">
-        <TextView
-            android:layout_width="72dp"
-            android:layout_height="wrap_content"
-            android:text="@string/c_start"
-            android:id="@+id/textView"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        android:text="@string/c_start"
+        android:id="@+id/cStartView"
+        android:layout_alignStart="@+id/cStartPicker"
+        android:layout_alignEnd="@+id/cStartPicker"
+        android:gravity="center_horizontal" />
 
-    </RelativeLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_below="@id/coef_dialog_1"
-    android:layout_centerHorizontal="true"
-    android:id="@+id/linearLayout">
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberPicker"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberPicker2"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_toEndOf="@id/numberPicker" />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberPicker3"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/numberPicker"
-        android:layout_toStartOf="@+id/numberPicker" />
-</LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/c_end"
-        android:id="@+id/textView2"
-        android:gravity="center_horizontal"
-        android:layout_alignBottom="@+id/coef_dialog_1"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/cEndView"
+        android:layout_alignStart="@+id/cEndPicker"
+        android:layout_alignEnd="@+id/cEndPicker"
+        android:gravity="center_horizontal" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cEndPicker"
+        android:layout_centerInParent="true"
+        />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cStartPicker"
+        android:layout_centerInParent="true"
+        android:layout_toStartOf="@id/cEndPicker"
+        android:layout_marginEnd="10dp" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/c_step"
-        android:id="@+id/textView3"
+        android:id="@+id/cStepView"
         android:gravity="center_horizontal"
-        android:layout_alignBottom="@+id/coef_dialog_1"
-        android:layout_alignRight="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp" />
+        android:layout_alignStart="@+id/cStepPicker"
+        android:layout_alignEnd="@+id/cStepPicker" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cStepPicker"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/cEndPicker"
+        android:layout_marginStart="10dp" />
+
+
+
+
+
 
 
 </RelativeLayout>

@@ -249,7 +249,7 @@ public class SettingsActivity extends PreferenceActivity {
             else if(key.equals(cCoefficientsKey))
             {
                 CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
-                coefficientsDialog.show(getFragmentManager(), null);
+                coefficientsDialog.show(getFragmentManager(), "C_Coefficient");
             }
 
             return true;
