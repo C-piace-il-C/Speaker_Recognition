@@ -98,6 +98,7 @@
     </array>
     <!-- Summaries -->
     <string name="c_coefficient_range_summary">Initial, final and step value for the C coefficient</string>
+    <string name="gamma_coefficient_range_summary">Initial, final and step value for the Gamma coefficient</string>
 
 
 </resources>

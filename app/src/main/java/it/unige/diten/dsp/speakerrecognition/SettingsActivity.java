@@ -174,6 +174,7 @@ public class SettingsActivity extends PreferenceActivity {
         private static String speakersNameKey;
         private static String trainingFilesKey;
         private static String cCoefficientsKey;
+        private static String gCoefficientsKey;
 
         private static Preference labelsPreference;
         private static Preference speakersNamePreference;
@@ -189,6 +190,7 @@ public class SettingsActivity extends PreferenceActivity {
             speakersNameKey     = getString(R.string.speakers_name_key);
             trainingFilesKey    = getString(R.string.training_files_key);
             cCoefficientsKey    = getString(R.string.c_coefficient_range_key);
+            gCoefficientsKey    = getString(R.string.gamma_coefficient_range_key);
 
             settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
             editor = settings.edit();
@@ -249,7 +251,14 @@ public class SettingsActivity extends PreferenceActivity {
             else if(key.equals(cCoefficientsKey))
             {
                 CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
+                super.onResume();
                 coefficientsDialog.show(getFragmentManager(), "C_Coefficient");
+            }
+            else if(key.equals(gCoefficientsKey))
+            {
+                CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
+                super.onResume();
+                coefficientsDialog.show(getFragmentManager(), "Gamma_Coefficient");
             }
 
             return true;

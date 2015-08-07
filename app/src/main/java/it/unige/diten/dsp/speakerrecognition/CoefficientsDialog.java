@@ -27,7 +27,6 @@ public class CoefficientsDialog extends DialogFragment{
     private AlertDialog.Builder builder;
     private NumberPicker startPicker, endPicker, stepPicker;
 
-    final private String tag    = getTag();
     final private String C      = "C_Coefficient";
     final private String Gamma  = "Gamma_Coefficient";
     final private String cTitle = "C coefficient range";
@@ -51,6 +50,8 @@ public class CoefficientsDialog extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final String tag = getTag();
+
         builder = new AlertDialog.Builder(getActivity());
         myView = new MyView(getActivity());
 
@@ -74,8 +75,11 @@ public class CoefficientsDialog extends DialogFragment{
 
     private void init(String title, final String tag)
     {
-        builder.setView(myView).setTitle(title);
-        builder.setPositiveButton("Ok", null);
+        builder
+                .setView(myView)
+                .setTitle(title)
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Back", null);
 
         alertDialog = builder.create();
 
