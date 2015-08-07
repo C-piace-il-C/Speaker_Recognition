@@ -29,12 +29,12 @@
             android:summary="256"
             android:enabled="false">
         </Preference>
+
         <!-- TODO: reject input if it's less/equal zero or more/equal one -->
-        <EditTextPreference
+        <Preference
             android:title="@string/frame_overlap_factor"
-            android:key="@string/frame_overlap_factor_key"
-            android:inputType="numberDecimal">
-        </EditTextPreference>
+            android:key="@string/frame_overlap_factor_key">
+        </Preference>
 
         <Preference
             android:title="@string/frame_size"
