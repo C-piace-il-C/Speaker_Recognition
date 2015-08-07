@@ -31,10 +31,17 @@
             android:key="@string/c_coefficient_range_key"
             android:summary="@string/c_coefficient_range_summary">
         </Preference>
+
         <Preference
             android:title="@string/gamma_coefficient_range"
             android:key="@string/gamma_coefficient_range_key"
             android:summary="@string/gamma_coefficient_range_summary">
+        </Preference>
+
+        <Preference
+            android:title="@string/folds"
+            android:key="@string/folds_key"
+            android:summary="@string/folds_summary">
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

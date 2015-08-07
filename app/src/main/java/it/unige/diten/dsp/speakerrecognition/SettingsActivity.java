@@ -1,6 +1,7 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -175,6 +176,7 @@ public class SettingsActivity extends PreferenceActivity {
         private static String trainingFilesKey;
         private static String cCoefficientsKey;
         private static String gCoefficientsKey;
+        private static String foldsKey;
 
         private static Preference labelsPreference;
         private static Preference speakersNamePreference;
@@ -191,6 +193,7 @@ public class SettingsActivity extends PreferenceActivity {
             trainingFilesKey    = getString(R.string.training_files_key);
             cCoefficientsKey    = getString(R.string.c_coefficient_range_key);
             gCoefficientsKey    = getString(R.string.gamma_coefficient_range_key);
+            foldsKey            = getString(R.string.folds_key);
 
             settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
             editor = settings.edit();
@@ -259,6 +262,10 @@ public class SettingsActivity extends PreferenceActivity {
                 CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
                 super.onResume();
                 coefficientsDialog.show(getFragmentManager(), "Gamma_Coefficient");
+            }
+            else if(key.equals(foldsKey))
+            {
+
             }
 
             return true;

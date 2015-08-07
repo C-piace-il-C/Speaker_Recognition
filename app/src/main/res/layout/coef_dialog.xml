@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/c_start"
+        android:text="@string/start"
         android:id="@+id/cStartView"
         android:layout_alignStart="@+id/cStartPicker"
         android:layout_alignEnd="@+id/cStartPicker"
@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/c_end"
+        android:text="@string/end"
         android:id="@+id/cEndView"
         android:layout_alignStart="@+id/cEndPicker"
         android:layout_alignEnd="@+id/cEndPicker"
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/c_step"
+        android:text="@string/step"
         android:id="@+id/cStepView"
         android:gravity="center_horizontal"
         android:layout_alignStart="@+id/cStepPicker"
