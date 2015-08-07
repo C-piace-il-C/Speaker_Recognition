@@ -11,6 +11,7 @@
     <string name="sample_rate">Sample rate (in Hz)</string>
     <string name="samples_in_frame">Samples in frame</string>
     <string name="frame_overlap_factor">Frame overlap factor (0 &lt; x &lt; 1)</string>
+    <string name="zero_dot">0.</string>
     <string name="frame_size">Frame size (in bytes)</string>
     <string name="channels">Channel</string>
     <string-array name="channels_entries">
