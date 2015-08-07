@@ -154,11 +154,36 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     public static class featureExtractionFragment extends PreferenceFragment {
+
+        private static String overlapFactorKey;
+
+        private static Preference overlapFactorPreference;
+
+        private static SharedPreferences settings;
+        private static SharedPreferences.Editor editor;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.pref_extraction);
+
+            overlapFactorKey = getString(R.string.frame_overlap_factor_key);
+
+            overlapFactorPreference = getPreferenceManager().findPreference(getString(R.string.frame_overlap_factor_key));
+
+            settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            editor = settings.edit();
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+            if(preference.getKey().equals(overlapFactorKey))
+            {
+                OverlapFactorDialog overlapFactorDialog = new OverlapFactorDialog();
+                super.onResume();
+                overlapFactorDialog.show(getFragmentManager(), "Overlap_Factor");
+            }
+            return true;
         }
     }
 
