@@ -1,8 +1,6 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,22 +15,15 @@ import android.support.v7.app.ActionBar;
 
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import com.github.mikephil.charting.utils.FileUtils;
 
 import java.io.File;
 import java.util.List;
 
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
-
-import static it.unige.diten.dsp.speakerrecognition.R.string.modeling_key;
-import static it.unige.diten.dsp.speakerrecognition.R.string.training_files_key;
 
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
@@ -265,7 +256,9 @@ public class SettingsActivity extends PreferenceActivity {
             }
             else if(key.equals(foldsKey))
             {
-
+                FoldsPickerDialog foldsPickerDialog = new FoldsPickerDialog();
+                super.onResume();
+                foldsPickerDialog.show(getFragmentManager(), "Folds");
             }
 
             return true;

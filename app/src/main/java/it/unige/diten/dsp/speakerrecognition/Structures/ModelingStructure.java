@@ -13,4 +13,7 @@ public abstract class ModelingStructure {
     // Start, ending and step values
     public static int cStart, cEnd, cStep;
     public static int gStart, gStep, gEnd;
+
+    // Folds of the cross validation
+    public static int folds;
 }
