@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Strings for toasts in CoefficientsDialog -->
+    <string name="wrong_direction">Step is in the wrong direction!</string>
+    <string name="step_inadequate">Step inadequate for selected boundaries.</string>
+    <string name="one_value_validation">
+        You can try a one-value cross validation
+        in another preference screen.</string>
+
+</resources>

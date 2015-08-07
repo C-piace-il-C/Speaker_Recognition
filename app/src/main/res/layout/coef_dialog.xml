@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,9 +12,6 @@
         android:layout_alignStart="@+id/cStartPicker"
         android:layout_alignEnd="@+id/cStartPicker"
         android:gravity="center_horizontal" />
-
-
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,22 +22,6 @@
         android:layout_alignEnd="@+id/cEndPicker"
         android:gravity="center_horizontal" />
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cEndPicker"
-        android:layout_centerInParent="true"
-        />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cStartPicker"
-        android:layout_centerInParent="true"
-        android:layout_toStartOf="@id/cEndPicker"
-        android:layout_marginEnd="10dp" />
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,6 +31,21 @@
         android:layout_alignStart="@+id/cStepPicker"
         android:layout_alignEnd="@+id/cStepPicker" />
 
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cEndPicker"
+        android:layout_centerInParent="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cStartPicker"
+        android:layout_centerInParent="true"
+        android:layout_toStartOf="@id/cEndPicker"
+        android:layout_marginEnd="10dp" />
+
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,11 +53,5 @@
         android:layout_centerInParent="true"
         android:layout_toEndOf="@id/cEndPicker"
         android:layout_marginStart="10dp" />
-
-
-
-
-
-
 
 </RelativeLayout>

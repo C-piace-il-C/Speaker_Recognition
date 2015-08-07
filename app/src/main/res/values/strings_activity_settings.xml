@@ -90,6 +90,9 @@
     <string name="c_start_key">c_start</string>
     <string name="c_end_key">c_end</string>
     <string name="c_step_key">c_step</string>
+    <string name="g_start_key">g_start</string>
+    <string name="g_end_key">g_end</string>
+    <string name="g_step_key">g_step</string>
     <!-- Values -->
     <string name="speakers_hint">Name1,Name2&#8230;</string>
     <array name="x_scaling_values">
