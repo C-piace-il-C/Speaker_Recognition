@@ -1,4 +1,4 @@
-package it.unige.diten.dsp.speakerrecognition;
+package it.unige.diten.dsp.speakerrecognition.Dialogs;
 
 /**
  * http://www.ninthavenue.com.au/simple-android-file-chooser

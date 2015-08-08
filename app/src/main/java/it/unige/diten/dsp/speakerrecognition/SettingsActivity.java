@@ -23,6 +23,10 @@ import android.view.ViewGroup;
 import java.io.File;
 import java.util.List;
 
+import it.unige.diten.dsp.speakerrecognition.Dialogs.CoefficientsDialog;
+import it.unige.diten.dsp.speakerrecognition.Dialogs.FileChooserDialog;
+import it.unige.diten.dsp.speakerrecognition.Dialogs.FoldsPickerDialog;
+import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
 /**

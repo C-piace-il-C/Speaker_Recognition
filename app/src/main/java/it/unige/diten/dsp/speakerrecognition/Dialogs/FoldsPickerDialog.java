@@ -1,4 +1,4 @@
-package it.unige.diten.dsp.speakerrecognition;
+package it.unige.diten.dsp.speakerrecognition.Dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
+import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
 public class FoldsPickerDialog extends DialogFragment{
