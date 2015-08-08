@@ -1,14 +1,9 @@
 package it.unige.diten.dsp.speakerrecognition;
 
 
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -20,14 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.File;
 import java.util.List;
-
-import it.unige.diten.dsp.speakerrecognition.Dialogs.CoefficientsDialog;
-import it.unige.diten.dsp.speakerrecognition.Dialogs.FileChooserDialog;
-import it.unige.diten.dsp.speakerrecognition.Dialogs.FoldsPickerDialog;
-import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
-import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
@@ -45,6 +33,8 @@ public class SettingsActivity extends PreferenceActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+
+        // TODO: Initialize the summaries of the preferences screen
 
         ActionBar actionBar = getSupportActionBar();
         // Display the back button

@@ -3,7 +3,9 @@ package it.unige.diten.dsp.speakerrecognition;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -47,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.prefs.PreferenceChangeEvent;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity
@@ -219,8 +222,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onMenuOpened(int featureld, Menu menu)
-    {
+    public boolean onMenuOpened(int featureld, Menu menu) {
         inputManager.hideSoftInputFromWindow(
                 (null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
@@ -258,6 +260,11 @@ public class MainActivity extends AppCompatActivity
         unregisterReceiver(feReceiver);
         unregisterReceiver(svmReceiver);
         unregisterReceiver(recognitionReceiver);
+    }
+
+    private void initPreferences()
+    {
+
     }
 
     private static String getCurrentDate()

@@ -1,5 +1,7 @@
 package it.unige.diten.dsp.speakerrecognition.Fragments;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -11,7 +13,7 @@ import java.io.File;
 
 import it.unige.diten.dsp.speakerrecognition.Dialogs.CoefficientsDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.FileChooserDialog;
-import it.unige.diten.dsp.speakerrecognition.Dialogs.FoldsPickerDialog;
+import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
@@ -109,9 +111,9 @@ public class ModelingFragments extends PreferenceFragment {
         }
         else if(key.equals(foldsKey))
         {
-            FoldsPickerDialog foldsPickerDialog = new FoldsPickerDialog();
+            DialogFragment dialogFragment = NumberPickerDialog.newInstance(R.string.folds);
             super.onResume();
-            foldsPickerDialog.show(getFragmentManager(), "Folds");
+            dialogFragment.show(getFragmentManager(), "folds");
         }
         return true;
     }

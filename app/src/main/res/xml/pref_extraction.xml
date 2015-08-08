@@ -13,13 +13,19 @@
         android:dependency="@string/enable_feature_extraction_key">
 
         <!-- TODO: implement a number picker for frame duration -->
+        <Preference
+            android:title="@string/frame_duration"
+            android:key="@string/frame_duration_key"
+            android:summary="32">
+        </Preference>
 
         <ListPreference
             android:title="@string/sample_rate"
             android:key="@string/sample_rate_key"
             android:entries="@array/sample_rate_numbers"
             android:entryValues="@array/sample_rate_numbers"
-            android:defaultValue="8000">
+            android:defaultValue="8000"
+            android:summary="8000">
         </ListPreference>
 
         <!-- Programmatically changed when its dependency are changed -->
