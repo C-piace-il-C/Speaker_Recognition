@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/feature_extraction">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/feature_extraction"
+    android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.FeatureExtractionFragment">
 
     <SwitchPreference
         android:title="@string/enable_feature_extraction"
