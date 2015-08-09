@@ -30,15 +30,6 @@
     <string name="frame_size_key">frame_size</string>
     <string name="channels_key">channel</string>
     <!-- Values -->
-    <string-array name="sample_rate_numbers">
-        <item>8000</item>
-        <item>11025</item>
-        <item>16000</item>
-        <item>22050</item>
-        <item>32000</item>
-        <item>44100</item>
-        <item>48000</item>
-    </string-array>
     <string-array name="channels_values">
         <item>0</item>
         <item>1</item>

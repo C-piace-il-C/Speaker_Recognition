@@ -54,6 +54,8 @@ public class ModelingFragments extends PreferenceFragment {
                 if(newValue.toString().equals(""))
                     return false;
 
+                newValue = newValue.toString().replace(" ", "");
+                editor.putString(speakersNameKey, "" + newValue);
                 String[] names = newValue.toString().split(",");
                 ModelingStructure.speakersNames = names;
 
@@ -85,7 +87,7 @@ public class ModelingFragments extends PreferenceFragment {
     }
 
     @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, final Preference preference) {
 
         String key = preference.getKey();
         if(key.equals(trainingFilesKey)) {
@@ -94,6 +96,7 @@ public class ModelingFragments extends PreferenceFragment {
                 public void fileSelected(final File[] files) {
                     if (files != null)
                         ModelingStructure.trainingFiles = files;
+
                 }
             }).showDialog();
         }

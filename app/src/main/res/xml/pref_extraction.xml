@@ -22,9 +22,6 @@
         <ListPreference
             android:title="@string/sample_rate"
             android:key="@string/sample_rate_key"
-            android:entries="@array/sample_rate_numbers"
-            android:entryValues="@array/sample_rate_numbers"
-            android:defaultValue="8000"
             android:summary="8000">
         </ListPreference>
 

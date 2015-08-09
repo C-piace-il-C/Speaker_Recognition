@@ -150,10 +150,6 @@ public class CoefficientsDialog extends DialogFragment{
                 editor.putInt(cStartKey, start);
                 editor.putInt(cEndKey, end);
                 editor.putInt(cStepKey, step);
-
-                editor.putString(cStartKey, "" + start);
-                editor.putString(cEndKey, "" + end);
-                editor.putString(cStepKey, "" + step);
                 editor.apply();
                 break;
             }
@@ -165,10 +161,6 @@ public class CoefficientsDialog extends DialogFragment{
                 editor.putInt(gStartKey, start);
                 editor.putInt(gEndKey, end);
                 editor.putInt(gStepKey, step);
-
-                editor.putString(gStartKey, "" + start);
-                editor.putString(gEndKey, "" + end);
-                editor.putString(gStepKey, "" + step);
                 editor.apply();
                 break;
             }

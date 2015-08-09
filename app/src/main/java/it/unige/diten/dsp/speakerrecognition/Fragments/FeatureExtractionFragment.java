@@ -10,8 +10,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.view.View;
-import android.widget.NumberPicker;
 
 import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
@@ -30,13 +28,6 @@ public class FeatureExtractionFragment extends PreferenceFragment {
 
 
     private PreferenceManager preferenceManager;
-    // Preferences that have a summary that needs to be updated
-    private Preference frameDuration;
-    private Preference sampleRate;
-    private Preference samplesInFrame;
-    private Preference overlapFactor;
-    private Preference frameSize;
-
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
@@ -76,18 +67,24 @@ public class FeatureExtractionFragment extends PreferenceFragment {
 
     private void initSummaries()
     {
+        // Preferences that have a summary that needs to be updated
+        Preference frameDuration;
+        Preference sampleRate;
+        Preference samplesInFrame;
+        Preference overlapFactor;
+        Preference frameSize;
+        // TODO: join this two pieces
         frameDuration           = preferenceManager.findPreference(frameDurationKey);
         sampleRate              = preferenceManager.findPreference(sampleRateKey);
         samplesInFrame          = preferenceManager.findPreference(samplesInFrameKey);
         overlapFactor           = preferenceManager.findPreference(overlapFactorKey);
         frameSize               = preferenceManager.findPreference(frameSizeKey);
 
-        // TODO: modify putInt to putString in dialogs
-        frameDuration.setSummary((settings.getString(frameDurationKey, "32")));
-        sampleRate.setSummary(settings.getString(sampleRateKey, "8000"));
-        samplesInFrame.setSummary(settings.getString(samplesInFrameKey, "256"));
-        overlapFactor.setSummary("0." + settings.getString(overlapFactorKey, "75"));
-        frameSize.setSummary(settings.getString(frameSizeKey, "512"));
+        frameDuration .setSummary("" + settings.getInt(frameDurationKey, 32));
+        sampleRate    .setSummary("" + settings.getString(sampleRateKey, "8000"));
+        samplesInFrame.setSummary("" + settings.getInt(samplesInFrameKey, 256));
+        overlapFactor .setSummary("0." + settings.getInt(overlapFactorKey, 75));
+        frameSize     .setSummary("" + settings.getInt(frameSizeKey, 512));
     }
 
     @Override
@@ -98,8 +95,10 @@ public class FeatureExtractionFragment extends PreferenceFragment {
             preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    FeatureExtractionStructure.sampleRate = Integer.parseInt(newValue.toString());
-                    preference.setSummary("" + FeatureExtractionStructure.sampleRate);
+                    int value = Integer.parseInt(newValue.toString());
+
+                    FeatureExtractionStructure.sampleRate = value;
+                    preference.setSummary("" + value);
 
                     Preference samplesInFramePreference =
                             getPreferenceManager()
@@ -107,11 +106,12 @@ public class FeatureExtractionFragment extends PreferenceFragment {
 
                     samplesInFramePreference.setSummary
                             (
-                               "" + (FeatureExtractionStructure.sampleRate *
+                               "" + (value *
                                        FeatureExtractionStructure.frameDuration / 1000));
 
-                    editor.putString(samplesInFrameKey,
-                            "" + (FeatureExtractionStructure.sampleRate *
+                    editor.putString(sampleRateKey, "" + value);
+                    editor.putInt(samplesInFrameKey,
+                            (value *
                                     FeatureExtractionStructure.frameDuration / 1000));
                     editor.apply();
 

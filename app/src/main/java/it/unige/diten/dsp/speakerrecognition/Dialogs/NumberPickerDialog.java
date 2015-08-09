@@ -92,14 +92,14 @@ public class NumberPickerDialog extends DialogFragment{
                         preferenceManager.findPreference(frameDurationKey);
                 preferences[1] =
                         preferenceManager.findPreference(getString(R.string.samples_in_frame_key));
-                setPickers(frameDurationKey, "32");
+                setPickers(frameDurationKey, 32);
                 setListeners(frameTitle, frameTag);
                 break;
             case(foldsTag):
                 minValue = 2;
                 maxValue = 10;
                 foldsKey = getString(R.string.folds_key);
-                setPickers(foldsKey, "2");
+                setPickers(foldsKey, 2);
                 setListeners(foldsTitle, foldsTag);
                 break;
         }
@@ -143,9 +143,9 @@ public class NumberPickerDialog extends DialogFragment{
             case(frameTag): {
                 FeatureExtractionStructure.frameDuration = value;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString(frameDurationKey, "" + value);
-                editor.putString(preferences[1].getKey(),
-                        "" + (FeatureExtractionStructure.sampleRate * value / 1000));
+                editor.putInt(frameDurationKey, value);
+                editor.putInt(preferences[1].getKey(),
+                        (FeatureExtractionStructure.sampleRate * value / 1000));
                 editor.apply();
                 preferences[0].setSummary("" + value);
                 preferences[1].setSummary(
@@ -156,18 +156,18 @@ public class NumberPickerDialog extends DialogFragment{
             case(foldsTag):
                 ModelingStructure.folds = value;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString(foldsKey, "" + value);
+                editor.putInt(foldsKey, value);
                 editor.apply();
                 break;
         }
     }
 
-    private void setPickers(String key, String def)
+    private void setPickers(String key, int def)
     {
         numberPicker = (NumberPicker) myView.findViewById(R.id.numberPicker);
         numberPicker.setMaxValue(maxValue);
         numberPicker.setMinValue(minValue);
-        numberPicker.setValue(Integer.valueOf(settings.getString(key, def)));
+        numberPicker.setValue(settings.getInt(key, def));
     }
 
     private void showDialog()

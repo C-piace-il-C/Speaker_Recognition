@@ -108,7 +108,6 @@ public class OverlapFactorDialog extends DialogFragment {
                         int position = numberPicker.getValue();
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt(overlapFactorKey, position);
-                        editor.putString(overlapFactorKey, "" + position);
                         editor.apply();
 
                         String value = "0." + decimals[position];
@@ -128,7 +127,7 @@ public class OverlapFactorDialog extends DialogFragment {
         numberPicker.setDisplayedValues(decimals);
         numberPicker.setMaxValue(maxValue);
         numberPicker.setMinValue(minValue);
-        numberPicker.setValue(Integer.parseInt(settings.getString(overlapFactorKey, "75")));
+        numberPicker.setValue(settings.getInt(overlapFactorKey, 75));
     }
 
     private class MyView extends FrameLayout

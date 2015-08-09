@@ -52,6 +52,9 @@ import java.util.Locale;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.regex.Pattern;
 
+import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
+import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
+
 public class MainActivity extends AppCompatActivity
 {
     public final static String TAG = "ASR";
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         numCores = getNumCores();
-
+        initPreferences();
         context = this;
 
         Button btnRecord = (Button) findViewById(R.id.RecordButton);
@@ -264,6 +267,41 @@ public class MainActivity extends AppCompatActivity
 
     private void initPreferences()
     {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // TODO: create a class with the key string: this is too much incomprehensible
+        // Feature extraction-related preferences
+        FeatureExtractionStructure.frameDuration =
+                preferences.getInt(getString(R.string.frame_duration_key), 32);
+        FeatureExtractionStructure.sampleRate =
+                Integer.parseInt(preferences.getString(getString(R.string.sample_rate_key), "8000"));
+        FeatureExtractionStructure.overlapFactor =
+                preferences.getInt(getString(R.string.frame_overlap_factor_key), 75) / 100.f;
+
+
+        // Modeling-related preferences
+        ModelingStructure.speakersNames =
+                preferences.getString(getString(R.string.speakers_name_key), "").split(",");
+
+        ModelingStructure.labels = new int[ModelingStructure.speakersNames.length];
+        for(int i = 0; i < ModelingStructure.speakersNames.length; i++)
+        {
+            ModelingStructure.labels[i] = i;
+        }
+        ModelingStructure.cStart =
+                preferences.getInt(getString(R.string.c_start_key), 1);
+        ModelingStructure.cEnd =
+                preferences.getInt(getString(R.string.c_end_key), 1);
+        ModelingStructure.cStep =
+                preferences.getInt(getString(R.string.c_step_key), 1);
+        ModelingStructure.gStart =
+                preferences.getInt(getString(R.string.g_start_key), 1);
+        ModelingStructure.gEnd =
+                preferences.getInt(getString(R.string.g_end_key), 1);
+        ModelingStructure.gStep =
+                preferences.getInt(getString(R.string.g_step_key), 1);
+        ModelingStructure.folds =
+                preferences.getInt(getString(R.string.folds_key), 2);
+
 
     }
 
