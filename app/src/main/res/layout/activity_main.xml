@@ -29,11 +29,12 @@
         android:id="@+id/RecordButton"
         android:background="@drawable/microphone"
         android:singleLine="false"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentRight="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp" />
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="10dp"
         android:layout_toStartOf="@id/RecordButton">
 
@@ -80,6 +82,7 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_toStartOf="@id/RecordButton" />
 
     <EditText
@@ -95,7 +98,8 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/edt_Duration"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"/>
 
     <TextView
         android:layout_width="wrap_content"

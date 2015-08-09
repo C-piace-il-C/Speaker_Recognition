@@ -3,6 +3,7 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -28,6 +29,8 @@ public class SettingsActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
     static Toolbar toolbar;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
@@ -35,6 +38,8 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         // TODO: Initialize the summaries of the preferences screen
+
+
 
         ActionBar actionBar = getSupportActionBar();
         // Display the back button

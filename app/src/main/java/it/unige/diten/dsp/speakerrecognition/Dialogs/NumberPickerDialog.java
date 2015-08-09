@@ -92,14 +92,14 @@ public class NumberPickerDialog extends DialogFragment{
                         preferenceManager.findPreference(frameDurationKey);
                 preferences[1] =
                         preferenceManager.findPreference(getString(R.string.samples_in_frame_key));
-                setPickers(frameDurationKey, 32);
+                setPickers(frameDurationKey, "32");
                 setListeners(frameTitle, frameTag);
                 break;
             case(foldsTag):
                 minValue = 2;
                 maxValue = 10;
                 foldsKey = getString(R.string.folds_key);
-                setPickers(foldsKey, 2);
+                setPickers(foldsKey, "2");
                 setListeners(foldsTitle, foldsTag);
                 break;
         }
@@ -143,31 +143,31 @@ public class NumberPickerDialog extends DialogFragment{
             case(frameTag): {
                 FeatureExtractionStructure.frameDuration = value;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putInt(frameDurationKey, value);
+                editor.putString(frameDurationKey, "" + value);
+                editor.putString(preferences[1].getKey(),
+                        "" + (FeatureExtractionStructure.sampleRate * value / 1000));
                 editor.apply();
-                preferences[0].setSummary(String.valueOf(value));
+                preferences[0].setSummary("" + value);
                 preferences[1].setSummary(
-                        String.valueOf(
-                                FeatureExtractionStructure.sampleRate * value / 1000
-                        )
+                             "" + (FeatureExtractionStructure.sampleRate * value / 1000)
                 );
                 break;
             }
             case(foldsTag):
-                ModelingStructure.folds = numberPicker.getValue();
+                ModelingStructure.folds = value;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putInt(foldsKey, ModelingStructure.folds);
+                editor.putString(foldsKey, "" + value);
                 editor.apply();
                 break;
         }
     }
 
-    private void setPickers(String key, int def)
+    private void setPickers(String key, String def)
     {
         numberPicker = (NumberPicker) myView.findViewById(R.id.numberPicker);
         numberPicker.setMaxValue(maxValue);
         numberPicker.setMinValue(minValue);
-        numberPicker.setValue(settings.getInt(key, def));
+        numberPicker.setValue(Integer.valueOf(settings.getString(key, def)));
     }
 
     private void showDialog()
