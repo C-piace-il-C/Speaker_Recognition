@@ -3,7 +3,6 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -68,7 +67,7 @@ public class SettingsActivity extends PreferenceActivity {
     public void onBuildHeaders(List<Header> target) {
         super.onBuildHeaders(target);
         setContentView(R.layout.settings_layout);
-        loadHeadersFromResource(R.xml.headers, target);
+        loadHeadersFromResource(R.xml.settings_headers, target);
     }
 
     @Override
