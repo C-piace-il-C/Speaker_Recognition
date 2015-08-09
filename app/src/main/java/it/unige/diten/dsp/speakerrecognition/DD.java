@@ -19,7 +19,7 @@ public abstract class DD
         try
         {
             // TODO sostituisci 2 con MainActivity.numCores
-            int numCores = 2;//MainActivity.numCores;
+            int numCores = MainActivity.numCores;
 
             Thread[] threads = new Thread[numCores];
             for(int C = 0; C < numCores; C++)

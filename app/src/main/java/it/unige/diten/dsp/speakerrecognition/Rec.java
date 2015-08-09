@@ -70,7 +70,7 @@ public class Rec extends AsyncTask<String, Void, Boolean>
                 return false;
             }
 
-        WAVCreator wav = new WAVCreator(storDir + "/" + fileName, cAudioData, 8000, 1);
+        WAVCreator wav = new WAVCreator(storDir + "/" + fileName, cAudioData, cFS, 1);
         wav.write();
 
         return true;

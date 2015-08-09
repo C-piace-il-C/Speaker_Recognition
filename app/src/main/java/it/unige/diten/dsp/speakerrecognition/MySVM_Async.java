@@ -255,6 +255,8 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
     }
 
     /// reads the minimum and maximum values from filename and stores them into rangePtr
+
+
     private static void readRange(String fileName, Range rangePtr)
     {
         BufferedReader br = null;
@@ -267,7 +269,7 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
             int lineNumber = 1;
             while ((sCurrentLine = br.readLine()) != null)
             {
-                Log.v(TAG,"readRange: line read '" + sCurrentLine + "'");
+                //Log.v(TAG,"readRange: line read '" + sCurrentLine + "'");
                 if(lineNumber >= 3)
                 {
                     String[] arr = sCurrentLine.split(" ");
@@ -275,8 +277,8 @@ public class MySVM_Async extends AsyncTask<Void, Integer, Void>
                     rangePtr.y_min[lineNumber - 3] = Double.valueOf(arr[1]);
                     rangePtr.y_max[lineNumber - 3] = Double.valueOf(arr[2]);
 
-                    Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + rangePtr.y_min[lineNumber - 3]);
-                    Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + rangePtr.y_max[lineNumber - 3]);
+                    //Log.v(TAG, "y_min[" + (lineNumber - 3) + "] = " + rangePtr.y_min[lineNumber - 3]);
+                    //Log.v(TAG, "y_max[" + (lineNumber - 3) + "] = " + rangePtr.y_max[lineNumber - 3]);
                 }
                 lineNumber++;
             }

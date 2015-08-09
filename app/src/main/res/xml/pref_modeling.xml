@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/modeling"
+    android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.ModelingFragments">
+
+    <EditTextPreference
+        android:title="@string/speakers_name"
+        android:key="@string/speakers_name_key"
+        android:hint="@string/speakers_hint"
+        android:inputType="textCapWords">
+    </EditTextPreference>
+
+    <!-- Updated at startup and when the user changes Speakers name -->
+    <Preference
+        android:title="@string/labels_association"
+        android:key="@string/labels_association_key"
+        android:summary=""
+        android:enabled="false">
+    </Preference>
+
+    <Preference
+        android:title="@string/training_files"
+        android:key="@string/training_files_key">
+    </Preference>
+
+    <PreferenceCategory
+        android:title="@string/cross_validation"
+        android:key="@string/cross_validation_key"
+        >
+
+        <Preference
+            android:title="@string/c_coefficient_range"
+            android:key="@string/c_coefficient_range_key"
+            android:summary="@string/c_coefficient_range_summary">
+        </Preference>
+
+        <Preference
+            android:title="@string/gamma_coefficient_range"
+            android:key="@string/gamma_coefficient_range_key"
+            android:summary="@string/gamma_coefficient_range_summary">
+        </Preference>
+
+        <Preference
+            android:title="@string/folds"
+            android:key="@string/folds_key"
+            android:summary="@string/folds_summary">
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

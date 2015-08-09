@@ -1,5 +1,25 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
+
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -29,9 +49,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.prefs.PreferenceChangeEvent;
 import java.util.regex.Pattern;
 
-public class MainActivity extends Activity
+import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
+import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
+
+public class MainActivity extends AppCompatActivity
 {
     public final static String TAG = "ASR";
     public final static String AUDIO_EXT = ".wav";
@@ -62,6 +86,7 @@ public class MainActivity extends Activity
     private RecognitionReceiver recognitionReceiver;
     private InputMethodManager inputManager;
 
+    private Toolbar toolbar;
 
     private int getNumCores()
     {
@@ -94,7 +119,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
 
         numCores = getNumCores();
-
+        initPreferences();
         context = this;
 
         Button btnRecord = (Button) findViewById(R.id.RecordButton);
@@ -102,6 +127,7 @@ public class MainActivity extends Activity
         transformType   = TransformSelector.TT_DFT;
         inputManager    = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        toolbar     = (Toolbar)findViewById(R.id.toolbar);
         infos       = (TextView)findViewById(R.id.Infos);
         pChart      = (PieChart)findViewById(R.id.chart);
         etDuration  = (EditText)findViewById(R.id.edt_Duration);
@@ -110,6 +136,7 @@ public class MainActivity extends Activity
         rbTrain     = (RadioButton)findViewById(R.id.rbt_Train);
         tvResults   = (TextView)findViewById(R.id.tv_Results);
 
+        //setSupportActionBar(toolbar);
         pChart.setDescription("");
 
         rbRecognize.setOnClickListener(new View.OnClickListener() {
@@ -192,14 +219,13 @@ public class MainActivity extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onMenuOpened(int featureld, Menu menu)
-    {
-        infos.setVisibility(View.INVISIBLE);
+    public boolean onMenuOpened(int featureld, Menu menu) {
         inputManager.hideSoftInputFromWindow(
                 (null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
@@ -208,7 +234,6 @@ public class MainActivity extends Activity
 
     @Override
     public void onOptionsMenuClosed(Menu menu) {
-        infos.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -218,29 +243,17 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (item.getItemId()) {
-            case R.id.dft:
-                if (item.isChecked())
-                    return true;
-                else
-                    item.setChecked(true);
-
-                transformType = TransformSelector.TT_DFT;
-                return true;
-
-            case R.id.fft:
-                if (item.isChecked())
-                    return true;
-                else
-                    item.setChecked(true);
-
-                transformType = TransformSelector.TT_FFT;
-                return true;
-            default:
-                return true;
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            super.onResume();
+            startActivity(i);
+            return true;
         }
 
+        return true;
     }
+
+
 
     @Override
     protected void onDestroy()
@@ -250,6 +263,46 @@ public class MainActivity extends Activity
         unregisterReceiver(feReceiver);
         unregisterReceiver(svmReceiver);
         unregisterReceiver(recognitionReceiver);
+    }
+
+    private void initPreferences()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // TODO: create a class with the key string: this is too much incomprehensible
+        // Feature extraction-related preferences
+        FeatureExtractionStructure.frameDuration =
+                preferences.getInt(getString(R.string.frame_duration_key), 32);
+        FeatureExtractionStructure.sampleRate =
+                Integer.parseInt(preferences.getString(getString(R.string.sample_rate_key), "8000"));
+        FeatureExtractionStructure.overlapFactor =
+                preferences.getInt(getString(R.string.frame_overlap_factor_key), 75) / 100.f;
+
+
+        // Modeling-related preferences
+        ModelingStructure.speakersNames =
+                preferences.getString(getString(R.string.speakers_name_key), "").split(",");
+
+        ModelingStructure.labels = new int[ModelingStructure.speakersNames.length];
+        for(int i = 0; i < ModelingStructure.speakersNames.length; i++)
+        {
+            ModelingStructure.labels[i] = i;
+        }
+        ModelingStructure.cStart =
+                preferences.getInt(getString(R.string.c_start_key), 1);
+        ModelingStructure.cEnd =
+                preferences.getInt(getString(R.string.c_end_key), 1);
+        ModelingStructure.cStep =
+                preferences.getInt(getString(R.string.c_step_key), 1);
+        ModelingStructure.gStart =
+                preferences.getInt(getString(R.string.g_start_key), 1);
+        ModelingStructure.gEnd =
+                preferences.getInt(getString(R.string.g_end_key), 1);
+        ModelingStructure.gStep =
+                preferences.getInt(getString(R.string.g_step_key), 1);
+        ModelingStructure.folds =
+                preferences.getInt(getString(R.string.folds_key), 2);
+
+
     }
 
     private static String getCurrentDate()
@@ -290,8 +343,10 @@ public class MainActivity extends Activity
         pChart.setUsePercentValues(true);
         // Write the x-value on the chart
         pChart.setDrawSliceText(false);
-        //You spin the chart round, baby right round like a record, baby, right round round round
+        // You spin the chart round, baby right round like a record, baby, right round round round
         pChart.setDragDecelerationFrictionCoef(0.96f);
+        // Avoid punching yourself in the eyes when the background isn't white
+        pChart.setHoleColorTransparent(true);
 
         // List of Entry(float val, int index), necessary for the ChartDataSet
         ArrayList<Entry> results = new ArrayList<>();
