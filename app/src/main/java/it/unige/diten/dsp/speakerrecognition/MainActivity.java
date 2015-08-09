@@ -233,6 +233,13 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
             return true;
         }
+        else if(id == R.id.SVM_actions)
+        {
+            Intent i = new Intent(this, SVMActivity.class);
+            super.onResume();
+            startActivity(i);
+            return true;
+        }
 
         return true;
     }

@@ -24,7 +24,7 @@ import java.util.List;
  * This technique can be used with an {@link android.app.Activity} class, not just
  * {@link android.preference.PreferenceActivity}.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SVMActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
     static Toolbar toolbar;
 
@@ -47,7 +47,7 @@ public class SettingsActivity extends PreferenceActivity {
     public void onBuildHeaders(List<Header> target) {
         super.onBuildHeaders(target);
         setContentView(R.layout.settings_layout);
-        loadHeadersFromResource(R.xml.settings_headers, target);
+        loadHeadersFromResource(R.xml.svm_headers, target);
     }
 
     @Override

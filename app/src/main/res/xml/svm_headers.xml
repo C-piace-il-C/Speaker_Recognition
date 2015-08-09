@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:title="@string/labeling">
 
-</PreferenceScreen>
+    </header>
+    <header
+        android:title="@string/scaling">
+
+    </header>
+    <header
+        android:title="@string/training">
+
+    </header>
+    <header
+        android:title="@string/cross_validating">
+
+    </header>
+    <header
+        android:title="@string/modeling">
+
+    </header>
+</preference-headers>

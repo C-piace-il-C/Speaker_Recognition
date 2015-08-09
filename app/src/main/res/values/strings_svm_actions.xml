@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings related to SVM actions -->
+
+    <!-- String for the headers -->
+    <string name="training">Training</string>
+    <string name="cross_validating">Cross validating</string>
+    <string name="scaling">Scaling</string>
+    <string name="labeling">Labeling</string>
+
+</resources>
