@@ -6,6 +6,6 @@
         />
 
     <header
-        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.ModelingFragments"
+        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.ModelingFragment"
         android:title="@string/modeling"/>
 </preference-headers>

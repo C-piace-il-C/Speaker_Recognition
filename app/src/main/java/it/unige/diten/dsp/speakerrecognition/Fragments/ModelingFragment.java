@@ -17,7 +17,7 @@ import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
-public class ModelingFragments extends PreferenceFragment {
+public class ModelingFragment extends PreferenceFragment {
     private static String speakersNameKey;
     private static String trainingFilesKey;
     private static String cCoefficientsKey;
