@@ -1,5 +1,3 @@
-// Completely tested.
-
 package it.unige.diten.dsp.speakerrecognition;
 
 /**
@@ -41,6 +39,6 @@ public abstract class DCT
 
     public static double[] computeDCT(double[] src)
     {
-        return computeDCT(src,src.length);
+        return computeDCT(src, src.length);
     }
 }
