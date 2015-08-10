@@ -1,32 +1,17 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.preference.PreferenceManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
-
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Environment;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -49,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.prefs.PreferenceChangeEvent;
 import java.util.regex.Pattern;
 
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
@@ -245,6 +229,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
+            super.onResume();
+            startActivity(i);
+            return true;
+        }
+        else if(id == R.id.SVM_actions)
+        {
+            Intent i = new Intent(this, SVMActivity.class);
             super.onResume();
             startActivity(i);
             return true;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:title="@string/labeling"
+        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.LabelingFragment">
+
+    </header>
+    <header
+        android:title="@string/scaling"
+        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.ScalingFragment">
+
+    </header>
+    <header
+        android:title="@string/training"
+        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.TrainingFragment">
+
+    </header>
+    <header
+        android:title="@string/cross_validating"
+        android:fragment="it.unige.diten.dsp.speakerrecognition.Fragments.CrossValidationFragment">
+
+    </header>
+    <header
+        android:title="@string/modeling">
+
+    </header>
+</preference-headers>
