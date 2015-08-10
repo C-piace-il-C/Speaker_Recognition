@@ -37,14 +37,21 @@ public class CoefficientsDialog extends DialogFragment{
     private String gEndKey;
     private String gStepKey;
 
-    String[] defaultValues = new String[] {
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
-            "12", "13", "14", "15", "-15", "-14", "-13", "-12", "-11",
-            "-10", "-9", "-8","-7", "-6", "-5", "-4", "-3", "-2", "-1"
+    String[] logValues = new String[] {
+            "-15", "-14", "-13", "-12", "-11", "-10", "-9", "-8","-7",
+            "-6", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4",
+            "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"
+    };
+
+    String[] stepValues = new String[] {
+            "-15", "-14", "-13", "-12", "-11", "-10", "-9", "-8","-7",
+            "-6", "-5", "-4", "-3", "-2", "-1", "1", "2", "3", "4",
+            "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"
     };
 
     final int minValue = 0;
-    final int maxValue = defaultValues.length - 1;
+    final int logMaxValue = logValues.length - 1;
+    final int stepMaxValue = logMaxValue - 1;
 
     private SharedPreferences settings;
 
@@ -103,16 +110,14 @@ public class CoefficientsDialog extends DialogFragment{
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int start   = startPicker.getValue();
-                        int end     = endPicker.getValue();
+                        int start   = startPicker.getValue() - 15;
+                        int end     = endPicker.getValue() - 15;
                         int step    = stepPicker.getValue();
-                        int middle  = defaultValues.length / 2;
+                        int middle  = stepValues.length / 2;
 
                         // The index is different from the actual value, method valid only if the
-                        // array is antisymmetric
-                        start = start <= middle ? start + 1 : start - maxValue - 1;
-                        end   = end   <= middle ? end   + 1 : end   - maxValue - 1;
-                        step  = step  <= middle ? step  + 1 : step  - maxValue - 1;
+                        // array is symmetric
+                        step  = step  <= middle ? step  - middle : step - middle + 1;
 
                         // If true, the user is trying to go from a positive value to a negative
                         // value with a positive step or vice versa
@@ -171,21 +176,21 @@ public class CoefficientsDialog extends DialogFragment{
     {
         // Initialize startPicker
         startPicker = (NumberPicker) myView.findViewById(R.id.cStartPicker);
-        startPicker.setMaxValue(maxValue);
+        startPicker.setMaxValue(logMaxValue);
         startPicker.setMinValue(minValue);
-        startPicker.setDisplayedValues(defaultValues);
+        startPicker.setDisplayedValues(logValues);
 
         // Initialize endPicker
         endPicker = (NumberPicker) myView.findViewById(R.id.cEndPicker);
         endPicker.setMinValue(minValue);
-        endPicker.setMaxValue(maxValue);
-        endPicker.setDisplayedValues(defaultValues);
+        endPicker.setMaxValue(logMaxValue);
+        endPicker.setDisplayedValues(logValues);
 
         // Initialize stepPicker
         stepPicker = (NumberPicker) myView.findViewById(R.id.cStepPicker);
         stepPicker.setMinValue(minValue);
-        stepPicker.setMaxValue(maxValue);
-        stepPicker.setDisplayedValues(defaultValues);
+        stepPicker.setMaxValue(stepMaxValue);
+        stepPicker.setDisplayedValues(stepValues);
 
         int start, end, step;
 
@@ -207,10 +212,11 @@ public class CoefficientsDialog extends DialogFragment{
                 step  = 1;
                 break;
         }
+        int middle = stepValues.length / 2;
         // The index is different from the actual value
-        startPicker.setValue(start  < 0 ? start + maxValue + 1 : start - 1);
-        endPicker.setValue  (end    < 0 ? end   + maxValue + 1 : end   - 1);
-        stepPicker.setValue (step   < 0 ? step  + maxValue + 1 : step  - 1);
+        startPicker.setValue(start + 15);
+        endPicker.setValue  (end + 15);
+        stepPicker.setValue (step < 0 ? step + middle : step + middle + 1);
 
     }
 
