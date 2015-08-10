@@ -192,6 +192,11 @@ public class CoefficientsDialog extends DialogFragment{
         stepPicker.setMaxValue(stepMaxValue);
         stepPicker.setDisplayedValues(stepValues);
 
+        // Disable FOCUSABILITY.
+        startPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        endPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        stepPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
         int start, end, step;
 
         switch (tag) {
