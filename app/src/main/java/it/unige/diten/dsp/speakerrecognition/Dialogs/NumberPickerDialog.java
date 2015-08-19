@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 import it.unige.diten.dsp.speakerrecognition.Fragments.FeatureExtractionFragment;
+import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.SettingsActivity;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
@@ -142,6 +143,7 @@ public class NumberPickerDialog extends DialogFragment{
             // initialized in this scope in the second case
             case(frameTag): {
                 FeatureExtractionStructure.frameDuration = value;
+                Framer.FRAME_LENGTH_MS = value;
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt(frameDurationKey, value);
                 editor.putInt(preferences[1].getKey(),
@@ -149,7 +151,7 @@ public class NumberPickerDialog extends DialogFragment{
                 editor.apply();
                 preferences[0].setSummary("" + value);
                 preferences[1].setSummary(
-                             "" + (FeatureExtractionStructure.sampleRate * value / 1000)
+                        "" + (FeatureExtractionStructure.sampleRate * value / 1000)
                 );
                 break;
             }

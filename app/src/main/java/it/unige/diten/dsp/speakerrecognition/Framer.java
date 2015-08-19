@@ -2,6 +2,8 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import android.util.Log;
 
+import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
+
 
 /**
  * Framer
@@ -14,9 +16,9 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public final static int     FRAME_LENGTH_MS = 32;
+    public static int           FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public final static int     SAMPLE_RATE = 8000;
+    public static int           SAMPLE_RATE = FeatureExtractionStructure.sampleRate;
     /// Number of samples in a single frame
     public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
@@ -38,6 +40,7 @@ public abstract class Framer
     public static void readFromFile(String fileName) throws Exception
     {
         int correctFrameCount;
+
         WAVCreator readWAV = new WAVCreator(fileName);
         readWAV.read();
 
