@@ -14,13 +14,13 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public final static int     FRAME_LENGTH_MS = 32;
+    public static int           FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public  static int     SAMPLE_RATE = 8000;
+    public static int           SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
-    public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
+    public static int           SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
-    public final static float   FRAME_OVERLAP_FACTOR = .75f;
+    public static float         FRAME_OVERLAP_FACTOR = .75f;
     /// Number of Byte(s) per sample
     public final static int     BPS = 2;
     /// Frame size in Bytes
@@ -75,7 +75,7 @@ public abstract class Framer
             // Copy samples to frame data (zero filling is included).
             for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i] * hammingWindow[i];
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
             }
 
             // Removal of low energy frames
