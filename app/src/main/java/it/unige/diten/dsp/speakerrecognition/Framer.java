@@ -14,9 +14,9 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public final static int     FRAME_LENGTH_MS = 32;
+    public static int     FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public final static int     SAMPLE_RATE = 8000;
+    public static int     SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
     public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
@@ -64,30 +64,30 @@ public abstract class Framer
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
         correctFrameCount = frameCount;
-        for (int £ = 0; £ < frameCount; £++)
+        for (int j = 0; j < frameCount; j++)
         {
-            frames[£] = new Frame();
-            frames[£].data = new double[SAMPLES_IN_FRAME];
+            frames[j] = new Frame();
+            frames[j].data = new double[SAMPLES_IN_FRAME];
 
             // Copy samples to frame data (zero filling is included).
-            for (int i = 0; (i < SAMPLES_IN_FRAME) && (£ * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
+            for (int i = 0; (i < SAMPLES_IN_FRAME) && (j * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[£].data[i] = audioSamples[£ * FRAME_SHORT_SPACING + i];
+                frames[j].data[i] = audioSamples[j * FRAME_SHORT_SPACING + i];
             }
 
             // Removal of low energy frames
             // if frame is invalid, make it null
 
-            frames[£].ft = new Complex[frames[£].data.length];
-            for (int $ = 0; $ < frames[£].data.length; $++)
-                frames[£].ft[$] = new Complex();
-            DFT.computeDFT(frames[£].data, frames[£].ft);
+            frames[j].ft = new Complex[frames[j].data.length];
+            for (int $ = 0; $ < frames[j].data.length; $++)
+                frames[j].ft[$] = new Complex();
+            DFT.computeDFT(frames[j].data, frames[j].ft);
 
-            double energy = FCleaner.extractFreqEnergy(frames[£].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
+            double energy = FCleaner.extractFreqEnergy(frames[j].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
             TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
 
             if(energy < ENERGY_THRESHOLD) {
-                frames[£] = null;
+                frames[j] = null;
                 correctFrameCount--;
             }
 
