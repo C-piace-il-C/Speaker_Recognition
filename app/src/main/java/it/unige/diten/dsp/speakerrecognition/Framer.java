@@ -14,13 +14,13 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public static int     FRAME_LENGTH_MS = 32;
+    public static int           FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public static int     SAMPLE_RATE = 8000;
+    public static int           SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
-    public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
+    public static int           SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
-    public final static float   FRAME_OVERLAP_FACTOR = .75f;
+    public static float         FRAME_OVERLAP_FACTOR = .75f;
     /// Number of Byte(s) per sample
     public final static int     BPS = 2;
     /// Frame size in Bytes
@@ -30,7 +30,7 @@ public abstract class Framer
     /// Distance in Shorts between the beginning of a frame and the following
     public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
-    public final static double  ENERGY_THRESHOLD = 5E7;
+    public static double        ENERGY_THRESHOLD = 5E7;
     /// Container for all frames
     private static Frame[] frames = null;
 

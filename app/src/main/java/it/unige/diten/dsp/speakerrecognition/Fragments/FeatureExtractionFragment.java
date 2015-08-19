@@ -1,6 +1,7 @@
 package it.unige.diten.dsp.speakerrecognition.Fragments;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -13,22 +14,20 @@ import android.preference.PreferenceScreen;
 
 import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
+import it.unige.diten.dsp.speakerrecognition.Dialogs.ThresholdDialog;
 import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
+import it.unige.diten.dsp.speakerrecognition.Structures.Keys;
 
 public class FeatureExtractionFragment extends PreferenceFragment {
-    private String sampleRateKey;
-    private String frameDurationKey;
-    private String overlapFactorKey;
-    private String samplesInFrameKey;
-    private String frameSizeKey;
 
     private final String[] rates = new String[]
             {"8000", "11025", "16000", "22050", "32000", "44100", "48000"};
 
 
     private PreferenceManager preferenceManager;
+    private FragmentManager   fragmentManager;
 
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
@@ -40,12 +39,7 @@ public class FeatureExtractionFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.pref_extraction);
 
         preferenceManager = getPreferenceManager();
-
-        sampleRateKey    = getString(R.string.sample_rate_key);
-        frameDurationKey = getString(R.string.frame_duration_key);
-        samplesInFrameKey= getString(R.string.samples_in_frame_key);
-        overlapFactorKey = getString(R.string.frame_overlap_factor_key);
-        frameSizeKey     = getString(R.string.frame_size_key);
+        fragmentManager   = getFragmentManager();
 
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = settings.edit();
@@ -58,7 +52,7 @@ public class FeatureExtractionFragment extends PreferenceFragment {
     private void initRates()
     {
         int maxRate = getValidSampleRates();
-        ListPreference listPreference = (ListPreference) findPreference(sampleRateKey);
+        ListPreference listPreference = (ListPreference) findPreference(Keys.sampleRate);
         String[] validRates = new String[maxRate];
         System.arraycopy(rates, 0, validRates, 0, maxRate);
         listPreference.setEntries(validRates);
@@ -74,66 +68,91 @@ public class FeatureExtractionFragment extends PreferenceFragment {
         Preference samplesInFrame;
         Preference overlapFactor;
         Preference frameSize;
+        Preference energyThreshold;
         // TODO: join this two pieces
-        frameDuration           = preferenceManager.findPreference(frameDurationKey);
-        sampleRate              = preferenceManager.findPreference(sampleRateKey);
-        samplesInFrame          = preferenceManager.findPreference(samplesInFrameKey);
-        overlapFactor           = preferenceManager.findPreference(overlapFactorKey);
-        frameSize               = preferenceManager.findPreference(frameSizeKey);
+        frameDuration           = preferenceManager.findPreference(Keys.frameDuration);
+        sampleRate              = preferenceManager.findPreference(Keys.sampleRate);
+        samplesInFrame          = preferenceManager.findPreference(Keys.samplesInFrame);
+        overlapFactor           = preferenceManager.findPreference(Keys.overlapFactor);
+        frameSize               = preferenceManager.findPreference(Keys.frameSize);
+        energyThreshold         = preferenceManager.findPreference(Keys.energyThreshold);
 
-        frameDuration .setSummary("" + settings.getInt(frameDurationKey, 32));
-        sampleRate    .setSummary("" + settings.getString(sampleRateKey, "8000"));
-        samplesInFrame.setSummary("" + settings.getInt(samplesInFrameKey, 256));
-        overlapFactor .setSummary("0." + settings.getInt(overlapFactorKey, 75));
-        frameSize     .setSummary("" + settings.getInt(frameSizeKey, 512));
+        frameDuration   .setSummary("" + settings.getInt(Keys.frameDuration, 32));
+        sampleRate      .setSummary("" + settings.getString(Keys.sampleRate, "8000"));
+        samplesInFrame  .setSummary("" + settings.getInt(Keys.samplesInFrame, 256));
+        overlapFactor   .setSummary("0." + settings.getInt(Keys.overlapFactor, 75));
+        frameSize       .setSummary("" + settings.getInt(Keys.frameSize, 512));
+        // TODO: set the summary with a more elegant number
+        //energyThreshold .setSummary(settings.getString(Keys.energyThreshold, "5e7"));
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         String key = preference.getKey();
-        if(key.equals(sampleRateKey))
+
+        switch(key)
         {
-            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int value = Integer.parseInt(newValue.toString());
+            case "frame_duration":
+            {
+                DialogFragment dialogFragment =
+                        NumberPickerDialog.newInstance(R.string.frame_duration, preferenceManager);
+                super.onResume();
+                dialogFragment.show(fragmentManager, "frame_duration");
+                break;
+            }
 
-                    FeatureExtractionStructure.sampleRate = value;
-                    Framer.SAMPLE_RATE = value;
-                    preference.setSummary("" + value);
+            case "sample_rate":
+            {
+                preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        int value = Integer.parseInt(newValue.toString());
 
-                    Preference samplesInFramePreference =
-                            getPreferenceManager()
-                                    .findPreference(getString(R.string.samples_in_frame_key));
+                        FeatureExtractionStructure.sampleRate = value;
+                        Framer.SAMPLE_RATE = value;
+                        preference.setSummary("" + value);
 
-                    samplesInFramePreference.setSummary
-                            (
-                               "" + (value *
-                                       FeatureExtractionStructure.frameDuration / 1000));
+                        Preference samplesInFramePreference =
+                                getPreferenceManager()
+                                        .findPreference(Keys.samplesInFrame);
 
-                    editor.putString(sampleRateKey, "" + value);
-                    editor.putInt(samplesInFrameKey,
-                            (value *
-                                    FeatureExtractionStructure.frameDuration / 1000));
-                    editor.apply();
+                        samplesInFramePreference.setSummary
+                                (
+                                        "" + (value *
+                                                FeatureExtractionStructure.frameDuration / 1000));
 
-                    return true;
-                }
-            });
-        }
-        else if(key.equals(frameDurationKey))
-        {
-            DialogFragment dialogFragment =
-                    NumberPickerDialog.newInstance(R.string.frame_duration, getPreferenceManager());
-            super.onResume();
-            dialogFragment.show(getFragmentManager(), "frame_duration");
-        }
-        else if(key.equals(overlapFactorKey))
-        {
-            OverlapFactorDialog overlapFactorDialog =
-                    OverlapFactorDialog.newInstance(getPreferenceManager());
-            super.onResume();
-            overlapFactorDialog.show(getFragmentManager(), "overlap_factor");
+                        editor.putString(Keys.sampleRate, "" + value);
+                        editor.putInt(Keys.samplesInFrame,
+                                (value *
+                                        FeatureExtractionStructure.frameDuration / 1000));
+                        editor.apply();
+
+                        return true;
+                    }
+                });
+                break;
+            }
+
+            case "energy_threshold":
+            {
+                ThresholdDialog thresholdDialog =
+                        ThresholdDialog.newInstance(preferenceManager);
+                super.onResume();
+                thresholdDialog.show(fragmentManager, "energy_threshold");
+                break;
+            }
+
+            case "frame_overlap_factor":
+            {
+                OverlapFactorDialog overlapFactorDialog =
+                        OverlapFactorDialog.newInstance(preferenceManager);
+                super.onResume();
+                overlapFactorDialog.show(fragmentManager, "overlap_factor");
+                break;
+            }
+
+            default:
+                return false;
         }
         return true;
     }
