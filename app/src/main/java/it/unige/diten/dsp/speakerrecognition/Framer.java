@@ -14,29 +14,30 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public final static int FRAME_LENGTH_MS = 32;
+    public final static int     FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public final static int SAMPLE_RATE = 8000;
+    public final static int     SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
-    public final static int SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
+    public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
-    public final static float FRAME_OVERLAP_FACTOR = .75f;
+    public final static float   FRAME_OVERLAP_FACTOR = .75f;
     /// Number of Byte(s) per sample
-    public final static int BPS = 2;
+    public final static int     BPS = 2;
     /// Frame size in Bytes
-    public final static int FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
+    public final static int     FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
     /// Distance in Bytes between the beginning of a frame and the following
-    public final static int FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
+    public final static int     FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
     /// Distance in Shorts between the beginning of a frame and the following
-    public final static int FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
-
+    public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
+    /// Generic energy threshold
+    public final static double  ENERGY_THRESHOLD = 5E7;
     /// Container for all frames
     private static Frame[] frames = null;
 
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-
+        int correctFrameCount;
         WAVCreator readWAV = new WAVCreator(fileName);
         readWAV.read();
 
@@ -62,18 +63,44 @@ public abstract class Framer
         }
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
-
-        for (int C = 0; C < frameCount; C++)
+        correctFrameCount = frameCount;
+        for (int £ = 0; £ < frameCount; £++)
         {
-            frames[C] = new Frame();
-            frames[C].data = new double[SAMPLES_IN_FRAME];
+            frames[£] = new Frame();
+            frames[£].data = new double[SAMPLES_IN_FRAME];
 
             // Copy samples to frame data (zero filling is included).
-            for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
+            for (int i = 0; (i < SAMPLES_IN_FRAME) && (£ * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
+                frames[£].data[i] = audioSamples[£ * FRAME_SHORT_SPACING + i];
             }
+
+            // Removal of low energy frames
+            // if frame is invalid, make it null
+
+            frames[£].ft = new Complex[frames[£].data.length];
+            for (int $ = 0; $ < frames[£].data.length; $++)
+                frames[£].ft[$] = new Complex();
+            DFT.computeDFT(frames[£].data, frames[£].ft);
+
+            double energy = FCleaner.extractFreqEnergy(frames[£].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
+            TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
+
+            if(energy < ENERGY_THRESHOLD) {
+                frames[£] = null;
+                correctFrameCount--;
+            }
+
         }
+
+        Frame[] frames2 = new Frame[correctFrameCount];
+        int C = 0;
+        for(int i = 0; i < correctFrameCount; i++)
+        {
+            if(frames[i] != null)
+                frames2[C++] = frames[i];
+        }
+        frames = frames2;
 
     }
 

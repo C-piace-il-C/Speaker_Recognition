@@ -52,6 +52,8 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         try
         {
             // params[0] = name of the audio file
+            // TODO rimuovi la seguente linea di codice (era per test)
+            //params[0] = MainActivity.PATH + "/" + "aceDavide0.wav";
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -159,7 +161,6 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
 
 
-        // TODO sostituisci 2 con MainActivity.numCores
         int numCores = MainActivity.numCores;
 
 

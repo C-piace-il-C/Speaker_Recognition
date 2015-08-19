@@ -11,7 +11,7 @@ package it.unige.diten.dsp.speakerrecognition;
 public class Frame
 {
     public double[] data;
-
+    public Complex[] ft;
     public Frame()
     {
         data = null;
