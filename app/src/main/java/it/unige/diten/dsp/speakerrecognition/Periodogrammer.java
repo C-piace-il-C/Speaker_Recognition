@@ -64,22 +64,23 @@ public class Periodogrammer
             case TT_FFT:
                 Complex[] cWindowedFrame = new Complex[size];
 
-                for( int C = 0; C < size; C++) {
-
+                for( int C = 0; C < size; C++)
+                {
                     cWindowedFrame[C] = new Complex();
                     cWindowedFrame[C].Re = frame.data[C] * hammingWindow[C];
                     cWindowedFrame[C].Im = 0;
-
-                    //windowedFrame[C] = frame.data[C] * hammingWindow[C];
                 }
 
                 ft = FFT.fft(cWindowedFrame);
 
                 break;
 
+
             default:
                 throw new IllegalStateException();
         }
+
+        // usa la trasformata per calcolare energie..
 
 
         // Compute periodogram

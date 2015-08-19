@@ -42,7 +42,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         cProgressRecorder.setProgressNumberFormat(null);
         cProgressRecorder.setMax(100);
 
-        cProgressRecorder = ProgressDialog.show(cContext, "Extracting features...", "just deal with it.");
+        cProgressRecorder = ProgressDialog.show(cContext, "Removing invalid frames...", "Energy based removal");
     }
 
     @Override
@@ -52,6 +52,8 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         try
         {
             // params[0] = name of the audio file
+            // TODO rimuovi la seguente linea di codice (era per test)
+            //params[0] = MainActivity.PATH + "/" + "aceDavide0.wav";
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -97,9 +99,13 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     @Override
     protected void onProgressUpdate(Void... out)
     {
-        int frameCount = Framer.getFrames().length;
-        //int perc = (int)Math.floor(((float)frameExtracted / (float)frameCount * 100.0));
-        cProgressRecorder.setMessage(frameExtracted + "/" + frameCount);
+        if(frameExtracted > 0)
+        {
+            int frameCount = Framer.getFrames().length;
+            //int perc = (int)Math.floor(((float)frameExtracted / (float)frameCount * 100.0));
+            cProgressRecorder.setTitle("Extracting features...");
+            cProgressRecorder.setMessage(frameExtracted + "/" + frameCount);
+        }
     }
 
     @Override
@@ -159,7 +165,6 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         double[][] mfcc = new double[frames.length][]; // No need to create rows (FEThread already does it)
 
 
-        // TODO sostituisci 2 con MainActivity.numCores
         int numCores = MainActivity.numCores;
 
 
