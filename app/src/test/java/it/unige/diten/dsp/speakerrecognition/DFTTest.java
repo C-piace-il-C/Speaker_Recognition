@@ -549,10 +549,16 @@ public class DFTTest extends TestCase
 
         DFT.computeDFT(input,output);
 
+        //Printo su file testuale
+        for(int C = 0; C < 256; C++) {
+            TextWriter.appendText("C:\\Tests\\output.txt", "output = " +
+                    String.valueOf(output[C].getSquareLength()) + " expected = " +
+                    String.valueOf(expectation[C].getSquareLength()));
+        }
 
         for(int C = 0; C < 256; C++)
         {
-            Assert.assertTrue(areEqual(expectation[C],output[C]));
+            Assert.assertTrue(areEqual(expectation[C], output[C]));
         }
 
     }
@@ -628,5 +634,4 @@ public class DFTTest extends TestCase
 
         return( abs1 <= prec && abs2 <= prec );
     }
-
 }

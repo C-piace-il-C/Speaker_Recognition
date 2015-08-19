@@ -24,8 +24,13 @@ public abstract class DFT
 
         int     N       = src.length;
         double  stride  = -2 * Math.PI / N;
+        boolean Nparity = ((N & 1) == 0);
 
-        for (int k = 0; k < N; k++)
+        int kMax = N >> 1;
+        if(!Nparity)
+            kMax++;
+
+        for (int k = 0; k <= kMax; k++)
         {
             dest[k].Re  = .0;
             dest[k].Im  = .0;
@@ -38,6 +43,20 @@ public abstract class DFT
                 dest[k].Im  += src[n] * Math.sin(angle);
             }
         }
+
+        double tempRe, tempIm;
+        for(int k = kMax; k < N; k++)
+        {
+            int half = N/2 + 1;
+            int refIndex = half - (k + 1 - half) - 1;
+
+            tempRe = dest[refIndex].Re;
+            tempIm = -dest[refIndex].Im;
+            dest[k].Re = tempRe;
+            dest[k].Im = tempIm;
+            TextWriter.appendText("C:\\Tests\\debugDFT.txt", "k = " + String.valueOf(k) + " - ref: "+String.valueOf(refIndex));
+        }
+
     }
 
     /**
