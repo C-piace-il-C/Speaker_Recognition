@@ -27,7 +27,7 @@ public class RecognitionThread implements Runnable
         // Eventually, all values of C (from 0 to frameCount-1) are covered.
         for(int C = threadNumber; C < frameCount; C += threadCount)
         {
-            for(int M = 0; M < MySVM_Async.modelCount; M++)
+            for(int M = 0; M < MySVM_Async.modelCnt; M++)
             {
                 resultPtr[M][(int)svm.svm_predict(models[M], featuresPtr[M][C])]++;
             }
