@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/thresholdText"
+        android:layout_alignBottom="@+id/thresholdView"
+        android:layout_toLeftOf="@+id/thresholdView"
+        android:layout_toStartOf="@+id/thresholdView" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/thresholdPicker"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="*10"
+        android:id="@+id/thresholdView"
+        android:layout_alignBottom="@+id/thresholdPicker"
+        android:layout_toLeftOf="@+id/thresholdPicker"
+        android:layout_toStartOf="@+id/thresholdPicker" />
+</RelativeLayout>
