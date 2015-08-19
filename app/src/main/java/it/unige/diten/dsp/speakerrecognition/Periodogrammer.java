@@ -9,7 +9,7 @@ package it.unige.diten.dsp.speakerrecognition;
 public class Periodogrammer
 {
     private Complex[] ft;
-    private double[] hammingWindow;
+    public static double[] hammingWindow;
     private TransformSelector transformSelector;
 
     public Periodogrammer(int size)
@@ -46,7 +46,7 @@ public class Periodogrammer
 
         // Compute DFT of windowed sequence
 
-        switch (transformSelector) {
+        /*switch (transformSelector) {
             case TT_DFT:
                 double[]  windowedFrame = new double[size];
 
@@ -78,14 +78,14 @@ public class Periodogrammer
 
             default:
                 throw new IllegalStateException();
-        }
+        }*/
 
         // usa la trasformata per calcolare energie..
 
 
         // Compute periodogram
         for (int C = 0; C < size; C++)
-            periodogram[C] = ft[C].getSquareLength() / N;
+            periodogram[C] = frame.ft[C].getSquareLength() / N;
 
         return (periodogram);
     }
