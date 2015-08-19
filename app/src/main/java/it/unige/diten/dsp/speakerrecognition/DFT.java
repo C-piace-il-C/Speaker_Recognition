@@ -47,24 +47,28 @@ public abstract class DFT
      */
     public static void computeIDFT(Complex[] src, double[] dest)
     {
-        if(dest.length < src.length)
-            return;
+        if(dest.length < src.length) { return; }
 
-        int N = dest.length;
+        int N               = dest.length;
+        double[] lengths    = new double[N];
+        double[] phases     = new double[N];
+
+        for (int i = 0; i < N; i++)
+        {
+            dest[i]         = .0;
+            lengths[i]      = src[i].getLength();
+            phases[i]       = src[i].getPhase();
+        }
 
         for(int n = 0; n < N; n++)
         {
-            dest[n] = 0;
             for(int k = 0; k < N; k++)
             {
-                // src[k] = src[k] * e^(jnk2PI/N) => solo uno sfasamento
-                src[k].addPhase(2.0*Math.PI / (double)N*(double)k*(double)n);
-                // add the real part
-                dest[n] += src[k].Re;
+                dest[n]    += lengths[k] * Math.cos(2 * Math.PI / (N * k * n) + phases[k]);
             }
-            // Scaling factor
-            dest[n] /= (double)N;
-            // If the result has too much precision, round it
+
+            // Scale output
+            dest[n] /= N;
         }
     }
 }
