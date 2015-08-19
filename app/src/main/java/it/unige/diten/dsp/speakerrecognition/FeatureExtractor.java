@@ -36,6 +36,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
     protected void onPreExecute()
     {
+        frameExtracted = 0;
         cContext = MainActivity.context;
 
         cProgressRecorder = new ProgressDialog(cContext);
