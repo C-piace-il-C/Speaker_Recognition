@@ -5,29 +5,63 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import it.unige.diten.dsp.speakerrecognition.libsvm.*;
+import it.unige.diten.dsp.speakerrecognition.libsvm.svm_problem;
 
 public abstract class CrossValidation {
 
-    public static double[][]   results;
-    public static double[]     percentages;
-    public static int[] exactResults;
     // TODO the user must not enter invalid values for those six variables
-    public static int cStart, cEnd, cStep;
-    public static int gStart, gEnd, gStep;
-    public static String filename;
+    private static int cStart, cEnd, cStep;
+    private static int gStart, gEnd, gStep;
+    private static String filename;
 
-    public static int cLength;
-    public static int gLength;
-    public static int[] log_C_coef;
-    public static int[] log_Gamma_coef;
-    public static String[] parameters;
+    // TODO: implement a good method of checking if the value is valid
+    public static boolean set_C_values(int cStart, int cEnd, int cStep) {
+        if((cEnd - cStart) % cStep == 0) {
+            CrossValidation.cStart = cStart;
+            CrossValidation.cEnd = cEnd;
+            CrossValidation.cStep = cStep;
 
-    static FileOutputStream fileOutputStream;
-    static BufferedOutputStream bufferedOutputStream;
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean set_Gamma_values(int gStart, int gEnd, int gStep) {
+        if((gEnd - gStart) % gStep == 0) {
+            CrossValidation.gStart = gStart;
+            CrossValidation.gEnd = gEnd;
+            CrossValidation.gStep = gStep;
+
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean setFilename(String filename) {
+        if(filename != null) {
+            CrossValidation.filename = filename;
+
+            return true;
+        }
+        return false;
+    }
+
+    private static int cLength;
+    private static int gLength;
+    private static int[] log_C_coef;
+    private static int[] log_Gamma_coef;
+
+    private static String[] parameters;
+    private static double[][]   results;
+    public static int[] exactResults;
+
+    private static BufferedOutputStream bufferedOutputStream;
+
 
 
     public static void cross_validate(svm_problem svmProblem) {
+
+        Coefficients coefficients = new Coefficients();
 
         // Number of step = [(End - Start) / Step] + 1
         // Valid only if the Step is adequate for starting at Start and arriving exactly at End
@@ -48,13 +82,19 @@ public abstract class CrossValidation {
         // combination of C and Gamma
         results = new double[cLength * gLength][LoadFeatureFile.l];
 
+        // Preparing the coefficients structure for Cross_MThread
+        coefficients.cLength        = cLength;
+        coefficients.gLength        = gLength;
+        coefficients.log_C_coef     = log_C_coef;
+        coefficients.log_Gamma_coef = log_Gamma_coef;
+
         // TODO: replace numCores with actual cores on the device
         int numCores = 8;
 
         try {
             Thread[] threads = new Thread[numCores];
             for (int C = 0; C < numCores; C++) {
-                threads[C] = new Thread(new Cross_MThread(C, numCores, svmProblem));
+                threads[C] = new Thread(new Cross_MThread(C, numCores, svmProblem, coefficients, parameters, results));
                 threads[C].start();
             }
             for (int C = 0; C < numCores; C++)
@@ -104,7 +144,7 @@ public abstract class CrossValidation {
     private static void calculatePercentages(svm_problem svmProblem)
     {
         exactResults = new int[results.length];
-        percentages = new double[results.length];
+        double[] percentages = new double[results.length];
 
         // For every combination of C and G
         for(int i = 0; i < cLength * gLength; i++)
@@ -124,8 +164,9 @@ public abstract class CrossValidation {
     {
         filename += ".coeff";
 
+
         try {
-            fileOutputStream = new FileOutputStream(filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
             bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
         }
         catch (FileNotFoundException e) {
@@ -143,4 +184,7 @@ public abstract class CrossValidation {
             e.printStackTrace();
         }
     }
+
 }
+
+

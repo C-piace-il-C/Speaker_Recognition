@@ -1,9 +1,12 @@
 package it.unige.diten.dsp.speakerrecognition.svmModeling;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +23,7 @@ import java.util.Locale;
 public abstract class LabelFeatureFile {
 
     static String[] names;
+    static long startTime, endTime;
     /**
      * This function is called when the labelling is performed on .ff files created by the application
      * @param params    an array containing paths of the files to be labeled
@@ -29,7 +33,7 @@ public abstract class LabelFeatureFile {
     public static String label(String[] params) throws Exception
     {
         // TODO: replace this line with names selected
-        names = new String[]{"Andrea", "Davide", "Emanuele"};
+        names = new String[]{"Andrea"}; //, "Davide", "Emanuele"};
 
         String[] sameNamePath = groupFilesByName(params);
         String toBeMerged = "";
@@ -63,6 +67,10 @@ public abstract class LabelFeatureFile {
             fileWriter = new FileWriter(mergedFile);
             bufferedWriter = new BufferedWriter(fileWriter);
 
+            startTime = System.nanoTime();
+
+// Using line-by-line reading/writing
+
             for (File file : files) {
                 FileInputStream fileInputStream = new FileInputStream(file);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -75,9 +83,52 @@ public abstract class LabelFeatureFile {
                 }
             }
 
-            bufferedWriter.close();
+            // Using chunk-by-chunk reading/writing
+/*
+            for (File file : files) {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
+                char[] line = new char[(int) file.length()];
+                int chunkSize = 8192;
+                int iterations = (int)file.length() / chunkSize;
+                int remainder = (int) file.length() % chunkSize;
+                int index = 0;
+
+                for(int C = 0; C < iterations; C++)
+                {
+                    bufferedReader.read(line, C * chunkSize, chunkSize);
+                }
+                bufferedReader.read(line, iterations * chunkSize, remainder);
+
+                StringBuilder st = new StringBuilder();
+                st.append(line);
+
+                do {
+                    st.insert(index, i + " ");
+                    index = st.indexOf("\n", index + 2) + 1;
+                }
+                while(index != st.lastIndexOf("\n") + 1);
+
+                String string = st.toString();
+                iterations = string.length() / chunkSize;
+                remainder = string.length() % chunkSize;
+
+                for(int C = 0; C < iterations; C++)
+                {
+                    bufferedWriter.write(string, C * chunkSize, chunkSize);
+                }
+                bufferedWriter.write(string, (iterations * chunkSize), remainder);
+                bufferedWriter.flush();
+            }
+*/
+
+
+            bufferedWriter.close();
+            endTime = System.nanoTime();
         }
+
+        System.out.println("\n\n\n Time elapsed: " + (endTime - startTime));
 
         // Constructing the filename
         String mergedFileName = path[0][0].substring(0, path[0][0].lastIndexOf('/') + 1);
@@ -86,7 +137,9 @@ public abstract class LabelFeatureFile {
             mergedFileName += name;
         mergedFileName += ".unscaled";
 
-        return MergeFile.mergeFiles(toBeMerged, mergedFileName);
+        MergeFile.mergeFiles(toBeMerged, mergedFileName);
+
+        return null;
     }
 
     private static String getCurrentDate()
@@ -138,19 +191,16 @@ public abstract class LabelFeatureFile {
         protected static String[] mergeFiles(final String[] groupOfPaths, final String[] identifier) throws IOException
         {
             File[]          files;
-            FileWriter      fileWriter;
-            BufferedWriter  bufferedWriter;
 
             String[] newPaths = new String[identifier.length];
 
             // For each group of paths
-            for(int i = 0; i < groupOfPaths.length; i++)
-            {
+            for(int i = 0; i < groupOfPaths.length; i++) {
                 String[] path = groupOfPaths[0].split(",");
 
                 files = new File[path.length];
                 // Initialize a file for every path
-                for(int j = 0; j < files.length; j++)
+                for (int j = 0; j < files.length; j++)
                     files[j] = new File(path[j]);
 
                 String mergedFile =
@@ -158,25 +208,8 @@ public abstract class LabelFeatureFile {
 
                 newPaths[i] = mergedFile;
 
-                fileWriter =        new FileWriter(mergedFile);
-                bufferedWriter =    new BufferedWriter(fileWriter);
-
-                for(File file : files) {
-                    FileInputStream fileInputStream = new FileInputStream(file);
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-
-                    String line;
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        bufferedWriter.write(line);
-                        bufferedWriter.newLine();
-                    }
-                }
-
-                bufferedWriter.close();
-
+                merge(files, mergedFile);
             }
-
             return newPaths;
         }
 
@@ -193,9 +226,6 @@ public abstract class LabelFeatureFile {
          */
         private static String mergeFiles(final String paths, final String filename) throws IOException {
             File[] files;
-            FileWriter fileWriter;
-            BufferedWriter bufferedWriter;
-
 
             String[] path = paths.split(",");
 
@@ -204,24 +234,37 @@ public abstract class LabelFeatureFile {
             for (int i = 0; i < files.length; i++)
                 files[i] = new File(path[i]);
 
-            fileWriter = new FileWriter(filename);
-            bufferedWriter = new BufferedWriter(fileWriter);
+            merge(files, filename);
+
+            return filename;
+        }
+
+        private static void merge(File[] files, String outFilename) throws IOException
+        {
+            FileOutputStream fileOutputStream = new FileOutputStream(outFilename);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 
             for (File file : files) {
                 FileInputStream fileInputStream = new FileInputStream(file);
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-                String line;
+                int chunkSize = 8192;
+                byte[] line = new byte[chunkSize];
+                long iterations = file.length() / chunkSize;
+                int remainder = (int) file.length() % chunkSize;
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    bufferedWriter.write(line);
-                    bufferedWriter.newLine();
+                for(int C = 0; C < iterations; C++)
+                {
+                    bufferedInputStream.read(line);
+                    bufferedOutputStream.write(line);
                 }
+                line = new byte[remainder];
+                bufferedInputStream.read(line);
+                bufferedOutputStream.write(line);
             }
 
-            bufferedWriter.close();
 
-            return filename;
+            bufferedOutputStream.close();
         }
     }
 }
