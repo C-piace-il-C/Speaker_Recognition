@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
 
         // Modeling-related preferences
         ModelingStructure.speakersNames =
-                preferences.getString(getString(R.string.speakers_name_key), "").split(",");
+                preferences.getString(getString(R.string.speakers_name_key), "").replace(" ", "").split(",");
 
         ModelingStructure.labels = new int[ModelingStructure.speakersNames.length];
         for(int i = 0; i < ModelingStructure.speakersNames.length; i++)

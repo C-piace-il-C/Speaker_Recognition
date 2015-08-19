@@ -20,4 +20,9 @@ public abstract class Keys {
     public static String gEnd               = "g_end";
     public static String gStep              = "g_step";
     public static String folds              = "folds";
+    public static String speakersName       = "speakers_name";
+    public static String trainingFiles      = "training_files";
+    public static String cCoefficients      = "c_coefficient_range";
+    public static String gCoefficients      = "gamma_coefficient_range";
+    public static String labelAssociation   = "label_association";
 }
