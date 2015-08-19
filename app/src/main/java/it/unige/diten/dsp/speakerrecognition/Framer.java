@@ -30,7 +30,7 @@ public abstract class Framer
     /// Distance in Shorts between the beginning of a frame and the following
     public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
-    public final static double  ENERGY_THRESHOLD = 1E5;
+    public static double        ENERGY_THRESHOLD = 1E5;
     /// Container for all frames
     private static Frame[] frames = null;
 
