@@ -19,7 +19,7 @@ import it.unige.diten.dsp.speakerrecognition.libsvm.svm_node;
 public class MySVM_Async extends AsyncTask<Void, Integer, Void>
 {
     public static final String  TAG                 = "MySVM_Async";
-    public static final int     modelCount          = 3;
+    public static final int     modelCount          = 1;
     private static svm_model[]  models              = null;
     private static final int    decisionAlgorithm   = 1;
 
