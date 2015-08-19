@@ -6,38 +6,34 @@ package it.unige.diten.dsp.speakerrecognition;
 public abstract class DD
 {
     public static final int DD_COUNT = FeatureExtractor.MFCC_COUNT;
+
     /**
-     * @brief       Computes the DeltaDelta matrix of the matrix src[f][fe], where
-     *              f is the frame index and fe is the feature index.
-     * @param M     The precision of the DD.
-     * @return      The DeltaDelta matrix, with the same
+     * Computes the DeltaDelta matrix of the matrix src[i][f] (i: frame index, f: feature index).
+     * @param src   Matrix from which are extracted the Delta-Deltas.
+     * @param M     The precision of the DD calculation.
+     * @return      The DeltaDelta matrix, with the same size of src.
      */
     public static double[][] computeDD(double[][] src, int M)
     {
-        double ret[][] = new double[src.length][src[0].length];
+        double DD_Matrix[][] = new double[src.length][src[0].length];
 
         try
         {
-            // TODO sostituisci 2 con MainActivity.numCores
-            int numCores = MainActivity.numCores;
+            Thread[] threads  = new Thread[MainActivity.numCores];
 
-            Thread[] threads = new Thread[numCores];
-            for(int C = 0; C < numCores; C++)
+            // Start workers.
+            for(int i = 0; i < MainActivity.numCores; i++)
             {
-                threads[C] = new Thread(new DDThread(C,numCores,ret,src,M));
-                threads[C].start();
+                threads[i] = new Thread(new DDThread(i, MainActivity.numCores, DD_Matrix, src, M));
+                threads[i].start();
             }
 
-            // Pause the current thread until all threads are done.
-            for (int C = 0; C < numCores; C++)
-                threads[C].join();
+            // Wait workers to finish.
+            for (Thread t : threads) { t.join(); }
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        catch (Exception e) { e.printStackTrace(); }
 
-        return ret;
+        return DD_Matrix;
     }
 
 }
