@@ -18,9 +18,9 @@ public abstract class Framer
     /// Expected sample rate in Hz
     public static int           SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
-    public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
+    public static int           SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
-    public final static float   FRAME_OVERLAP_FACTOR = .75f;
+    public static float         FRAME_OVERLAP_FACTOR = .75f;
     /// Number of Byte(s) per sample
     public final static int     BPS = 2;
     /// Frame size in Bytes

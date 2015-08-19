@@ -18,13 +18,9 @@ import it.unige.diten.dsp.speakerrecognition.Dialogs.ThresholdDialog;
 import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
+import it.unige.diten.dsp.speakerrecognition.Structures.Keys;
 
 public class FeatureExtractionFragment extends PreferenceFragment {
-    private String sampleRateKey;
-    private String frameDurationKey;
-    private String overlapFactorKey;
-    private String samplesInFrameKey;
-    private String frameSizeKey;
 
     private final String[] rates = new String[]
             {"8000", "11025", "16000", "22050", "32000", "44100", "48000"};
@@ -45,12 +41,6 @@ public class FeatureExtractionFragment extends PreferenceFragment {
         preferenceManager = getPreferenceManager();
         fragmentManager   = getFragmentManager();
 
-        sampleRateKey    = getString(R.string.sample_rate_key);
-        frameDurationKey = getString(R.string.frame_duration_key);
-        samplesInFrameKey= getString(R.string.samples_in_frame_key);
-        overlapFactorKey = getString(R.string.frame_overlap_factor_key);
-        frameSizeKey     = getString(R.string.frame_size_key);
-
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = settings.edit();
 
@@ -62,7 +52,7 @@ public class FeatureExtractionFragment extends PreferenceFragment {
     private void initRates()
     {
         int maxRate = getValidSampleRates();
-        ListPreference listPreference = (ListPreference) findPreference(sampleRateKey);
+        ListPreference listPreference = (ListPreference) findPreference(Keys.sampleRate);
         String[] validRates = new String[maxRate];
         System.arraycopy(rates, 0, validRates, 0, maxRate);
         listPreference.setEntries(validRates);
@@ -78,18 +68,22 @@ public class FeatureExtractionFragment extends PreferenceFragment {
         Preference samplesInFrame;
         Preference overlapFactor;
         Preference frameSize;
+        Preference energyThreshold;
         // TODO: join this two pieces
-        frameDuration           = preferenceManager.findPreference(frameDurationKey);
-        sampleRate              = preferenceManager.findPreference(sampleRateKey);
-        samplesInFrame          = preferenceManager.findPreference(samplesInFrameKey);
-        overlapFactor           = preferenceManager.findPreference(overlapFactorKey);
-        frameSize               = preferenceManager.findPreference(frameSizeKey);
+        frameDuration           = preferenceManager.findPreference(Keys.frameDuration);
+        sampleRate              = preferenceManager.findPreference(Keys.sampleRate);
+        samplesInFrame          = preferenceManager.findPreference(Keys.samplesInFrame);
+        overlapFactor           = preferenceManager.findPreference(Keys.overlapFactor);
+        frameSize               = preferenceManager.findPreference(Keys.frameSize);
+        energyThreshold         = preferenceManager.findPreference(Keys.energyThreshold);
 
-        frameDuration .setSummary("" + settings.getInt(frameDurationKey, 32));
-        sampleRate    .setSummary("" + settings.getString(sampleRateKey, "8000"));
-        samplesInFrame.setSummary("" + settings.getInt(samplesInFrameKey, 256));
-        overlapFactor .setSummary("0." + settings.getInt(overlapFactorKey, 75));
-        frameSize     .setSummary("" + settings.getInt(frameSizeKey, 512));
+        frameDuration   .setSummary("" + settings.getInt(Keys.frameDuration, 32));
+        sampleRate      .setSummary("" + settings.getString(Keys.sampleRate, "8000"));
+        samplesInFrame  .setSummary("" + settings.getInt(Keys.samplesInFrame, 256));
+        overlapFactor   .setSummary("0." + settings.getInt(Keys.overlapFactor, 75));
+        frameSize       .setSummary("" + settings.getInt(Keys.frameSize, 512));
+        // TODO: set the summary with a more elegant number
+        //energyThreshold .setSummary(settings.getString(Keys.energyThreshold, "5e7"));
     }
 
     @Override
@@ -120,15 +114,15 @@ public class FeatureExtractionFragment extends PreferenceFragment {
 
                         Preference samplesInFramePreference =
                                 getPreferenceManager()
-                                        .findPreference(samplesInFrameKey);
+                                        .findPreference(Keys.samplesInFrame);
 
                         samplesInFramePreference.setSummary
                                 (
                                         "" + (value *
                                                 FeatureExtractionStructure.frameDuration / 1000));
 
-                        editor.putString(sampleRateKey, "" + value);
-                        editor.putInt(samplesInFrameKey,
+                        editor.putString(Keys.sampleRate, "" + value);
+                        editor.putInt(Keys.samplesInFrame,
                                 (value *
                                         FeatureExtractionStructure.frameDuration / 1000));
                         editor.apply();
