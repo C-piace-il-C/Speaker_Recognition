@@ -14,9 +14,9 @@ public abstract class Framer
     public final static String TAG = "Framer";
 
     /// Duration of the single frame in ms
-    public final static int     FRAME_LENGTH_MS = 32;
+    public static int     FRAME_LENGTH_MS = 32;
     /// Expected sample rate in Hz
-    public  static int     SAMPLE_RATE = 8000;
+    public static int     SAMPLE_RATE = 8000;
     /// Number of samples in a single frame
     public final static int     SAMPLES_IN_FRAME = SAMPLE_RATE * FRAME_LENGTH_MS / 1000;
     /// Frame overlap factor
@@ -64,37 +64,35 @@ public abstract class Framer
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
         correctFrameCount = frameCount;
-        for (int C = 0; C < frameCount; C++)
+        for (int j = 0; j < frameCount; j++)
         {
-            frames[C] = new Frame();
-            frames[C].data = new double[SAMPLES_IN_FRAME];
+            frames[j] = new Frame();
+            frames[j].data = new double[SAMPLES_IN_FRAME];
 
             // Copy samples to frame data (zero filling is included).
-            for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
+            for (int i = 0; (i < SAMPLES_IN_FRAME) && (j * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
+                frames[j].data[i] = audioSamples[j * FRAME_SHORT_SPACING + i];
             }
 
             // Removal of low energy frames
             // if frame is invalid, make it null
 
-            // compute fourier transform
-            frames[C].ft = new Complex[frames[C].data.length];
-            for (int i = 0; i < frames[C].data.length; i++)
-                frames[C].ft[i] = new Complex();
-            DFT.computeDFT(frames[C].data, frames[C].ft);
+            frames[j].ft = new Complex[frames[j].data.length];
+            for (int $ = 0; $ < frames[j].data.length; $++)
+                frames[j].ft[$] = new Complex();
+            DFT.computeDFT(frames[j].data, frames[j].ft);
 
-            double energy = FCleaner.extractFreqEnergy(frames[C].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
+            double energy = FCleaner.extractFreqEnergy(frames[j].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
             TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
 
             if(energy < ENERGY_THRESHOLD) {
-                frames[C] = null;
+                frames[j] = null;
                 correctFrameCount--;
             }
 
         }
 
-        // Create a new frame array and fill it with non-null frames
         Frame[] frames2 = new Frame[correctFrameCount];
         int C = 0;
         for(int i = 0; i < frameCount; i++)
@@ -102,8 +100,6 @@ public abstract class Framer
             if(frames[i] != null)
                 frames2[C++] = frames[i];
         }
-
-        // Replace Framer.frames with the new array
         frames = frames2;
 
     }

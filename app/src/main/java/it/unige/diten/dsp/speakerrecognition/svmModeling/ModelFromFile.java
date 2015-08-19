@@ -25,12 +25,12 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
 
         // TODO: replace this with selected values
         CrossValidation.cStart = -5;
-        CrossValidation.cEnd = 4;
-        CrossValidation.cStep = 3;
+        CrossValidation.cEnd = 15;
+        CrossValidation.cStep = 1;
 
-        CrossValidation.gStart = 2;
-        CrossValidation.gEnd = -7;
-        CrossValidation.gStep = -3;
+        CrossValidation.gStart = 3;
+        CrossValidation.gEnd = -15;
+        CrossValidation.gStep = -1;
 
         try {
             svmProblem = LoadFeatureFile.load(params[0]);
