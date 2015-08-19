@@ -64,31 +64,31 @@ public abstract class Framer
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
         frames = new Frame[frameCount];
         correctFrameCount = frameCount;
-        for (int _ = 0; _ < frameCount; _++)
+        for (int C = 0; C < frameCount; C++)
         {
-            frames[_] = new Frame();
-            frames[_].data = new double[SAMPLES_IN_FRAME];
+            frames[C] = new Frame();
+            frames[C].data = new double[SAMPLES_IN_FRAME];
 
             // Copy samples to frame data (zero filling is included).
-            for (int i = 0; (i < SAMPLES_IN_FRAME) && (_ * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
+            for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[_].data[i] = audioSamples[_ * FRAME_SHORT_SPACING + i];
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
             }
 
             // Removal of low energy frames
             // if frame is invalid, make it null
 
             // compute fourier transform
-            frames[_].ft = new Complex[frames[_].data.length];
-            for (int $ = 0; $ < frames[_].data.length; $++)
-                frames[_].ft[$] = new Complex();
-            DFT.computeDFT(frames[_].data, frames[_].ft);
+            frames[C].ft = new Complex[frames[C].data.length];
+            for (int i = 0; i < frames[C].data.length; i++)
+                frames[C].ft[i] = new Complex();
+            DFT.computeDFT(frames[C].data, frames[C].ft);
 
-            double energy = FCleaner.extractFreqEnergy(frames[_].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
+            double energy = FCleaner.extractFreqEnergy(frames[C].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
             TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
 
             if(energy < ENERGY_THRESHOLD) {
-                frames[_] = null;
+                frames[C] = null;
                 correctFrameCount--;
             }
 
