@@ -9,7 +9,7 @@ package it.unige.diten.dsp.speakerrecognition;
 public class Periodogrammer
 {
     private Complex[] ft;
-    public static double[] hammingWindow;
+    private double[] hammingWindow;
     private TransformSelector transformSelector;
 
     public Periodogrammer(int size)

@@ -33,7 +33,8 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
     public static double[][] DeltaDelta = null;
 
     public static int frameExtracted = 0;
-
+    public static int frameRemoved = 0;
+    public static int frameCount = 0;
     protected void onPreExecute()
     {
         frameExtracted = 0;
@@ -54,7 +55,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         {
             // params[0] = name of the audio file
             // TODO rimuovi la seguente linea di codice (era per test)
-            //params[0] = MainActivity.PATH + "/" + "aceDavide0.wav";
+            params[0] = MainActivity.PATH + "/" + "provaOddoRumore0.wav";
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -63,6 +64,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                 }
             }, 50, 50);
 
+            frameRemoved = 0;
             MFCC = extractMFCC(params[0]);
             DeltaDelta = DD.computeDD(MFCC, 2); // 2 is the precision
 
@@ -106,6 +108,10 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
             //int perc = (int)Math.floor(((float)frameExtracted / (float)frameCount * 100.0));
             cProgressRecorder.setTitle("Extracting features...");
             cProgressRecorder.setMessage(frameExtracted + "/" + frameCount);
+        }
+        else
+        {
+            cProgressRecorder.setMessage("Frames removed " + frameRemoved + "/" + frameCount);
         }
     }
 

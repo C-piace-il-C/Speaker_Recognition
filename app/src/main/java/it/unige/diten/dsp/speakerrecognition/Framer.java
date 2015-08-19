@@ -30,7 +30,7 @@ public abstract class Framer
     /// Distance in Shorts between the beginning of a frame and the following
     public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
-    public final static double  ENERGY_THRESHOLD = 5E7;
+    public final static double  ENERGY_THRESHOLD = 1E5;
     /// Container for all frames
     private static Frame[] frames = null;
 
@@ -64,6 +64,7 @@ public abstract class Framer
             audioSamples[C] = samples[C + offset];
         }
         int frameCount = audioSamples.length / FRAME_SHORT_SPACING;
+        FeatureExtractor.frameCount = frameCount;
         frames = new Frame[frameCount];
         correctFrameCount = frameCount;
         for (int C = 0; C < frameCount; C++)
@@ -74,7 +75,7 @@ public abstract class Framer
             // Copy samples to frame data (zero filling is included).
             for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
             {
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i] * Periodogrammer.hammingWindow[i];
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i] * hammingWindow[i];
             }
 
             // Removal of low energy frames
@@ -92,6 +93,7 @@ public abstract class Framer
             {
                 frames[C] = null;
                 correctFrameCount--;
+                FeatureExtractor.frameRemoved++;
             }
 
         }
