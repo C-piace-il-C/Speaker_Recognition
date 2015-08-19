@@ -95,7 +95,7 @@ public abstract class Framer
 
         Frame[] frames2 = new Frame[correctFrameCount];
         int C = 0;
-        for(int i = 0; i < correctFrameCount; i++)
+        for(int i = 0; i < frameCount; i++)
         {
             if(frames[i] != null)
                 frames2[C++] = frames[i];
