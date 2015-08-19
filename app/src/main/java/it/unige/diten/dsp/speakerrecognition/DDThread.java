@@ -1,47 +1,60 @@
 package it.unige.diten.dsp.speakerrecognition;
 
+/**
+ * Delta-Deltas thread class.
+ */
 public class DDThread implements Runnable
 {
-    // threadNumber ranges from 0 to threadCount-1
-    private int threadNumber;
-    private int threadCount;
-    private double[][] DDPtr;
-    private double[][] MFCCPtr;
-    private int precision;
+    // threadNum has value in [0; threadCnt - 1].
+    private int         threadNum;
+    private int threadCnt;
+    private double[][]  DD_Matrix;
+    private double[][]  MFCC_Matrix;
+    private int p;
 
-    public DDThread(int threadNumber, int threadCount, double[][] DD, double[][] MFCC, int precision)
+    /**
+     * DDThread constructor.
+     * @param threadNum Number of thread, from 0 to 'threadCnt - 1'.
+     * @param threadCnt Total number of threads.
+     * @param DD        Delta-Delta matrix.
+     * @param MFCC      MFCC matrix.
+     * @param precision The precision of the Delta-Deltas.
+     */
+    public DDThread (int threadNum, int threadCnt, double[][] DD, double[][] MFCC, int precision)
     {
-        this.threadNumber   = threadNumber;
-        this.threadCount    = threadCount;
-        this.DDPtr          = DD;
-        this.MFCCPtr        = MFCC;
-        this.precision      = precision;
+        this.threadNum   = threadNum;
+        this.threadCnt   = threadCnt;
+        this.DD_Matrix   = DD;
+        this.MFCC_Matrix = MFCC;
+        this.p           = precision;
     }
 
     public void run()
     {
-        double denominator =
-                Math.pow(2 * (precision * (precision + 1) * (2 * precision + 1)) / 6.0, 2);
-        int frameCount = MFCCPtr.length;
-        int featureCount = MFCCPtr[0].length;
+        double adj        = Math.pow(2 * (p * (p + 1) * (2 * p + 1)) / 6.0, 2);
+        int    frameCnt   = MFCC_Matrix.length;
+        int    featureCnt = MFCC_Matrix[0].length;
 
-        // Multithread: each thread works on different values of k.
-        // Eventually, all values of k (from 0 to featureCount-1) are covered.
-        for (int k = threadNumber; k < featureCount; k += threadCount)
+        // Each thread works on different values of k (k: feature index).
+        for (int k = threadNum; k < featureCnt; k += threadCnt)
         {
-            // f: frame index
-            for (int f = 0; f < frameCount; f++)
+            // f: frame index.
+            for (int f = 0; f < frameCnt; f++)
             {
-                for (int m = -precision; m <= precision; m++)
+                // Compute Delta-Delta calculation.
+                for (int m = -p; m <= p; m++)
                 {
-                    for (int n = -precision; n <= precision; n++)
+                    for (int n = -p; n <= p; n++)
                     {
                         // Boundaries check (this prevents IndexOutOfBoundException)
-                        if ( (f + m + n >= 0) && (f + m + n < frameCount) )
-                            DDPtr[f][k] += m * n * MFCCPtr[f + m + n][k];
+                        if ((f + m + n >= 0) && (f + m + n < frameCnt)) {
+                            DD_Matrix[f][k] += m * n * MFCC_Matrix[f + m + n][k];
+                        }
                     }
                 }
-                DDPtr[f][k] /= denominator;
+
+                // Scale factor.
+                DD_Matrix[f][k] /= adj;
             }
         }
     }
