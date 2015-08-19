@@ -20,25 +20,26 @@ public abstract class DFT
      */
     public static void computeDFT(double[] src, Complex[] dest) 
     {
-        if(dest.length < src.length)
-            return;
-        
-        double angle;
-        int N = src.length;
-        double angleFactor = -2.0*Math.PI/(double)N;
-        for(int k = 0; k < N; k++)
+        if (dest.length < src.length) { return; }
+
+        int     N       = src.length;
+        double  stride  = -2 * Math.PI / N;
+
+        for (int k = 0; k < N; k++)
         {
-            dest[k].Re = .0;
-            dest[k].Im = .0;
+            dest[k].Re  = .0;
+            dest[k].Im  = .0;
+
             for (int n = 0; n < N; n++)
             {
-                //angle = -2.0*Math.PI*(double)k*(double)n/(double)N;
-                angle = angleFactor*(double)k*(double)n;
-                dest[k].Re += src[n] * Math.cos(angle);
-                dest[k].Im += src[n] * Math.sin(angle);
+                double angle = stride * k * n;
+
+                dest[k].Re  += src[n] * Math.cos(angle);
+                dest[k].Im  += src[n] * Math.sin(angle);
             }
         }
     }
+
     /**
      * @brief   compute the real part of the IDFT of sequence src and saves it in dest.
      * @param src   The source sequence.
@@ -47,12 +48,12 @@ public abstract class DFT
      */
     public static void computeIDFT(Complex[] src, double[] dest)
     {
-        if(dest.length < src.length) { return; }
+        if (dest.length < src.length) { return; }
 
-        int N               = dest.length;
-        double stride       = 2 * Math.PI / N;
-        double[] lengths    = new double[N];
-        double[] phases     = new double[N];
+        int         N       = dest.length;
+        double      stride  = 2 * Math.PI / N;
+        double[]    lengths = new double[N];
+        double[]    phases  = new double[N];
 
         for (int i = 0; i < N; i++)
         {
@@ -61,10 +62,11 @@ public abstract class DFT
             phases[i]       = src[i].getPhase();
         }
 
-        for(int n = 0; n < N; n++)
+        for (int n = 0; n < N; n++)
         {
-            for(int k = 0; k < N; k++)
+            for (int k = 0; k < N; k++)
             {
+                // Compute only the real part of the iDFT.
                 dest[n]    += lengths[k] * Math.cos(stride * k * n + phases[k]);
             }
 
