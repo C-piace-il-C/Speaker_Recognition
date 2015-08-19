@@ -57,9 +57,10 @@ public abstract class DFT
         dest[k].Re = .0;
         dest[k].Im = .0;
 
-        for (int n = 0; n < N; n++)
+        for (int n = 0; n < N; n += 2)
         {
-            dest[k].Re += src[n] * Math.cos(stride * k * n);
+            dest[k].Re += src[n];
+            dest[k].Re -= src[n + 1];
         }
     }
 
