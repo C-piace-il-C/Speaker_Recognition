@@ -21,16 +21,11 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
          */
 
         TrainSVM.filename = params[0];
-        CrossValidation.filename = params[0];
+        CrossValidation.setFilename(params[0]);
 
         // TODO: replace this with selected values
-        CrossValidation.cStart = -5;
-        CrossValidation.cEnd = 4;
-        CrossValidation.cStep = 3;
-
-        CrossValidation.gStart = 2;
-        CrossValidation.gEnd = -7;
-        CrossValidation.gStep = -3;
+        CrossValidation.set_C_values(-5, 15, 1);
+        CrossValidation.set_Gamma_values(3, -15, -1);
 
         try {
             svmProblem = LoadFeatureFile.load(params[0]);
