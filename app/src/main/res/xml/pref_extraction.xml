@@ -26,6 +26,10 @@
             android:summary="8000">
         </ListPreference>
 
+        <Preference
+            android:title="@string/energy_threshold"
+            android:key="@string/energy_threshold_key">
+        </Preference>
         <!-- Programmatically changed when its dependency are changed -->
         <Preference
             android:title="@string/samples_in_frame"

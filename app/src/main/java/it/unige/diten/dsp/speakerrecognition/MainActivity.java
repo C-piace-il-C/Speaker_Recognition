@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
                     if( durationSecs == 0)
                         durationSecs = 1;
 
-                    Rec rec = new Rec(context, durationSecs, 8000);
+                    Rec rec = new Rec(context, durationSecs, FeatureExtractionStructure.sampleRate);
                     // +1 here because the first second of registration will be ignored
                     // during the features extraction.
                     rec.execute(PATH, fileName);

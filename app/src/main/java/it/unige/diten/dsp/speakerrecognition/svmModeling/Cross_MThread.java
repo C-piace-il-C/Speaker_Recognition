@@ -38,9 +38,9 @@ public class Cross_MThread implements Runnable {
             {
                 svmParameter.gamma = Math.pow(2, log_Gamma_coef[gParameters]);
                 // Do the cross validation and store the results
-                // TODO: replace 5 with the user selected number of folds
+                // TODO: replace 10 with the user selected number of folds
                 svm.svm_cross_validation
-                        (svmProblem, svmParameter, 5, results[gLength * cParameters + gParameters]);
+                        (svmProblem, svmParameter, 10, results[gLength * cParameters + gParameters]);
                 // Store the parameters in the correct order of cross validation
                 parameters[gLength * cParameters + gParameters] =
                         "log2c=" + log_C_coef[cParameters] +
