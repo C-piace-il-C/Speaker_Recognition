@@ -5,12 +5,11 @@ package it.unige.diten.dsp.speakerrecognition;
  */
 public class DDThread implements Runnable
 {
-    // threadNum has value in [0; threadCnt - 1].
     private int         threadNum;
-    private int threadCnt;
+    private int         threadCnt;
     private double[][]  DD_Matrix;
     private double[][]  MFCC_Matrix;
-    private int p;
+    private int         p;
 
     /**
      * DDThread constructor.
