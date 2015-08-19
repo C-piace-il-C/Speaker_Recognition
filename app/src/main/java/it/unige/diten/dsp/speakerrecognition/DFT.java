@@ -2,7 +2,6 @@
 
 // TODO: Fai calcolare la DFT solo dei primi N/2 valori, gli altri sono ricavabili mediante proprietà di simmetria (2x speedup)
 // TODO: Precalcola i fattori moltiplicativi nella DFT
-// [
 // TODO: Le operazioni tra i complessi vanno fatte inline e non chiamando le funzioni, tipo Complex.multiply.
 package it.unige.diten.dsp.speakerrecognition;
 
@@ -48,40 +47,10 @@ public abstract class DFT
      */
     public static void computeIDFT(Complex[] src, double[] dest)
     {
-        if(dest.length < src.length)
-            return;
-
-        int N = dest.length;
-
-        Complex temp = new Complex();
-        Complex sum = new Complex();
-        for(int n = 0; n < N; n++)
-        {
-            dest[n] = 0;
-            sum.Re = 0;
-            sum.Im = 0;
-            for(int k = 0; k < N; k++)
-            {
-                temp.Re = src[k].Re;
-                temp.Im = src[k].Im;
-                // src[k] = src[k] * e^(jnk2PI/N) => solo uno sfasamento
-                temp.addPhase(2.0*Math.PI / (double)N*(double)k*(double)n);
-                // add the real part
-                //dest[n] += temp[k].Re;
-                sum.Re += temp.Re;
-                sum.Im += temp.Im;
-            }
-            dest[n] = sum.Re;
-            // Scaling factor
-            dest[n] /= (double)N;
-            // If the result has too much precision, round it
-        }
-    }
-    /*public static void computeIDFT(Complex[] src, double[] dest)
-    {
         if(dest.length < src.length) { return; }
 
         int N               = dest.length;
+        double stride       = 2 * Math.PI / N;
         double[] lengths    = new double[N];
         double[] phases     = new double[N];
 
@@ -96,11 +65,11 @@ public abstract class DFT
         {
             for(int k = 0; k < N; k++)
             {
-                dest[n]    += lengths[k] * Math.cos(2 * Math.PI / (N * k * n) + phases[k]);
+                dest[n]    += lengths[k] * Math.cos(stride * k * n + phases[k]);
             }
 
             // Scale output
             dest[n] /= N;
         }
-    }*/
+    }
 }
