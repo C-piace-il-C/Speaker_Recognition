@@ -5,7 +5,12 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class WAVCreator {
+/**
+ * WAVCreator.
+ * Manage I/O with WAVE files.
+ */
+public class WAVCreator
+{
     private final static int RIFF_I = 0x46464952;
     private final static int WAVE_I = 0x45564157;
     private final static int FMT_I  = 0x20746D66;
