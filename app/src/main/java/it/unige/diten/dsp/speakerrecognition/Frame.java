@@ -1,19 +1,33 @@
-// DA CONTROLLARE.
-
 package it.unige.diten.dsp.speakerrecognition;
 
 /**
- * Frame
- * E' solo il tipo contenitore dei frame estratti da un file WAV.
- * Contiene un array di short con i samples del frame.
- * short perche' i samples sono per specifica a 16 bit.
+ * Frame.
+ * Container for frame data.
  */
 public class Frame
 {
-    public double[] data;
-    public Complex[] ft;
+    public double[]     data;
+    public Complex[]    ft;
+
+    /**
+     * Default constructor.
+     */
     public Frame()
     {
         data = null;
+        ft   = null;
+    }
+
+    /**
+     * Copy constructor.
+     * @param f Frame to be copied.
+     */
+    public Frame(Frame f)
+    {
+        this.data = new double[f.data.length];
+        this.ft   = new Complex[f.ft.length];
+
+        System.arraycopy(f.data, 0, this.data, 0, f.data.length);
+        System.arraycopy(f.ft, 0, this.ft, 0, f.ft.length);
     }
 }
