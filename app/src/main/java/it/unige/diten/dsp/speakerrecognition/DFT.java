@@ -13,7 +13,7 @@ package it.unige.diten.dsp.speakerrecognition;
 public abstract class DFT
 {
     /**
-     * @brief       compute the DFT of the real sequence src and saves it in dest.
+     * Compute the DFT of the real sequence src and saves it in dest.
      * @param src   The source sequence.
      * @param dest  The destination sequence. This must be large enough to
      *              contain src, otherwise IndexOutOfBoundExceptions will eventually occur.
@@ -24,16 +24,26 @@ public abstract class DFT
 
         int     N       = src.length;
         double  stride  = -2 * Math.PI / N;
-        boolean Nparity = ((N & 1) == 0);
 
-        int kMax = N >> 1;
-        if(!Nparity)
-            kMax++;
+        // Length must be even!
+        if ((N & 1) != 0) { return; }
 
-        for (int k = 0; k <= kMax; k++)
+        int k = 0;
+
+        // Prologue: calculate first real coefficient.
+        dest[k].Re      = .0;
+        dest[k].Im      = .0;
+
+        for (double sample : src)
         {
-            dest[k].Re  = .0;
-            dest[k].Im  = .0;
+            dest[0].Re += sample;
+        }
+
+        // Calculate complex coefficients using Hermitian symmetry.
+        for (k = 1; k < N / 2; k++)
+        {
+            dest[k].Re = .0;
+            dest[k].Im = .0;
 
             for (int n = 0; n < N; n++)
             {
@@ -42,25 +52,23 @@ public abstract class DFT
                 dest[k].Re  += src[n] * Math.cos(angle);
                 dest[k].Im  += src[n] * Math.sin(angle);
             }
+
+            dest[N - k].Re  =  dest[k].Re;
+            dest[N - k].Im  = -dest[k].Im;
         }
 
-        double tempRe, tempIm;
-        for(int k = kMax; k < N; k++)
+        // Epilogue: calculate last real coefficient.
+        dest[k].Re = .0;
+        dest[k].Im = .0;
+
+        for (int n = 0; n < N; n++)
         {
-            int half = N/2 + 1;
-            int refIndex = half - (k + 1 - half) - 1;
-
-            tempRe = dest[refIndex].Re;
-            tempIm = -dest[refIndex].Im;
-            dest[k].Re = tempRe;
-            dest[k].Im = tempIm;
-            TextWriter.appendText("C:\\Tests\\debugDFT.txt", "k = " + String.valueOf(k) + " - ref: "+String.valueOf(refIndex));
+            dest[k].Re += src[n] * Math.cos(stride * k * n);
         }
-
     }
 
     /**
-     * @brief   compute the real part of the IDFT of sequence src and saves it in dest.
+     * Compute the real part of the iDFT of sequence src and saves it in dest.
      * @param src   The source sequence.
      * @param dest  The destination sequence. This must be large enough to
      *              contain src.
