@@ -1,15 +1,11 @@
-// testata completely
-
-// TODO: Fai calcolare la DFT solo dei primi N/2 valori, gli altri sono ricavabili mediante proprietà di simmetria (2x speedup)
-// TODO: Precalcola i fattori moltiplicativi nella DFT
-// TODO: Le operazioni tra i complessi vanno fatte inline e non chiamando le funzioni, tipo Complex.multiply.
 package it.unige.diten.dsp.speakerrecognition;
+
+// TODO: Precalcola i fattori moltiplicativi nella DFT
 
 /**
  * DFT
  * Abstract class to compute the DFT of a real sequence.
  */
-
 public abstract class DFT
 {
     /**
