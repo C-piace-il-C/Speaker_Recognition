@@ -50,6 +50,7 @@ public abstract class DFT
         if(dest.length < src.length) { return; }
 
         int N               = dest.length;
+        double stride       = 2 * Math.PI / N;
         double[] lengths    = new double[N];
         double[] phases     = new double[N];
 
@@ -64,7 +65,7 @@ public abstract class DFT
         {
             for(int k = 0; k < N; k++)
             {
-                dest[n]    += lengths[k] * Math.cos(2 * Math.PI / (N * k * n) + phases[k]);
+                dest[n]    += lengths[k] * Math.cos(stride * k * n + phases[k]);
             }
 
             // Scale output
