@@ -13,6 +13,7 @@ import android.preference.PreferenceScreen;
 
 import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
+import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
 
@@ -98,6 +99,7 @@ public class FeatureExtractionFragment extends PreferenceFragment {
                     int value = Integer.parseInt(newValue.toString());
 
                     FeatureExtractionStructure.sampleRate = value;
+                    Framer.SAMPLE_RATE = value;
                     preference.setSummary("" + value);
 
                     Preference samplesInFramePreference =
