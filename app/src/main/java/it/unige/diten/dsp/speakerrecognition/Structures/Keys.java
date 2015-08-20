@@ -1,9 +1,7 @@
 package it.unige.diten.dsp.speakerrecognition.Structures;
 
-import it.unige.diten.dsp.speakerrecognition.R;
-import it.unige.diten.dsp.speakerrecognition.svmModeling.ScaleFeatureFile;
-
-public abstract class Keys {
+public abstract class Keys
+{
     // Keys of the feature extraction preferences
     public static String sampleRate         = "sample_rate";
     public static String frameDuration      = "frame_duration";
@@ -20,4 +18,9 @@ public abstract class Keys {
     public static String gEnd               = "g_end";
     public static String gStep              = "g_step";
     public static String folds              = "folds";
+    public static String speakersName       = "speakers_name";
+    public static String trainingFiles      = "training_files";
+    public static String cCoefficients      = "c_coefficient_range";
+    public static String gCoefficients      = "gamma_coefficient_range";
+    public static String labelAssociation   = "label_association";
 }

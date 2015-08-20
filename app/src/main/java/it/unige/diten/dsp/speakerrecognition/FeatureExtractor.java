@@ -55,7 +55,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         {
             // params[0] = name of the audio file
             // TODO rimuovi la seguente linea di codice (era per test)
-            params[0] = MainActivity.PATH + "/" + "aceAndrea0.wav";
+            // params[0] = MainActivity.PATH + "/" + "provaOddoRumore0.wav";
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override

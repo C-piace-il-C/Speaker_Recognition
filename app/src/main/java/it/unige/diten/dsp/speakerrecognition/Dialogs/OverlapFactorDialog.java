@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
+import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
@@ -113,6 +114,7 @@ public class OverlapFactorDialog extends DialogFragment {
                         String value = "0." + decimals[position];
                         preference.setSummary(value);
                         FeatureExtractionStructure.overlapFactor = Float.parseFloat(value);
+                        Framer.FRAME_OVERLAP_FACTOR = FeatureExtractionStructure.overlapFactor;
 
                         alertDialog.dismiss();
                     }

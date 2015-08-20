@@ -1,7 +1,7 @@
 package it.unige.diten.dsp.speakerrecognition.Fragments;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -15,38 +15,32 @@ import it.unige.diten.dsp.speakerrecognition.Dialogs.CoefficientsDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.FileChooserDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.R;
+import it.unige.diten.dsp.speakerrecognition.Structures.Keys;
 import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 
 public class ModelingFragment extends PreferenceFragment {
-    private static String speakersNameKey;
-    private static String trainingFilesKey;
-    private static String cCoefficientsKey;
-    private static String gCoefficientsKey;
-    private static String foldsKey;
+    private Preference labelsPreference;
+    private Preference speakersNamePreference;
 
-    private static Preference labelsPreference;
-    private static Preference speakersNamePreference;
+    private PreferenceManager preferenceManager;
+    private FragmentManager   fragmentManager;
 
-
-    private static SharedPreferences settings;
-    private static SharedPreferences.Editor editor;
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.pref_modeling);
-        speakersNameKey     = getString(R.string.speakers_name_key);
-        trainingFilesKey    = getString(R.string.training_files_key);
-        cCoefficientsKey    = getString(R.string.c_coefficient_range_key);
-        gCoefficientsKey    = getString(R.string.gamma_coefficient_range_key);
-        foldsKey            = getString(R.string.folds_key);
+        preferenceManager = getPreferenceManager();
+        fragmentManager   = getFragmentManager();
 
         settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = settings.edit();
 
 
-        labelsPreference = getPreferenceManager().findPreference(getString(R.string.labels_association_key));
-        speakersNamePreference = getPreferenceManager().findPreference(getString(R.string.speakers_name_key));
+        labelsPreference = preferenceManager.findPreference(Keys.labelAssociation);
+        speakersNamePreference = getPreferenceManager().findPreference(Keys.speakersName);
 
         speakersNamePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -55,7 +49,7 @@ public class ModelingFragment extends PreferenceFragment {
                     return false;
 
                 newValue = newValue.toString().replace(" ", "");
-                editor.putString(speakersNameKey, "" + newValue);
+                editor.putString(Keys.speakersName, "" + newValue);
                 String[] names = newValue.toString().split(",");
                 ModelingStructure.speakersNames = names;
 
@@ -83,14 +77,14 @@ public class ModelingFragment extends PreferenceFragment {
     public void onResume() {
         super.onResume();
         // TODO: clean this sentence
-        labelsPreference.setSummary(settings.getString(getString(R.string.labels_association_key), ""));
+        labelsPreference.setSummary(settings.getString(Keys.labelAssociation, ""));
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, final Preference preference) {
 
         String key = preference.getKey();
-        if(key.equals(trainingFilesKey)) {
+        if(key.equals(Keys.trainingFiles)) {
             new FileChooserDialog(getActivity()).setFileListener(new FileChooserDialog.FileSelectedListener() {
                 @Override
                 public void fileSelected(final File[] files) {
@@ -100,23 +94,23 @@ public class ModelingFragment extends PreferenceFragment {
                 }
             }).showDialog();
         }
-        else if(key.equals(cCoefficientsKey))
+        else if(key.equals(Keys.cCoefficients))
         {
             CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
             super.onResume();
-            coefficientsDialog.show(getFragmentManager(), "C_Coefficient");
+            coefficientsDialog.show(fragmentManager, "C_Coefficient");
         }
-        else if(key.equals(gCoefficientsKey))
+        else if(key.equals(Keys.gCoefficients))
         {
             CoefficientsDialog coefficientsDialog = new CoefficientsDialog();
             super.onResume();
-            coefficientsDialog.show(getFragmentManager(), "Gamma_Coefficient");
+            coefficientsDialog.show(fragmentManager, "Gamma_Coefficient");
         }
-        else if(key.equals(foldsKey))
+        else if(key.equals(Keys.folds))
         {
             DialogFragment dialogFragment = NumberPickerDialog.newInstance(R.string.folds);
             super.onResume();
-            dialogFragment.show(getFragmentManager(), "folds");
+            dialogFragment.show(fragmentManager, "folds");
         }
         return true;
     }

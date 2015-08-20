@@ -6,6 +6,7 @@
         android:title="@string/speakers_name"
         android:key="@string/speakers_name_key"
         android:hint="@string/speakers_hint"
+        android:defaultValue="@string/speakers_default"
         android:inputType="textCapWords">
     </EditTextPreference>
 
