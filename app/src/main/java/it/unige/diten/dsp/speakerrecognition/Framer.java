@@ -19,13 +19,13 @@ public abstract class Framer
     /// Frame overlap factor
     public static float         FRAME_OVERLAP_FACTOR = .75f;
     /// Number of Byte(s) per sample
-    public final static int     BPS = 2;
+    public static int           BPS = 2;
     /// Frame size in Bytes
-    public final static int     FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
+    public static int           FRAME_BYTE_SIZE = SAMPLES_IN_FRAME * BPS;
     /// Distance in Bytes between the beginning of a frame and the following
-    public final static int     FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
+    public static int           FRAME_BYTE_SPACING = (int) ((float) FRAME_BYTE_SIZE * (1.0f - FRAME_OVERLAP_FACTOR));
     /// Distance in Shorts between the beginning of a frame and the following
-    public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
+    public static int           FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
     public static double        ENERGY_THRESHOLD = 5E5;
     /// Container for all frames

@@ -3,6 +3,7 @@ package it.unige.diten.dsp.speakerrecognition.Structures;
 public abstract class Keys
 {
     // Keys of the feature extraction preferences
+    public static String enableCustom       = "enable_custom_extraction";
     public static String sampleRate         = "sample_rate";
     public static String frameDuration      = "frame_duration";
     public static String samplesInFrame     = "samples_in_frame";

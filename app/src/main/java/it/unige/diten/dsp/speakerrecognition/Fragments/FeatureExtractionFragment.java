@@ -11,10 +11,12 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 
 import it.unige.diten.dsp.speakerrecognition.Dialogs.NumberPickerDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.OverlapFactorDialog;
 import it.unige.diten.dsp.speakerrecognition.Dialogs.ThresholdDialog;
+import it.unige.diten.dsp.speakerrecognition.Frame;
 import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
@@ -92,6 +94,25 @@ public class FeatureExtractionFragment extends PreferenceFragment {
 
         switch(key)
         {
+            case "enable_custom_extraction":
+            {
+                SwitchPreference switchPreference =
+                        (SwitchPreference) preferenceManager.findPreference(Keys.enableCustom);
+
+                if(!switchPreference.isChecked())
+                {
+                    Framer.FRAME_LENGTH_MS      = 32;
+                    Framer.SAMPLE_RATE          = 8000;
+                    Framer.SAMPLES_IN_FRAME     = 256;
+                    Framer.FRAME_OVERLAP_FACTOR = 0.75f;
+                    Framer.BPS                  = 2;
+                    Framer.FRAME_BYTE_SIZE      = 512;
+                    Framer.FRAME_BYTE_SPACING   = (int) (512 * 0.25f);
+                    Framer.FRAME_SHORT_SPACING  = Framer.FRAME_BYTE_SPACING / 2;
+                    Framer.ENERGY_THRESHOLD     = 5e7;
+                }
+                break;
+            }
             case "frame_duration":
             {
                 DialogFragment dialogFragment =
