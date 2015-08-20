@@ -47,14 +47,14 @@ public abstract class CrossValidation {
         return false;
     }
 
-    private static int cLength;
-    private static int gLength;
-    private static int[] log_C_coef;
-    private static int[] log_Gamma_coef;
+    private static int          cLength;
+    private static int          gLength;
+    private static int[]        log_C_coef;
+    private static int[]        log_Gamma_coef;
 
-    private static String[] parameters;
+    private static String[]     parameters;
     private static double[][]   results;
-    public static int[] exactResults;
+    public static int[]         exactResults;
 
     private static BufferedOutputStream bufferedOutputStream;
 

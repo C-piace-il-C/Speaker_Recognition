@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
-import it.unige.diten.dsp.speakerrecognition.Fragments.FeatureExtractionFragment;
 import it.unige.diten.dsp.speakerrecognition.Framer;
 import it.unige.diten.dsp.speakerrecognition.R;
 import it.unige.diten.dsp.speakerrecognition.Structures.FeatureExtractionStructure;
@@ -27,12 +26,15 @@ public class ThresholdDialog extends DialogFragment{
     private Activity activity;
     private AlertDialog.Builder builder;
     private AlertDialog         alertDialog;
-    private NumberPicker numberPicker;
+    private NumberPicker        numberPicker;
     private MyView              myView;
+    private EditText            editText;
 
-    private final String title = "Energy threshold";
-    private final int minValue = 0;
-    private final int maxValue = 10;
+    private final String exponent   = "exponent";
+    private final String base       = "base";
+    private final String title      = "Energy threshold";
+    private final int minValue      = 0;
+    private final int maxValue      = 10;
 
     private PreferenceManager preferenceManager = null;
 
@@ -68,7 +70,7 @@ public class ThresholdDialog extends DialogFragment{
         settings    = PreferenceManager.getDefaultSharedPreferences(activity);
 
         setListeners(tag);
-        setPickers();
+        setViews();
 
         return alertDialog;
     }
@@ -87,16 +89,25 @@ public class ThresholdDialog extends DialogFragment{
             public void onShow(final DialogInterface dialog) {
 
                 Button button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                final SharedPreferences.Editor editor = settings.edit();
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EditText editText = (EditText) myView.findViewById(R.id.thresholdText);
-                        double value =  Double.valueOf(editText.getText().toString());
-                        value *= Math.pow(10, numberPicker.getValue());
+                        // Get the base in the editText
+                        double value = Double.valueOf(editText.getText().toString());
+                        // Save the number for future dialog openings
+                        editor.putString(base, value + "");
+                        // Get the exponent in the numberPicker
+                        int exp = numberPicker.getValue();
+                        // Save the number for future dialog openings
+                        editor.putInt(exponent, exp);
+                        // Calculate the threshold selected
+                        value *= Math.pow(10, exp);
+                        // Save it in the places that needs it
                         FeatureExtractionStructure.energyThreshold = value;
                         Framer.ENERGY_THRESHOLD = value;
-                        SharedPreferences.Editor editor = settings.edit();
+                        // Save it
                         editor.putString(tag, value + "").apply();
                         alertDialog.dismiss();
                     }
@@ -105,12 +116,16 @@ public class ThresholdDialog extends DialogFragment{
         });
     }
 
-    private void setPickers()
+    private void setViews()
     {
+        editText = (EditText) myView.findViewById(R.id.thresholdText);
         numberPicker = (NumberPicker) myView.findViewById(R.id.thresholdPicker);
+
         numberPicker.setMaxValue(maxValue);
         numberPicker.setMinValue(minValue);
-        //numberPicker.setValue(settings.getInt(key, def));
+        numberPicker.setValue(settings.getInt(exponent, 7));
+
+        editText.setText(settings.getString(base, "5"));
     }
 
     private class MyView extends FrameLayout

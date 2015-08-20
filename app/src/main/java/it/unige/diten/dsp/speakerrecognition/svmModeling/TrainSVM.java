@@ -10,7 +10,13 @@ public abstract class TrainSVM {
     static svm_parameter svmParameter;
     static svm_model svmModel;
 
-    public static String filename;
+    private static String filename;
+
+    public static void setFilename(String filename) {
+        if(filename != null)
+        TrainSVM.filename = filename;
+    }
+
     public static double C, G;
 
     public static void train(svm_problem svmProblem)

@@ -305,8 +305,6 @@ public class MainActivity extends AppCompatActivity
                 preferences.getInt(Keys.gStep, 1);
         ModelingStructure.folds =
                 preferences.getInt(Keys.folds, 2);
-
-
     }
 
     private static String getCurrentDate()
