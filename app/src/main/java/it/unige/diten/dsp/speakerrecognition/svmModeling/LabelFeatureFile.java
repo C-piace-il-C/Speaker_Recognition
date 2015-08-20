@@ -203,7 +203,7 @@ public abstract class LabelFeatureFile {
             // Initialize a file for every path
             for (int i = 0; i < files.length; i++)
                 files[i] = new File(path[i]);
-            filename = filename.replace("\\","/");
+
             fileWriter = new FileWriter(filename);
             bufferedWriter = new BufferedWriter(fileWriter);
 
