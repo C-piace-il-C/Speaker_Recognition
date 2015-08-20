@@ -2,7 +2,6 @@ package it.unige.diten.dsp.speakerrecognition;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public abstract class TextWriter

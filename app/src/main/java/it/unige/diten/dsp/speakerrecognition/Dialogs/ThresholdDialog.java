@@ -93,11 +93,11 @@ public class ThresholdDialog extends DialogFragment{
                     public void onClick(View v) {
                         EditText editText = (EditText) myView.findViewById(R.id.thresholdText);
                         double value =  Double.valueOf(editText.getText().toString());
-                        value = Math.pow(value, numberPicker.getValue());
+                        value *= Math.pow(10, numberPicker.getValue());
                         FeatureExtractionStructure.energyThreshold = value;
                         Framer.ENERGY_THRESHOLD = value;
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putString(tag, value + "");
+                        editor.putString(tag, value + "").apply();
                         alertDialog.dismiss();
                     }
                 });
