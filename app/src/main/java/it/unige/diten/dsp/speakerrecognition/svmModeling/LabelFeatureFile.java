@@ -191,7 +191,7 @@ public abstract class LabelFeatureFile {
          * @return          A string with the path to the merged file
          * @throws IOException
          */
-        private static String mergeFiles(final String paths, final String filename) throws IOException {
+        private static String mergeFiles(final String paths, String filename) throws IOException {
             File[] files;
             FileWriter fileWriter;
             BufferedWriter bufferedWriter;
@@ -203,7 +203,7 @@ public abstract class LabelFeatureFile {
             // Initialize a file for every path
             for (int i = 0; i < files.length; i++)
                 files[i] = new File(path[i]);
-
+            filename = filename.replace("\\","/");
             fileWriter = new FileWriter(filename);
             bufferedWriter = new BufferedWriter(fileWriter);
 

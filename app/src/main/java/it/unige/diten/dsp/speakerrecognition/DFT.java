@@ -47,13 +47,11 @@ public abstract class DFT
         double tempRe, tempIm;
         for(int k = kMax; k < N; k++)
         {
-            int half = N/2 + 1;
-            int refIndex = half - (k + 1 - half) - 1;
+            int half = N/2;
+            int refIndex = half - (k - half);
 
-            tempRe = dest[refIndex].Re;
-            tempIm = -dest[refIndex].Im;
-            dest[k].Re = tempRe;
-            dest[k].Im = tempIm;
+            dest[k].Re = dest[refIndex].Re;
+            dest[k].Im = -dest[refIndex].Im;
             TextWriter.appendText("C:\\Tests\\debugDFT.txt", "k = " + String.valueOf(k) + " - ref: "+String.valueOf(refIndex));
         }
 

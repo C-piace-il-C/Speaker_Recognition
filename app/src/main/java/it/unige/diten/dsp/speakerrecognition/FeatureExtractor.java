@@ -55,7 +55,7 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
         {
             // params[0] = name of the audio file
             // TODO rimuovi la seguente linea di codice (era per test)
-            params[0] = MainActivity.PATH + "/" + "provaOddoRumore0.wav";
+            params[0] = MainActivity.PATH + "/" + "aceAndrea0.wav";
             Timer t = new Timer();
             t.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -143,13 +143,13 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                 String line = "";
 
                 for (int k = 0; k < MFCC_COUNT; k++)
-                    line += (k + 1) + ":" + Double.toString(MFCC[f][k]) + "\t";
+                    line += (k + 1) + ":" + Double.toString(MFCC[f][k]) + " ";
 
 
                 for (int k = 0; k < DD.DD_COUNT; k++)
-                    line += (k + MFCC_COUNT + 1) + ":" + Double.toString(DeltaDelta[f][k]) + "\t";
+                    line += (k + MFCC_COUNT + 1) + ":" + Double.toString(DeltaDelta[f][k]) + " ";
 
-                line = line.substring(0, line.length() - 2) + "\r\n";
+                line = line.substring(0, line.length() - 1) + "\r\n";
 
                 writer.write(line);
             }
@@ -186,6 +186,4 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
         return mfcc;
     }
-
-
 }
