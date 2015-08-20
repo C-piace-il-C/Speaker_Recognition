@@ -33,7 +33,7 @@ public abstract class LabelFeatureFile {
     public static String label(String[] params) throws Exception
     {
         // TODO: replace this line with names selected
-        names = new String[]{"Andrea"}; //, "Davide", "Emanuele"};
+        names = new String[]{"Andrea", "Davide", "Emanuele"};
 
         String[] sameNamePath = groupFilesByName(params);
         String toBeMerged = "";
@@ -67,7 +67,7 @@ public abstract class LabelFeatureFile {
             fileWriter = new FileWriter(mergedFile);
             bufferedWriter = new BufferedWriter(fileWriter);
 
-            startTime = System.nanoTime();
+            //startTime = System.nanoTime();
 
 // Using line-by-line reading/writing
 
@@ -125,7 +125,7 @@ public abstract class LabelFeatureFile {
 
 
             bufferedWriter.close();
-            endTime = System.nanoTime();
+            //endTime = System.nanoTime();
         }
 
         System.out.println("\n\n\n Time elapsed: " + (endTime - startTime));
@@ -139,7 +139,7 @@ public abstract class LabelFeatureFile {
 
         MergeFile.mergeFiles(toBeMerged, mergedFileName);
 
-        return null;
+        return mergedFileName;
     }
 
     private static String getCurrentDate()

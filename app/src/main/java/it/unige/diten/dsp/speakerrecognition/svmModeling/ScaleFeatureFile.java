@@ -11,11 +11,11 @@ public abstract class ScaleFeatureFile {
      * @param filename path of the file to be scaled
      * @throws IOException
      */
-    public static void Scale(String filename) throws IOException {
+    public static String Scale(String filename) throws IOException {
 
         String[] commandLine = new String[]{filename};
 
-        svm_scale.main(commandLine);
+        return svm_scale.main(commandLine);
     }
 
     /** Scale feature file specifying lower and upper bounds for x values
@@ -25,14 +25,14 @@ public abstract class ScaleFeatureFile {
      * @param upper     desired lower bound for x values (feature values)
      * @throws IOException
      */
-    public static void Scale(String filename, double lower, double upper) throws IOException {
+    public static String Scale(String filename, double lower, double upper) throws IOException {
 
         String l = String.valueOf(lower);
         String u = String.valueOf(upper);
 
         String[] commandLine = new String[]{"-l", l, "-u", u, filename};
 
-        svm_scale.main(commandLine);
+        return svm_scale.main(commandLine);
     }
 
     /** Scale feature file specifying lower and upper bounds for x and y values
@@ -44,7 +44,7 @@ public abstract class ScaleFeatureFile {
      * @param y_upper   desired upper bound for y values (labels values)
      * @throws IOException
      */
-    public static void Scale(String filename, double lower, double upper, double y_lower, double y_upper) throws IOException {
+    public static String Scale(String filename, double lower, double upper, double y_lower, double y_upper) throws IOException {
         String l        = String.valueOf(lower);
         String u        = String.valueOf(upper);
         String y_low    = String.valueOf(y_lower);
@@ -52,7 +52,7 @@ public abstract class ScaleFeatureFile {
 
         String[] commandLine = new String[]{"-l", l, "-u", u, "-y", y_low, y_up, filename};
 
-        svm_scale.main(commandLine);
+        return svm_scale.main(commandLine);
     }
 
 }

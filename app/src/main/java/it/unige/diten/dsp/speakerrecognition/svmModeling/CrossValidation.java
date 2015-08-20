@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import it.unige.diten.dsp.speakerrecognition.SVMTraining.Coefficients;
 import it.unige.diten.dsp.speakerrecognition.libsvm.svm_problem;
 
 public abstract class CrossValidation {

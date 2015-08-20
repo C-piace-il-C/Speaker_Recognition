@@ -2,6 +2,9 @@ package it.unige.diten.dsp.speakerrecognition.SVMTraining;
 
 import android.os.AsyncTask;
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.CrossValidation;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.LoadFeatureFile;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.TrainSVM;
 
 public class ModelFromFile extends AsyncTask <String, Void, Void> {
 
@@ -13,7 +16,7 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    public Void doInBackground(String... params) {
 
         /**
          * params[0] = name of the training file
