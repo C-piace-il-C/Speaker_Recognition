@@ -143,13 +143,13 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
                 String line = "";
 
                 for (int k = 0; k < MFCC_COUNT; k++)
-                    line += (k + 1) + ":" + Double.toString(MFCC[f][k]) + "\t";
+                    line += (k + 1) + ":" + Double.toString(MFCC[f][k]) + " ";
 
 
                 for (int k = 0; k < DD.DD_COUNT; k++)
-                    line += (k + MFCC_COUNT + 1) + ":" + Double.toString(DeltaDelta[f][k]) + "\t";
+                    line += (k + MFCC_COUNT + 1) + ":" + Double.toString(DeltaDelta[f][k]) + " ";
 
-                line = line.substring(0, line.length() - 2) + "\r\n";
+                line = line.substring(0, line.length() - 1) + "\r\n";
 
                 writer.write(line);
             }
@@ -186,6 +186,4 @@ public class FeatureExtractor extends AsyncTask <String, Void, Boolean> {
 
         return mfcc;
     }
-
-
 }
