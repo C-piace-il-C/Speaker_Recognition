@@ -27,17 +27,13 @@ public abstract class Framer
     /// Distance in Shorts between the beginning of a frame and the following
     public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
-    public static double        ENERGY_THRESHOLD = 5E5;
+    public static double        ENERGY_THRESHOLD = 5E7;
     /// Container for all frames
     private static Frame[] frames = null;
 
     /// Read WAVE file from SDCard
     public static void readFromFile(String fileName) throws Exception
     {
-        double[] hammingWindow = new double[SAMPLES_IN_FRAME];
-        for( int C = 0; C < SAMPLES_IN_FRAME; C++ )
-            hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)SAMPLES_IN_FRAME-1.0));
-
         int correctFrameCount;
 
         WAVCreator readWAV = new WAVCreator(fileName);
@@ -71,7 +67,7 @@ public abstract class Framer
 
             // Copy samples to frame data (zero filling is included).
             for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i] * hammingWindow[i];
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
 
             // Removal of low energy frames
             // if frame is invalid (i.e. has low energy), make it null

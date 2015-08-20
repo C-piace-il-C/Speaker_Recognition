@@ -29,7 +29,7 @@ public class Periodogrammer
     }
 
     /**
-     * @brief   Computes the periodogram of frame.
+     *          Computes the periodogram of frame.
      *          A periodogram is a real sequence of the same length of frame (N)
      *          periodogram[i] = 1/N * |F[i]|^2, F[i] being the DFT of frame.
      * @param   frame   The frame.
@@ -37,7 +37,12 @@ public class Periodogrammer
      */
     public double[] computePeriodogram (Frame frame)
     {
+
         int size = frame.data.length;
+
+        double[] hammingWindow = new double[size];
+        for( int C = 0; C < size; C++ )
+            hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)size-1.0));
 
         // Initialize return value
         double[] periodogram = new double[size];
@@ -46,7 +51,7 @@ public class Periodogrammer
 
         // Compute DFT of windowed sequence
 
-        /*switch (transformSelector) {
+        switch (transformSelector) {
             case TT_DFT:
                 double[]  windowedFrame = new double[size];
 
@@ -78,14 +83,11 @@ public class Periodogrammer
 
             default:
                 throw new IllegalStateException();
-        }*/
-
-        // usa la trasformata per calcolare energie..
-
+        }
 
         // Compute periodogram
         for (int C = 0; C < size; C++)
-            periodogram[C] = frame.ft[C].getSquareLength() / N;
+            periodogram[C] = ft[C].getSquareLength() / N;
 
         return (periodogram);
     }
