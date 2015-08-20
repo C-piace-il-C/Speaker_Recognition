@@ -3,8 +3,6 @@ package it.unige.diten.dsp.speakerrecognition.svmModeling;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class LabelFeatureFileTest {
 
     // Questi file devono avere un identificativo, ovvero nel nome del file ci deve essere il nome del parlatore
