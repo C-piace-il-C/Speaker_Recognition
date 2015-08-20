@@ -9,15 +9,15 @@ package it.unige.diten.dsp.speakerrecognition;
 public class Periodogrammer
 {
     private Complex[] ft;
-    private double[] hammingWindow;
+   // private double[] hammingWindow;
     private TransformSelector transformSelector;
 
     public Periodogrammer(int size)
     {
-        hammingWindow = new double[size];
+        //hammingWindow = new double[size];
         // Create an hamming window and then computeWindowedDFT
-        for( int C = 0; C < size; C++)
-            hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)size-1.0));
+        //for( int C = 0; C < size; C++)
+        //    hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)size-1.0));
 
         ft = new Complex[size];
         // Initialize ft

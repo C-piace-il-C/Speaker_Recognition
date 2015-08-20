@@ -1,8 +1,5 @@
 package it.unige.diten.dsp.speakerrecognition;
 
-import android.util.Log;
-
-
 /**
  * Framer
  * E' una classe astratta che si occupa di leggere un file .WAV per poi suddividerlo in frames
@@ -30,7 +27,7 @@ public abstract class Framer
     /// Distance in Shorts between the beginning of a frame and the following
     public final static int     FRAME_SHORT_SPACING = FRAME_BYTE_SPACING / 2;
     /// Generic energy threshold
-    public static double        ENERGY_THRESHOLD = 1E5;
+    public static double        ENERGY_THRESHOLD = 5E5;
     /// Container for all frames
     private static Frame[] frames = null;
 
@@ -38,7 +35,7 @@ public abstract class Framer
     public static void readFromFile(String fileName) throws Exception
     {
         double[] hammingWindow = new double[SAMPLES_IN_FRAME];
-        for( int C = 0; C < SAMPLES_IN_FRAME; C++)
+        for( int C = 0; C < SAMPLES_IN_FRAME; C++ )
             hammingWindow[C] = 0.54-0.46*Math.cos((2.0*Math.PI*(double)C)/((double)SAMPLES_IN_FRAME-1.0));
 
         int correctFrameCount;
@@ -74,9 +71,7 @@ public abstract class Framer
 
             // Copy samples to frame data (zero filling is included).
             for (int i = 0; (i < SAMPLES_IN_FRAME) && (C * FRAME_SHORT_SPACING + i < audioSamples.length); i++)
-            {
-                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i];
-            }
+                frames[C].data[i] = audioSamples[C * FRAME_SHORT_SPACING + i] * hammingWindow[i];
 
             // Removal of low energy frames
             // if frame is invalid (i.e. has low energy), make it null
@@ -95,7 +90,6 @@ public abstract class Framer
                 correctFrameCount--;
                 FeatureExtractor.frameRemoved++;
             }
-
         }
 
         // Create a new frame array and fill it with non-null frames
@@ -109,7 +103,6 @@ public abstract class Framer
 
         // Replace Framer.frames with the new array
         frames = frames2;
-
     }
 
     /// Returns frame array
