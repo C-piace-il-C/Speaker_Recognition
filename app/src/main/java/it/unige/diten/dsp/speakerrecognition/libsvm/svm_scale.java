@@ -94,7 +94,7 @@ public class svm_scale
 		return line;
 	}
 
-	private void run(String []argv) throws IOException
+	private String run(String []argv) throws IOException
 	{
 		int i,index;
 		BufferedReader fp = null, fp_restore = null;
@@ -362,12 +362,13 @@ public class svm_scale
 
 		fp.close();
 		bufferedOutputStream.close();
+        return exitFilename;
 
 	}
 
-	public static void main(String argv[]) throws IOException
+	public static String main(String argv[]) throws IOException
 	{
 		svm_scale s = new svm_scale();
-		s.run(argv);
+		return s.run(argv);
 	}
 }

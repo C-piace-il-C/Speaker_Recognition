@@ -1,7 +1,12 @@
 package it.unige.diten.dsp.speakerrecognition.svmModeling;
 
 import android.os.AsyncTask;
+
+import it.unige.diten.dsp.speakerrecognition.Structures.ModelingStructure;
 import it.unige.diten.dsp.speakerrecognition.libsvm.*;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.CrossValidation;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.LoadFeatureFile;
+import it.unige.diten.dsp.speakerrecognition.svmModeling.TrainSVM;
 
 public class ModelFromFile extends AsyncTask <String, Void, Void> {
 
@@ -13,24 +18,21 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    public Void doInBackground(String... params) {
 
         /**
          * params[0] = name of the training file
          * params[1] = action [Cross, Train]
          */
 
-        TrainSVM.filename = params[0];
-        CrossValidation.filename = params[0];
+        TrainSVM.setFilename(params[0]);
+        CrossValidation.setFilename(params[0]);
 
         // TODO: replace this with selected values
-        CrossValidation.cStart = -5;
-        CrossValidation.cEnd = 15;
-        CrossValidation.cStep = 1;
-
-        CrossValidation.gStart = 3;
-        CrossValidation.gEnd = -15;
-        CrossValidation.gStep = -1;
+        CrossValidation.set_C_values(
+                ModelingStructure.cStart, ModelingStructure.cEnd, ModelingStructure.cStep);
+        CrossValidation.set_Gamma_values(
+                ModelingStructure.gStart, ModelingStructure.gEnd, ModelingStructure.gStep);
 
         try {
             svmProblem = LoadFeatureFile.load(params[0]);

@@ -23,7 +23,7 @@ public class FEThread implements Runnable
         for (int frame = threadNumber; frame < framesPtr.length; frame += threadCount)
         {
             MFCCPtr[frame] = DCT.computeDCT(
-                    Logarithmer.computeLogarithm(
+                    Log.calculateArrayLog(
                             MelScaler.extractMelEnergies(
                                     periodogrammer.computePeriodogram(
                                             framesPtr[frame]

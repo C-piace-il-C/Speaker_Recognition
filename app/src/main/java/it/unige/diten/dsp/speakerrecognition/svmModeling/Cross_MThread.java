@@ -1,7 +1,10 @@
 package it.unige.diten.dsp.speakerrecognition.svmModeling;
 
 
-import it.unige.diten.dsp.speakerrecognition.libsvm.*;
+import it.unige.diten.dsp.speakerrecognition.SVMTraining.Coefficients;
+import it.unige.diten.dsp.speakerrecognition.libsvm.svm;
+import it.unige.diten.dsp.speakerrecognition.libsvm.svm_parameter;
+import it.unige.diten.dsp.speakerrecognition.libsvm.svm_problem;
 
 public class Cross_MThread implements Runnable {
 
@@ -14,17 +17,18 @@ public class Cross_MThread implements Runnable {
     private double[][] results;
     private String[] parameters;
 
-    public Cross_MThread(int threadNum, int threadCount, svm_problem svmProblem)
+    public Cross_MThread(int threadNum, int threadCount, svm_problem svmProblem,
+                         Coefficients coefficients, String[] parameters, double[][] results)
     {
         this.threadNum = threadNum;
         this.threadCount = threadCount;
         this.svmProblem = svmProblem;
-        this.cLength = CrossValidation.cLength;
-        this.gLength = CrossValidation.gLength;
-        this.log_C_coef = CrossValidation.log_C_coef;
-        this.log_Gamma_coef = CrossValidation.log_Gamma_coef;
-        this.parameters = CrossValidation.parameters;
-        this.results = CrossValidation.results;
+        this.cLength = coefficients.cLength;
+        this.gLength = coefficients.gLength;
+        this.log_C_coef = coefficients.log_C_coef;
+        this.log_Gamma_coef = coefficients.log_Gamma_coef;
+        this.parameters = parameters;
+        this.results = results;
         svmParameter = new DefaultSVMParameter(LoadFeatureFile.f).svmParameter;
     }
 
@@ -38,9 +42,9 @@ public class Cross_MThread implements Runnable {
             {
                 svmParameter.gamma = Math.pow(2, log_Gamma_coef[gParameters]);
                 // Do the cross validation and store the results
-                // TODO: replace 10 with the user selected number of folds
+                // TODO: replace 5 with the user selected number of folds
                 svm.svm_cross_validation
-                        (svmProblem, svmParameter, 10, results[gLength * cParameters + gParameters]);
+                        (svmProblem, svmParameter, 5, results[gLength * cParameters + gParameters]);
                 // Store the parameters in the correct order of cross validation
                 parameters[gLength * cParameters + gParameters] =
                         "log2c=" + log_C_coef[cParameters] +
