@@ -29,11 +29,14 @@ public class ModelFromFile extends AsyncTask <String, Void, Void> {
         CrossValidation.setFilename(params[0]);
 
         // TODO: replace this with selected values
+        /*
         CrossValidation.set_C_values(
                 ModelingStructure.cStart, ModelingStructure.cEnd, ModelingStructure.cStep);
         CrossValidation.set_Gamma_values(
                 ModelingStructure.gStart, ModelingStructure.gEnd, ModelingStructure.gStep);
-
+        */
+        CrossValidation.set_C_values(-5, 15, 1);
+        CrossValidation.set_Gamma_values(-15, 3, 1);
         try {
             svmProblem = LoadFeatureFile.load(params[0]);
         } catch (Exception e) {

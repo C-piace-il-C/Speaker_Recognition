@@ -82,7 +82,7 @@ public abstract class Framer
                 frames[C].ft[i] = new Complex();
             DFT.computeDFT(frames[C].data, frames[C].ft);
             double energy = FCleaner.extractFreqEnergy(frames[C].ft, SAMPLE_RATE, 0, SAMPLE_RATE/2);
-            TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
+            //TextWriter.appendText(MainActivity.PATH + "/" + "energyLog" + ".txt",String.valueOf(energy) + "\n");
 
             if(energy < ENERGY_THRESHOLD)
             {

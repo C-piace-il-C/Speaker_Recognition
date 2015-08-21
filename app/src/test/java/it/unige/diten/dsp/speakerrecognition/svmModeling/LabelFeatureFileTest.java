@@ -3,22 +3,33 @@ package it.unige.diten.dsp.speakerrecognition.svmModeling;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.unige.diten.dsp.speakerrecognition.SVMTraining.ModelFromFile;
+import it.unige.diten.dsp.speakerrecognition.DD;
+import it.unige.diten.dsp.speakerrecognition.FeatureExtractor;
 
 public class LabelFeatureFileTest {
 
-    // Questi file devono avere un identificativo, ovvero nel nome del file ci deve essere il nome del parlatore
-    // Attenzione che di default sono Andrea, Davide, Emanuele
-    private String[] files = {"/home/doddo/Tests/modeling2/[qualcosa]aceAndrea2.ff",
-            "/home/doddo/Tests/modeling2/[qualcosa]aceDavide2.ff",
-            "/home/doddo/Tests/modeling2/[qualcosa]aceEmanuele2.ff"};
+    private String[] files = {
+            "/home/doddo/Generic_Workspace/Matlab/ace/[a]aceAndrea2.wav",
+            "/home/doddo/Generic_Workspace/Matlab/ace/[a]aceDavide2.wav"};
     @Before
     public void setUp() throws Exception {
     }
 
     @Test
     public void testLabel() throws Exception {
-        String mergedFile = LabelFeatureFile.label(files);
+        String[] features = new String[files.length];
+        int i = 0;
+        for(String file : files)
+        {
+            double[][] MFCC, DDelta;
+            MFCC = FeatureExtractor.extractMFCC(file);
+            DDelta   = DD.computeDD(MFCC, 2);
+            features[i] = file.replace(".wav", ".ff");
+            FeatureExtractor.writeFeatureFile(features[i], MFCC, DDelta);
+            i++;
+        }
+
+        String mergedFile = LabelFeatureFile.label(features);
         String scaledFile = ScaleFeatureFile.Scale(mergedFile);
         ModelFromFile modelFromFile = new ModelFromFile();
         modelFromFile.doInBackground(scaledFile, "Cross");

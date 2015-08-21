@@ -33,7 +33,7 @@ public abstract class LabelFeatureFile {
     public static String label(String[] params) throws Exception
     {
         // TODO: replace this line with names selected
-        names = new String[]{"Andrea", "Davide", "Emanuele"};
+        names = new String[]{"Andrea", "Davide"};
 
         String[] sameNamePath = groupFilesByName(params);
         String toBeMerged = "";
